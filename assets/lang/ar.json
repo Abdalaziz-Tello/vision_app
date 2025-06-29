@@ -1,4 +1,13 @@
 {
-    "login": "تسجيل الدخول",
-    "signup": "تسجيل الإنضمام"
+  "login": "تسجيل الدخول",
+  "signup": "إنشاء حساب",
+  "create_first_project": "انشأ مشروعك الأول",
+  "project_name": "اسم المشروع",
+  "project_field": "مجال المشروع",
+  "project_description": "وصف المشروع",
+  "add_attachments": "إضافة مرفقات",
+  "add_files": "إضافة ملفات",
+  "add_cover_image": "إضافة صورة غلاف",
+  "university_student": "طالب جامعي",
+  "upload": "رفع"
 }

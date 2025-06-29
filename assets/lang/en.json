@@ -1,4 +1,13 @@
 {
-    "login": "Login",
-    "signup": "Signup"
+  "login": "Login",
+  "signup": "Signup",
+  "create_first_project": "Create Your First Project",
+  "project_name": "Project Name",
+  "project_field": "Project Field",
+  "project_description": "Project Description",
+  "add_attachments": "Add Attachments",
+  "add_files": "Add Files",
+  "add_cover_image": "Add Cover Image",
+  "university_student": "University Student",
+  "upload": "Upload"
 }
