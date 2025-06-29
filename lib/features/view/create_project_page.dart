@@ -17,6 +17,8 @@ class DialogScreen extends StatefulWidget {
 }
 
 class _DialogScreenState extends State<DialogScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   final _projectNameController = TextEditingController();
   final _projectTypeController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
@@ -55,45 +57,34 @@ class _DialogScreenState extends State<DialogScreen> {
                     ),
                     backgroundColor: AppColors.whiteColor,
                     insetPadding: const EdgeInsets.all(30),
-
                     child: Container(
-                      width: isWide ? 700 : double.infinity,
+                      width: double.infinity,
                       padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildTitle(),
-                          const SizedBox(height: 16),
-                          CustomTextField(
-                            controller: _projectNameController,
-                            title: AppString.projectName,
-                            hintText: "مشروع منصة استيراد وتصدير",
-                          ),
-                          CustomTextField(
-                            controller: _projectTypeController,
-                            title: AppString.projectField,
-                            hintText: "برمجة ويب",
-                          ),
-                          CustomTextField(
-                            controller: _projectDescriptionController,
-                            title: AppString.projectDescription,
-                            hintText:
-                                "منصة لاستيراد و تصدير القطع الصناعية و صمامات النفط",
-                          ),
-                          SectionTitle(
-                            AppString.addAttachments,
-                            padding: const EdgeInsets.only(top: 16),
-                          ),
-                          _buildAttachmentSection(isWide),
-                          const SizedBox(height: 10),
-                          UniversityStudentCheckbox(
-                            value: isUniversityStudent,
-                            onChanged: (val) =>
-                                setState(() => isUniversityStudent = val),
-                          ),
-                          const SizedBox(height: 10),
-                          _buildUploadButton(),
-                        ],
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildTitle(),
+                            const SizedBox(height: 16),
+                            _buildProjectNameField(),
+                            _buildProjectTypeField(),
+                            _buildProjectDescriptionField(),
+                            SectionTitle(
+                              AppString.addAttachments,
+                              padding: const EdgeInsets.only(top: 16),
+                            ),
+                            _buildAttachmentSection(isWide),
+                            const SizedBox(height: 10),
+                            UniversityStudentCheckbox(
+                              value: isUniversityStudent,
+                              onChanged: (val) =>
+                                  setState(() => isUniversityStudent = val),
+                            ),
+                            const SizedBox(height: 10),
+                            _buildUploadButton(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -116,6 +107,24 @@ class _DialogScreenState extends State<DialogScreen> {
       ),
     );
   }
+
+  Widget _buildProjectNameField() => CustomTextField(
+        controller: _projectNameController,
+        title: AppString.projectName,
+        hintText: "مشروع منصة استيراد وتصدير",
+      );
+
+  Widget _buildProjectTypeField() => CustomTextField(
+        controller: _projectTypeController,
+        title: AppString.projectField,
+        hintText: "برمجة ويب",
+      );
+
+  Widget _buildProjectDescriptionField() => CustomTextField(
+        controller: _projectDescriptionController,
+        title: AppString.projectDescription,
+        hintText: "وصف المشروع...",
+      );
 
   Widget _buildAttachmentSection(bool isWide) {
     return isWide
@@ -156,7 +165,25 @@ class _DialogScreenState extends State<DialogScreen> {
       alignment: Alignment.bottomRight,
       child: InkWell(
         onTap: () {
-          // TODO: Handle actual upload logic
+          final formValid = _formKey.currentState?.validate() ?? false;
+
+          if (!formValid || coverImage == null || selectedFiles.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("يرجى تعبئة جميع الحقول المطلوبة وإضافة مرفقات"),
+                backgroundColor: Colors.red,
+              ),
+            );
+            return;
+          }
+
+          // TODO: Proceed with upload
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("تم التحقق من البيانات بنجاح"),
+              backgroundColor: Colors.green,
+            ),
+          );
         },
         child: Container(
           width: 200,
@@ -165,10 +192,14 @@ class _DialogScreenState extends State<DialogScreen> {
             color: const Color.fromRGBO(33, 193, 242, 1),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Center(
+          child:  Center(
             child: Text(
               AppString.upload,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: AppColors.navyBlue,
+              ),
             ),
           ),
         ),

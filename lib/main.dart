@@ -35,8 +35,13 @@ class MyApp extends StatelessWidget {
 
 
 //TODO :
-//fix the exeption when choosing file
+//fix the exeption when choosing file !!
+//change the second text form to make it drop button
 
+//? done :
+//handle validation
+//fix the direction of the page
+//change the placeHolder after choosing PDF or IMAGE
 
 
 //** remember :

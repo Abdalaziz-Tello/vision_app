@@ -13,6 +13,8 @@ class AppColors {
   static const Color purble = Color(0xFF643AB5);
   static const Color lightGrey = Color(0xFFF2F2F0);
   static const Color whiteColor = Color(0xffF9F9F9);
-  static const Color realyWihte = Color(0xffFCFCFC);
-  static const Color shadowColor = Colors.grey;
+  static const Color reallyWhite = Color(0xffFCFCFC);
+  static const Color shadowGreyColor = Colors.grey;
+  static const Color checkboxInactiveGreyFill = Color(0xFFE4E4E4);
+  static const Color grayGreen400 = Color.fromRGBO(166, 181, 172, 1);
 }

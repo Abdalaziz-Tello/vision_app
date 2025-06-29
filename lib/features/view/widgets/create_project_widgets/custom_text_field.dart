@@ -1,53 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:vision_app/core/res/color/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required this.hintText,
-    required this.title,
-    required this.controller,
-  });
-
   final String title;
   final String hintText;
   final TextEditingController controller;
+
+  const CustomTextField({
+    super.key,
+    required this.title,
+    required this.hintText,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const Text(
+                "*",
+                style: TextStyle(fontSize: 22, color: Colors.red),
+              ),
+              const SizedBox(width: 2),
               Text(
                 title,
-                style: TextStyle(fontSize: 22, color: Color(0XFF3A433E)),
+                style: const TextStyle(fontSize: 22, color: Color(0XFF3A433E)),
               ),
-              SizedBox(width: 2),
-              Text("*", style: TextStyle(fontSize: 22, color: Colors.red)),
             ],
           ),
+          const SizedBox(height: 10),
           Container(
-            width: 1008, // Fixed width — you might want to make this responsive
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Color.fromRGBO(228, 228, 228, 1),
+              color: const Color.fromRGBO(228, 228, 228, 1),
             ),
-            child: TextField(
+            child: TextFormField(
               controller: controller,
-              textAlign: TextAlign.end, // RTL alignment
+              cursorColor: AppColors.navyBlue,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'هذا الحقل مطلوب';
+                }
+                return null;
+              },
               decoration: InputDecoration(
                 hintText: hintText,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Colors.transparent),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Colors.transparent),
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
                 ),
               ),
             ),
