@@ -9,5 +9,16 @@
   "add_files": "إضافة ملفات",
   "add_cover_image": "إضافة صورة غلاف",
   "university_student": "طالب جامعي",
-  "upload": "رفع"
+  "upload": "رفع",
+  "show_your_project_now": "اعرض مشروعك الآن",
+  "top_projects": "المشاريع الأبرز",
+  "email": "البريد الإلكتروني",
+  "enter_email": "أدخل بريدك الإلكتروني",
+  "password": "كلمة المرور",
+  "enter_password": "أدخل كلمة المرور",
+  "email_required": "البريد الإلكتروني مطلوب",
+"email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+"password_required": "كلمة المرور مطلوبة",
+"password_too_short": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+
 }

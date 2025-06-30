@@ -9,5 +9,15 @@
   "add_files": "Add Files",
   "add_cover_image": "Add Cover Image",
   "university_student": "University Student",
-  "upload": "Upload"
+  "upload": "Upload",
+  "show_your_project_now": "Show Your Project Now",
+  "top_projects": "Top Projects",
+  "email": "Email",
+  "enter_email": "Enter your email",
+  "password": "Password",
+  "enter_password": "Enter your password",
+  "email_required": "Email is required",
+  "email_invalid": "Enter a valid email",
+  "password_required": "Password is required",
+  "password_too_short": "Password must be at least 6 characters"
 }

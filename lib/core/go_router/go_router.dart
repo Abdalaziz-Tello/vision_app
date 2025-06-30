@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/app_keys.dart';
 import 'package:vision_app/features/view/create_project_page.dart';
-import 'package:vision_app/features/view/home_page.dart';
+import 'package:vision_app/features/auth/presentation/home_page.dart';
 
 class Routes {
   GoRouter router = GoRouter(

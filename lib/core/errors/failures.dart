@@ -1,4 +1,4 @@
-//rather than "Equatable" package , i used the hasCode
+//** rather than "Equatable" package , i used the hasCode
 abstract class Failure {
   final String message;
 
@@ -25,4 +25,8 @@ class ServerFailure extends Failure {
 
   @override
   int get hashCode => super.hashCode;
+}
+
+class NoConnectionFailure extends Failure {
+  NoConnectionFailure(super.message);
 }

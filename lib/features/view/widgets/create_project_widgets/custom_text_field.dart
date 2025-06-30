@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/features/view/widgets/create_project_widgets/lable_row.dart';
 
 class CustomTextField extends StatelessWidget {
   final String title;
   final String hintText;
   final TextEditingController controller;
-
+  final String? Function(String?)? validator;
   const CustomTextField({
     super.key,
     required this.title,
     required this.hintText,
     required this.controller,
+    this.validator,
   });
 
   @override
@@ -20,19 +22,7 @@ class CustomTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Text(
-                "*",
-                style: TextStyle(fontSize: 22, color: Colors.red),
-              ),
-              const SizedBox(width: 2),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 22, color: Color(0XFF3A433E)),
-              ),
-            ],
-          ),
+          LableRow(title: title),
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
@@ -41,13 +31,14 @@ class CustomTextField extends StatelessWidget {
             ),
             child: TextFormField(
               controller: controller,
+              validator: validator,
               cursorColor: AppColors.navyBlue,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'هذا الحقل مطلوب';
-                }
-                return null;
-              },
+              // validator: (value) {
+              //   if (value == null || value.trim().isEmpty) {
+              //     return 'هذا الحقل مطلوب';
+              //   }
+              //   return null;
+              // },
               decoration: InputDecoration(
                 hintText: hintText,
                 border: InputBorder.none,

@@ -31,7 +31,7 @@ class _CoverImagePickerWidgetState extends State<CoverImagePickerWidget> {
 
       final file = result.files.first;
       if (file.bytes == null && file.path == null) {
-        throw Exception('No image data available');
+        throw Exception('No image data available');//TODO :fix this
       }
 
       setState(() => _selectedImage = file);

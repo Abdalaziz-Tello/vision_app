@@ -7,6 +7,7 @@ import 'package:vision_app/features/view/widgets/create_project_widgets/custom_t
 import 'package:vision_app/features/view/widgets/create_project_widgets/section_title.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/pdf_picker_widget.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/cover_image_picker_widget.dart';
+import 'package:vision_app/features/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/university_student_checkbox.dart';
 
 class DialogScreen extends StatefulWidget {
@@ -38,6 +39,15 @@ class _DialogScreenState extends State<DialogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.whiteColor,
+        actions: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
+          ),
+        ],
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -46,6 +56,7 @@ class _DialogScreenState extends State<DialogScreen> {
             fit: BoxFit.cover,
             width: double.infinity,
           ),
+
           LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth >= 800;
@@ -109,22 +120,40 @@ class _DialogScreenState extends State<DialogScreen> {
   }
 
   Widget _buildProjectNameField() => CustomTextField(
-        controller: _projectNameController,
-        title: AppString.projectName,
-        hintText: "مشروع منصة استيراد وتصدير",
-      );
+    controller: _projectNameController,
+    title: AppString.projectName,
+    hintText: "مشروع منصة ", //TODO : what the hint text here ?
+  );
 
-  Widget _buildProjectTypeField() => CustomTextField(
-        controller: _projectTypeController,
-        title: AppString.projectField,
-        hintText: "برمجة ويب",
-      );
+  // Widget _buildProjectTypeField() => CustomTextField(
+  //   controller: _projectTypeController,
+  //   title: AppString.projectField,
+  //   hintText: "برمجة ويب",//TODOD : change this into drop
+  // );
+  Widget _buildProjectTypeField() => TextWithExpansionTileSelector(
+    label: AppString.projectField,
+    selectedValue: _projectTypeController.text.isEmpty
+        ? "اختر مجال المشروع"
+        : _projectTypeController.text,
+    options: [
+      "برمجة ويب",
+      "برمجة تطبيقات",
+      "ذكاء اصطناعي",
+      "أمن سيبراني",
+      "أخرى",
+    ],
+    onSelected: (val) {
+      setState(() {
+        _projectTypeController.text = val;
+      });
+    },
+  );
 
   Widget _buildProjectDescriptionField() => CustomTextField(
-        controller: _projectDescriptionController,
-        title: AppString.projectDescription,
-        hintText: "وصف المشروع...",
-      );
+    controller: _projectDescriptionController,
+    title: AppString.projectDescription,
+    hintText: "وصف المشروع...",
+  );
 
   Widget _buildAttachmentSection(bool isWide) {
     return isWide
@@ -167,7 +196,10 @@ class _DialogScreenState extends State<DialogScreen> {
         onTap: () {
           final formValid = _formKey.currentState?.validate() ?? false;
 
-          if (!formValid || coverImage == null || selectedFiles.isEmpty) {
+          if (!formValid ||
+              coverImage == null ||
+              selectedFiles.isEmpty ||
+              _projectTypeController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("يرجى تعبئة جميع الحقول المطلوبة وإضافة مرفقات"),
@@ -192,7 +224,7 @@ class _DialogScreenState extends State<DialogScreen> {
             color: const Color.fromRGBO(33, 193, 242, 1),
             borderRadius: BorderRadius.circular(20),
           ),
-          child:  Center(
+          child: Center(
             child: Text(
               AppString.upload,
               style: TextStyle(

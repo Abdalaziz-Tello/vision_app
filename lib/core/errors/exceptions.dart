@@ -1,6 +1,6 @@
 import 'package:vision_app/core/errors/error_model.dart';
 
-class NoConnectionExecption implements Exception {}
+class NoConnectionException implements Exception {}
 
 class ServerException implements Exception {
   final ErrorModel errorModel;
@@ -10,4 +10,4 @@ class ServerException implements Exception {
   String get errorMessage => errorModel.errorMessage;
 }
 
-class EmptyCashExecption implements Exception {}
+class EmptyCacheException implements Exception {}

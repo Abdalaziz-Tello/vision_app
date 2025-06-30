@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vision_app/core/go_router/go_router.dart';
+import 'package:vision_app/features/auth/injection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await init();
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
@@ -34,15 +36,16 @@ class MyApp extends StatelessWidget {
 
 
 
-//TODO :
+//TODO:
 //fix the exeption when choosing file !!
-//change the second text form to make it drop button
+//slove this error : 10_Another exception was thrown: Incorrect use of ParentDataWidget// already why its 10 times ?!
+//to save the role after get it
 
-//? done :
-//handle validation
-//fix the direction of the page
-//change the placeHolder after choosing PDF or IMAGE
+//? done:
+//complete the API's files
+//change the strings in homepage
+//make the dropdown widget , and fix the validation for it
+//fix problem of (Incorrect use of ParentDataWidget) in the createProjectPage
 
-
-//** remember :
+//** remember:
 // >Supabase Uses a Direct Client SDK,that allows to connect and interact directly:

@@ -1,13 +1,15 @@
 //TODO : change the name :|
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_keys.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/features/view/widgets/homePage_widgets/colored_card_with_content.dart';
-import 'package:vision_app/features/view/widgets/homePage_widgets/loading_card_with_lines.dart';
+import 'package:vision_app/features/auth/injection.dart';
+import 'package:vision_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -103,6 +105,9 @@ class _HomePageState extends State<HomePage> {
                               AppString.login,
                               AppColors.lightBlue,
                               Colors.white,
+                              onTap: () {
+                                showLoginDialog(context);
+                              },
                             ),
                             _buildButton(
                               AppString.signup,
@@ -130,7 +135,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: _buildButton(
-                  'اعرض مشروعك الآن',
+                  AppString.showYourProjectNow,
                   AppColors.brightBlue,
                   AppColors.navyBlue,
                   height: 50,
@@ -145,7 +150,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(20),
             child: Text(
-              'المشاريع الأبرز',
+              AppString.topProjects,
               style: TextStyle(
                 color: Color(0xff3A433E),
                 fontSize: 26,
@@ -160,7 +165,6 @@ class _HomePageState extends State<HomePage> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   double cardWidth = constraints.maxWidth * 0.45;
-
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
@@ -223,6 +227,19 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> showLoginDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return BlocProvider(
+          create: (context) => AuthBloc(sl()),
+          child: AuthDialog(),
+        );
+      },
     );
   }
 }
