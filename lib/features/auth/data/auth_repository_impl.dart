@@ -13,7 +13,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource, this.networkInfo);
 
   @override
-  Future<Either<Failure, AuthResponse>> signInWithEmailAndPassword({
+  Future<Either<Failure, AuthEntity>> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -31,9 +31,31 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
       print('right in the repo of the signin ');
-      return Right(response);
+
+      return Right(response.toEntity());
     } on ServerException catch (e) {
       print('left in the repo of the signin:${e} ');
+      return Left(ServerFailure(e.errorMessage));
+    }
+  }
+//_________________________________________________________________________
+  @override
+  Future<Either<Failure, AuthEntity>> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    final isConnected = await networkInfo.isConnected;
+    if (!isConnected) {
+      return Left(NoConnectionFailure("No internet connection"));
+    }
+
+    try {
+      final response = await remoteDataSource.signUp(
+        email: email,
+        password: password,
+      );
+      return Right(response.toEntity());
+    } on ServerException catch (e) {
       return Left(ServerFailure(e.errorMessage));
     }
   }

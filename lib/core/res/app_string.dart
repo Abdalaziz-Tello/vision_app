@@ -27,4 +27,15 @@ class AppString {
   static String get emailInvalid => 'email_invalid'.tr();
   static String get passwordRequired => 'password_required'.tr();
   static String get passwordTooShort => 'password_too_short'.tr();
+  static String get advancedResourcesRequest =>
+      'advanced_resources_request'.tr();
+  static String get project => 'project'.tr();
+  static String get completedPartOfProject => 'completed_part_of_project'.tr();
+  static String get selectEducationEntity => 'select_education_entity'.tr();
+  static String get educationEntity => 'education_entity'.tr();
+  static String get selectResource => 'select_resource'.tr();
+  static String get requiredResource => 'required_resource'.tr();
+  static String get pleaseFillRequiredFields =>
+      'please_fill_required_fields'.tr();
+  static String get submitRequest => 'submit_request'.tr();
 }

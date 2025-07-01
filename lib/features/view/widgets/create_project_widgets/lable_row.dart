@@ -9,11 +9,11 @@ class LableRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text("*", style: TextStyle(fontSize: 22, color: Colors.red)),
+        const Text("*", style: TextStyle(fontSize: 15, color: Colors.red)),
         const SizedBox(width: 2),
         Text(
           title,
-          style: const TextStyle(fontSize: 22, color: Color(0XFF3A433E)),
+          style: const TextStyle(fontSize: 15, color: Color(0XFF3A433E)),
         ),
       ],
     );

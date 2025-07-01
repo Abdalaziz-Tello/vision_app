@@ -19,6 +19,15 @@
   "email_required": "البريد الإلكتروني مطلوب",
 "email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
 "password_required": "كلمة المرور مطلوبة",
-"password_too_short": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+"password_too_short": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "advanced_resources_request": "طلب موارد متقدمة",
+  "project": "المشروع",
+  "completed_part_of_project": "المنجز من المشروع",
+  "select_education_entity": "اختر جهة التعليم",
+  "education_entity": "الجامعة أو الجهة التعليمية",
+  "select_resource": "اختر المورد",
+  "required_resource": "المورد المطلوب",
+  "please_fill_required_fields": "يرجى تعبئة جميع الحقول المطلوبة وإضافة مرفقات",
+  "submit_request": "رفع الطلب"
 
 }

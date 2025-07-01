@@ -7,7 +7,7 @@ class SignInWithEmailAndPassword {
   final AuthRepository repository;
 
   SignInWithEmailAndPassword(this.repository);
-  Future<Either<Failure, AuthResponse>> call({
+  Future<Either<Failure, AuthEntity>> call({
     required String email,
     required String password,
   }) async {

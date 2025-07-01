@@ -1,13 +1,14 @@
 class AppKeys {
   static const String homePageKey = '/';
   static const String createProjectPageKey = '/createProjectPageKey';
+  static const String advancedResourcesRequestPageKey =
+      '/advancedResourcesRequestPageKey';
 
-//backend keys :
-//_______________________________________________________________________
+  //backend keys :
+  //_______________________________________________________________________
   static const String supabaseUrl = 'https://kgyorpamyevmmjjcztwl.supabase.co';
   static const String supabaseAnonKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtneW9ycGFteWV2bW1qamN6dHdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzQ5OTcsImV4cCI6MjA2NTUxMDk5N30.KYSWQm8SzA8dqiXfAK43U_4-xDyhKAl6YT41tD2Mrp4';
-
 }
 
 

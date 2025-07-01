@@ -40,14 +40,15 @@ class _DialogScreenState extends State<DialogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.whiteColor,
-        actions: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
-          ),
-        ],
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: AppColors.whiteColor,
+        //  title: const SizedBox(),
+        actions: [Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain)],
       ),
+
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -57,51 +58,51 @@ class _DialogScreenState extends State<DialogScreen> {
             width: double.infinity,
           ),
 
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final isWide = constraints.maxWidth >= 800;
-              return Center(
-                child: SingleChildScrollView(
-                  child: Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    backgroundColor: AppColors.whiteColor,
-                    insetPadding: const EdgeInsets.all(30),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _buildTitle(),
-                            const SizedBox(height: 16),
-                            _buildProjectNameField(),
-                            _buildProjectTypeField(),
-                            _buildProjectDescriptionField(),
-                            SectionTitle(
-                              AppString.addAttachments,
-                              padding: const EdgeInsets.only(top: 16),
-                            ),
-                            _buildAttachmentSection(isWide),
-                            const SizedBox(height: 10),
-                            UniversityStudentCheckbox(
-                              value: isUniversityStudent,
-                              onChanged: (val) =>
-                                  setState(() => isUniversityStudent = val),
-                            ),
-                            const SizedBox(height: 10),
-                            _buildUploadButton(),
-                          ],
+          Center(
+            child: SingleChildScrollView(
+              child: Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                backgroundColor: AppColors.whiteColor,
+                insetPadding: const EdgeInsets.all(30),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildTitle(),
+                        const SizedBox(height: 16),
+                        _buildProjectNameField(),
+                        _buildProjectTypeField(),
+                        _buildProjectDescriptionField(),
+                        SectionTitle(
+                          AppString.addAttachments,
+                          padding: const EdgeInsets.only(top: 16),
                         ),
-                      ),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final isWide = constraints.maxWidth >= 800;
+                            return _buildAttachmentSection(isWide);
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        UniversityStudentCheckbox(
+                          value: isUniversityStudent,
+                          onChanged: (val) =>
+                              setState(() => isUniversityStudent = val),
+                        ),
+                        const SizedBox(height: 10),
+                        _buildUploadButton(),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ],
       ),

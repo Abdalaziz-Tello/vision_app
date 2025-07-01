@@ -8,38 +8,104 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<AuthResponseModel> signUp({
+    required String email,
+    required String password,
+  });
 }
 
 //TODO : change the netwrok connection ...DONE✅
+
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final SupabaseClient client;
+  final GoTrueClient auth;
 
-  AuthRemoteDataSourceImpl({required this.client});
-
+  AuthRemoteDataSourceImpl({required this.auth});
+  //__________________________________________________________________________
   @override
   Future<AuthResponseModel> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      final result = await client
-          .rpc('signin', params: {'email': email, 'password': password})
-          .select()
-          .single();
+      print('[AuthRemote] Initiating sign in for $email');
 
-      // Check if null
-      if (result == null || result.isEmpty) {
+      final response = await auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      print('[AuthRemote] Received auth response: ${response.user?.id}');
+
+      if (response.user == null) {
+        print('[AuthRemote] No user returned in response');
         throw ServerException(
-          errorModel: ErrorModel(
-            errorMessage: "No data returned from Supabase.",
-          ),
+          errorModel: ErrorModel(errorMessage: 'Authentication failed'),
         );
       }
 
-      return AuthResponseModel.fromJson(result);
-    } catch (error) {
+      final model = AuthResponseModel.fromJson({
+        'id': response.user!.id,
+        'email': response.user!.email,
+        'is_verified': response.user!.confirmedAt != null,
+        'access_token': response.session?.accessToken,
+        'refresh_token': response.session?.refreshToken,
+        'user_metadata': response.user!.userMetadata ?? {},
+      });
+
+      print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
+
+      return model;
+    } on AuthException catch (e) {
+      print('[AuthRemote] Auth error: ${e.message}');
+      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
+    } catch (e, stack) {
+      print('[AuthRemote] Unexpected error: $e\n$stack');
       throw ServerException(
-        errorModel: ErrorModel(errorMessage: error.toString()),
+        errorModel: ErrorModel(errorMessage: 'Authentication failed'),
+      );
+    }
+  }
+
+  //______________________________________________________________________________
+  @override
+  Future<AuthResponseModel> signUp({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      print('[AuthRemote] Initiating sign up for $email');
+
+      final response = await auth.signUp(email: email, password: password);
+
+      print('[AuthRemote] Received sign up response: ${response.user?.id}');
+
+      if (response.user == null) {
+        print('[AuthRemote] No user returned in sign up response');
+        throw ServerException(
+          errorModel: ErrorModel(errorMessage: 'Sign up failed'),
+        );
+      }
+
+      final model = AuthResponseModel.fromJson({
+        'id': response.user!.id,
+        'email': response.user!.email,
+        'is_verified': response.user!.confirmedAt != null,
+        'access_token': response.session?.accessToken,
+        'refresh_token': response.session?.refreshToken,
+        'user_metadata': response.user!.userMetadata ?? {},
+      });
+
+      print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
+
+      return model;
+    } on AuthException catch (e) {
+      print('[AuthRemote] Auth error on sign up: ${e.message}');
+      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
+    } catch (e, stack) {
+      print('[AuthRemote] Unexpected error on sign up: $e\n$stack');
+      throw ServerException(
+        errorModel: ErrorModel(errorMessage: 'Sign up failed'),
       );
     }
   }

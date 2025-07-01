@@ -6,34 +6,41 @@ import 'package:vision_app/core/res/app_keys.dart';
 import 'package:vision_app/features/auth/data/auth_datasource.dart';
 import 'package:vision_app/features/auth/data/auth_repository_impl.dart';
 import 'package:vision_app/features/auth/domain/auth_repository.dart';
-import 'package:vision_app/features/auth/domain/sign_in_usecase.dart';
+import 'package:vision_app/features/auth/domain/use_cases/sign_in_usecase.dart';
+import 'package:vision_app/features/auth/domain/use_cases/sign_up_usecase.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   //supabase :
-  if (!sl.isRegistered<SupabaseClient>()) {
-    sl.registerLazySingleton(
-      () => SupabaseClient(AppKeys.supabaseUrl, AppKeys.supabaseAnonKey),
-    );
-  }
+
+  await Supabase.initialize(
+    url: AppKeys.supabaseUrl,
+    anonKey: AppKeys.supabaseAnonKey,
+  );
+
+  // Register the auth instance directly
+  sl.registerLazySingleton<GoTrueClient>(() => Supabase.instance.client.auth);
 
   //_________________________________________________________________
-
   sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+
+  //_________________________________________________________________
   // Data sources
-  //_________________________________________________________________
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(client: sl()),
+    () => AuthRemoteDataSourceImpl(auth: sl()),
   );
-  // Repository
+
   //_________________________________________________________________
+  // Repository
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(sl(), sl()),
   );
-  // Use case
+
   //_________________________________________________________________
+  // Use case
+  sl.registerFactory(() => SignUpWithEmailAndPassword(sl()));
   sl.registerFactory(() => SignInWithEmailAndPassword(sl()));
 }

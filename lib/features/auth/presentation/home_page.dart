@@ -1,4 +1,3 @@
-//TODO : change the name :|
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +7,9 @@ import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/features/auth/injection.dart';
 import 'package:vision_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog_manager.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,110 +20,80 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Color> cardColors = [
-    Color(0xFFFFD5CA),
-    Color(0xFFC2FFDB),
-    Color(0xFFFFF6CC),
+    const Color(0xFFFFD5CA),
+    const Color(0xFFC2FFDB),
+    const Color(0xFFFFF6CC),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: ListView(
-        children: [
-          // Wrap(
-          //   alignment: WrapAlignment.center,
-          //   spacing: 16,
-          //   runSpacing: 16,
-          //   children: [
-          //     _buildButton(AppString.login, Colors.white, AppColors.lightBlue),
-          //     _buildButton(AppString.signup, AppColors.lightBlue, Colors.white),
-          //     Image.asset(AppImages.logo, width: 150),
-          //   ],
-          // ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                bool isWide = constraints.maxWidth >= 600;
-                //  bool isRtl = Directionality.of(context) == TextDirection.rtl;
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth > 600;
 
-                if (isWide) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          _buildButton(
-                            AppString.login,
-                            AppColors.lightBlue,
-                            Colors.white,
-                          ),
-                          _buildButton(
-                            AppString.signup,
-                            Colors.white,
-                            AppColors.lightBlue,
-                          ),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Image.asset(
-                          AppImages.logo,
-                          width: 120,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Image.asset(
-                        AppImages.logo,
-                        width: 120,
-                        fit: BoxFit.contain,
-                      ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: Wrap(
-                          spacing: 16,
-                          runSpacing: 16,
-                          alignment: WrapAlignment.center,
+            return AppBar(
+              backgroundColor: AppColors.whiteColor,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              shadowColor: AppColors.whiteColor,
+              automaticallyImplyLeading: false,
+              title: null,
+              flexibleSpace: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  isWide
+                      ? Wrap(
+                          spacing: 12,
                           children: [
-                            _buildButton(
-                              AppString.login,
-                              AppColors.lightBlue,
-                              Colors.white,
-                              onTap: () {
-                                showLoginDialog(context);
-                              },
+                            _buildAuthButton(
+                              text: AppString.login,
+                              isLogin: true,
                             ),
-                            _buildButton(
-                              AppString.signup,
-                              Colors.white,
-                              AppColors.lightBlue,
+                            _buildAuthButton(
+                              text: AppString.signup,
+                              isLogin: false,
+                            ),
+                          ],
+                        )
+                      : PopupMenuButton<int>(
+                          color: AppColors.lightGrey,
+                          tooltip: 'Account',
+                          icon: const Icon(
+                            Icons.manage_accounts,
+                            color: AppColors.navyBlue,
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 0,
+                              child: Text(AppString.login),
+                              onTap: () => Future.delayed(
+                                Duration.zero,
+                                () => _showAuthDialog(context, true),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 1,
+                              child: Text(AppString.signup),
+                              onTap: () => Future.delayed(
+                                Duration.zero,
+                                () => _showAuthDialog(context, false),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  );
-                }
-              },
-            ),
-          ),
-
+                  Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+      backgroundColor: AppColors.whiteColor,
+      body: ListView(
+        children: [
           Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -135,9 +105,9 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: _buildButton(
-                  AppString.showYourProjectNow,
-                  AppColors.brightBlue,
-                  AppColors.navyBlue,
+                  text: AppString.showYourProjectNow,
+                  bgColor: AppColors.brightBlue,
+                  textColor: AppColors.navyBlue,
                   height: 50,
                   width: 170,
                   onTap: () {
@@ -151,7 +121,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(20),
             child: Text(
               AppString.topProjects,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xff3A433E),
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
@@ -164,21 +134,15 @@ class _HomePageState extends State<HomePage> {
               height: 250,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  double cardWidth = constraints.maxWidth * 0.45;
+                  final cardWidth = constraints.maxWidth * 0.45;
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       return SizedBox(
                         width: cardWidth,
-                        // child: ColoredCardWithContent(
-                        //   imageAsset: AppImages.logo,
-                        //   title: 'منصة تصدير و إدارة التبادل${index + 1}',
-                        //   subtitle: 'معروض',
-                        // ),
                         child: LoadingCard(
-                          backgroundColor:
-                              cardColors[index % cardColors.length],
+                          backgroundColor: cardColors[index % cardColors.length],
                         ),
                       );
                     },
@@ -187,7 +151,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
           Image.asset(
             AppImages.footer,
             width: double.infinity,
@@ -198,20 +161,35 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildButton(
-    String text,
-    Color bgColor,
+  Widget _buildAuthButton({
+    required String text,
+    required bool isLogin,
+  }) {
+    return AuthDialogManager(
+      isLogin: isLogin,
+      child: _buildButton(
+        text: text,
+        bgColor: isLogin ? AppColors.lightBlue : Colors.white,
+        textColor: isLogin ? Colors.white : AppColors.lightBlue,
+        onTap: null, // Handled by AuthDialogManager
+      ),
+    );
+  }
 
-    Color textColor, {
-    double width = 185,
-    double height = 55,
-    void Function()? onTap,
+  Widget _buildButton({
+    required String text,
+    required Color bgColor,
+    required Color textColor,
+    double width = 160,
+    double height = 40,
+    VoidCallback? onTap,
   }) {
     return InkWell(
       onTap: onTap,
       child: Container(
         width: width,
         height: height,
+        margin: const EdgeInsets.symmetric(horizontal: 4),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: bgColor,
@@ -222,7 +200,7 @@ class _HomePageState extends State<HomePage> {
           text,
           style: TextStyle(
             color: textColor,
-            fontSize: 15,
+            fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -230,16 +208,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> showLoginDialog(BuildContext context) async {
-    return showDialog(
+  void _showAuthDialog(BuildContext context, bool isLogin) {
+    showDialog(
       context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return BlocProvider(
-          create: (context) => AuthBloc(sl()),
-          child: AuthDialog(),
-        );
-      },
+      builder: (context) => BlocProvider(
+        create: (_) => AuthBloc(
+          signInWithEmailAndPassword: sl(),
+          signUpWithEmailAndPassword: sl(),
+        ),
+        child: AuthDialog(
+          isLogin: isLogin,
+          onSuccess: () => context.pop(),
+        ),
+      ),
     );
   }
 }

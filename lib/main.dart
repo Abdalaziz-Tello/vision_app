@@ -40,12 +40,15 @@ class MyApp extends StatelessWidget {
 //fix the exeption when choosing file !!
 //slove this error : 10_Another exception was thrown: Incorrect use of ParentDataWidget// already why its 10 times ?!
 //to save the role after get it
+//extrac the button and make it the same for the hole buttons
+
 
 //? done:
-//complete the API's files
-//change the strings in homepage
-//make the dropdown widget , and fix the validation for it
-//fix problem of (Incorrect use of ParentDataWidget) in the createProjectPage
+//complete the login and singUp
+//change the appbar of the homepage
+//fix the dialog of the auth to make it more reusable for both login and signup
+//create AdvancedResourcesRequestPage Ui with the localization
+
 
 //** remember:
 // >Supabase Uses a Direct Client SDK,that allows to connect and interact directly:

@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/lable_row.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomDisplayField extends StatelessWidget {
   final String title;
-  final String hintText;
-  final TextEditingController controller;
-  final String? Function(String?)? validator;
+  final String value;
   final bool required;
-  const CustomTextField({
+
+  const CustomDisplayField({
     super.key,
     required this.title,
-    required this.hintText,
-    required this.controller,
-    this.validator,
+    required this.value,
     this.required = true,
   });
 
@@ -35,28 +31,15 @@ class CustomTextField extends StatelessWidget {
                 ),
           const SizedBox(height: 10),
           Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: const Color.fromRGBO(228, 228, 228, 1),
             ),
-            child: TextFormField(
-              controller: controller,
-              validator: validator,
-              cursorColor: AppColors.navyBlue,
-              // validator: (value) {
-              //   if (value == null || value.trim().isEmpty) {
-              //     return 'هذا الحقل مطلوب';
-              //   }
-              //   return null;
-              // },
-              decoration: InputDecoration(
-                hintText: hintText,
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
+            child: Text(
+              value.isNotEmpty ? value : '—',
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
           ),
         ],
