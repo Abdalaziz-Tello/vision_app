@@ -10,6 +10,7 @@ import 'package:vision_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog_manager.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
+import 'package:vision_app/features/view/widgets/custom_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,16 +105,25 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: _buildButton(
+                child: CustomButton(
                   text: AppString.showYourProjectNow,
                   bgColor: AppColors.brightBlue,
                   textColor: AppColors.navyBlue,
-                  height: 50,
-                  width: 170,
                   onTap: () {
                     context.push(AppKeys.createProjectPageKey);
                   },
                 ),
+
+                //  _buildButton(
+                //   text: AppString.showYourProjectNow,
+                //   bgColor: AppColors.brightBlue,
+                //   textColor: AppColors.navyBlue,
+                //   height: 50,
+                //   width: 170,
+                //   onTap: () {
+                //     context.push(AppKeys.createProjectPageKey);
+                //   },
+                // ),
               ),
             ],
           ),
@@ -142,7 +152,8 @@ class _HomePageState extends State<HomePage> {
                       return SizedBox(
                         width: cardWidth,
                         child: LoadingCard(
-                          backgroundColor: cardColors[index % cardColors.length],
+                          backgroundColor:
+                              cardColors[index % cardColors.length],
                         ),
                       );
                     },
@@ -161,18 +172,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAuthButton({
-    required String text,
-    required bool isLogin,
-  }) {
+  Widget _buildAuthButton({required String text, required bool isLogin}) {
     return AuthDialogManager(
       isLogin: isLogin,
-      child: _buildButton(
+      child: CustomButton(
         text: text,
         bgColor: isLogin ? AppColors.lightBlue : Colors.white,
         textColor: isLogin ? Colors.white : AppColors.lightBlue,
         onTap: null, // Handled by AuthDialogManager
       ),
+
+      //  _buildButton(
+      //   text: text,
+      //   bgColor: isLogin ? AppColors.lightBlue : Colors.white,
+      //   textColor: isLogin ? Colors.white : AppColors.lightBlue,
+      //   onTap: null, // Handled by AuthDialogManager
+      // ),
     );
   }
 
@@ -194,7 +209,7 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: bgColor,
           border: Border.all(color: AppColors.lightBlue),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
           text,
@@ -218,7 +233,12 @@ class _HomePageState extends State<HomePage> {
         ),
         child: AuthDialog(
           isLogin: isLogin,
-          onSuccess: () => context.pop(),
+          onSuccess: () {
+            context.pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('success'), backgroundColor: Colors.green),
+            );
+          },
         ),
       ),
     );

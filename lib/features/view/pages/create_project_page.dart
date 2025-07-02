@@ -9,6 +9,7 @@ import 'package:vision_app/features/view/widgets/create_project_widgets/pdf_pick
 import 'package:vision_app/features/view/widgets/create_project_widgets/cover_image_picker_widget.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/university_student_checkbox.dart';
+import 'package:vision_app/features/view/widgets/custom_button.dart';
 
 class DialogScreen extends StatefulWidget {
   const DialogScreen({super.key});
@@ -48,6 +49,7 @@ class _DialogScreenState extends State<DialogScreen> {
         //  title: const SizedBox(),
         actions: [Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain)],
       ),
+      backgroundColor: AppColors.whiteColor,
 
       body: Stack(
         fit: StackFit.expand,
@@ -193,10 +195,16 @@ class _DialogScreenState extends State<DialogScreen> {
   Widget _buildUploadButton() {
     return Align(
       alignment: Alignment.bottomRight,
-      child: InkWell(
+      child: CustomButton(
+        text: AppString.upload,
+          width: 200,
+        //  height: 50,
+          fontSize: 22,
+        //  borderRadius: 20,
+        bgColor: const Color.fromRGBO(33, 193, 242, 1),
+        textColor: AppColors.navyBlue,
         onTap: () {
           final formValid = _formKey.currentState?.validate() ?? false;
-
           if (!formValid ||
               coverImage == null ||
               selectedFiles.isEmpty ||
@@ -210,7 +218,7 @@ class _DialogScreenState extends State<DialogScreen> {
             return;
           }
 
-          // TODO: Proceed with upload
+          //TODO: Proceed with upload
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("تم التحقق من البيانات بنجاح"),
@@ -218,24 +226,6 @@ class _DialogScreenState extends State<DialogScreen> {
             ),
           );
         },
-        child: Container(
-          width: 200,
-          height: 50,
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(33, 193, 242, 1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Center(
-            child: Text(
-              AppString.upload,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.navyBlue,
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

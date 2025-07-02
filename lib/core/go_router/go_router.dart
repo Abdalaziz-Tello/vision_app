@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/app_keys.dart';
-import 'package:vision_app/features/view/advanced_resources_request_page.dart';
-import 'package:vision_app/features/view/create_project_page.dart';
+import 'package:vision_app/features/view/pages/advanced_resources_request_page.dart';
+import 'package:vision_app/features/view/pages/create_project_page.dart';
 import 'package:vision_app/features/auth/presentation/home_page.dart';
+import 'package:vision_app/features/view/pages/project_details_page.dart';
 
 class Routes {
   GoRouter router = GoRouter(
@@ -12,7 +13,7 @@ class Routes {
         path: AppKeys.homePageKey,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: HomePage(),
+          child:ProjectDetailsPage(), //HomePage(),
           transitionsBuilder: _fadeTransition,
         ),
       ),
@@ -29,6 +30,14 @@ class Routes {
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           child: AdvancedResourcesRequestPage(),
+          transitionsBuilder: _fadeTransition,
+        ),
+      ),
+      GoRoute(
+        path: AppKeys.projectDetailsPageKey,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: ProjectDetailsPage(),
           transitionsBuilder: _fadeTransition,
         ),
       ),

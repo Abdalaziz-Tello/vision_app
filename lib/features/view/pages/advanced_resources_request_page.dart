@@ -4,6 +4,7 @@ import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/custom_display_field.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
+import 'package:vision_app/features/view/widgets/custom_button.dart';
 
 class AdvancedResourcesRequestPage extends StatefulWidget {
   const AdvancedResourcesRequestPage({super.key});
@@ -21,6 +22,7 @@ class _AdvancedResourcesRequestPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.whiteColor,
@@ -144,22 +146,25 @@ class _AdvancedResourcesRequestPageState
   );
 
   Widget _buildProjectOwnerField() => CustomDisplayField(
-    title:   'مالك المشروع',
+    title: 'مالك المشروع',
     value: 'اسم صاحب المشروع',
     required: false,
   );
 
+  //TODO :make the buttons in the hole app the same (DONE)
   Widget _buildUploadButton() {
-    //TODO :make the buttons in the hole app the same
     return Align(
       alignment: Alignment.bottomRight,
-      child: InkWell(
+      child: CustomButton(
+        text: AppString.submitRequest,
+        width: 200,
+        //  height: 50,
+        fontSize: 22,
+        // borderRadius: 20,
+        bgColor: const Color.fromRGBO(33, 193, 242, 1),
+        textColor: AppColors.navyBlue,
         onTap: () {
-          //    final formValid = _formKey.currentState?.validate() ?? false;
-
-          if (
-          //!formValid ||
-          selectedUniversity == null || selectedResource == null) {
+          if (selectedUniversity == null || selectedResource == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("يرجى تعبئة جميع الحقول المطلوبة وإضافة مرفقات"),
@@ -169,27 +174,9 @@ class _AdvancedResourcesRequestPageState
             return;
           }
 
-          // TODO: Proceed with upload
-          print('true ');
+          // TODO :Proceed with upload
+          print('true');
         },
-        child: Container(
-          width: 200,
-          height: 50,
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(33, 193, 242, 1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Center(
-            child: Text(
-              AppString.submitRequest,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.navyBlue,
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

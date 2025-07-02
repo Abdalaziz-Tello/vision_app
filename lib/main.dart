@@ -42,13 +42,45 @@ class MyApp extends StatelessWidget {
 //to save the role after get it
 //extrac the button and make it the same for the hole buttons
 
+//handle no newtork will opining it
+//! know more about this : This uses the HTML renderer instead of CanvasKit — no internet needed to load it.
+//
+//1-save the access and refresh token , using 'FlutterSecureStorage'
+//2- depend on it , to make rather than the sign buttons a user container
+//
+//make the api keys in seperated class
 
-//? done:
-//complete the login and singUp
-//change the appbar of the homepage
-//fix the dialog of the auth to make it more reusable for both login and signup
-//create AdvancedResourcesRequestPage Ui with the localization
+
 
 
 //** remember:
 // >Supabase Uses a Direct Client SDK,that allows to connect and interact directly:
+//add:
+  //  await Supabase.instance.client.from('rooms').insert([
+  //                           {
+  //                             'table_num': _tableNumController.text,
+  //                             'table_category': _tableCategoryController.text,
+  //                             'char_num': _charNumController.text,
+  //                             'emty': true
+  //                           }
+  //                         ]);
+//-------------------------------------------------------------------------------
+
+//update :
+  // await Supabase.instance.client
+  //       .from('rooms')
+  //       .update({'emty': emty}).eq('table_num', id);
+//-------------------------------------------------------------------------------
+//delete :
+  // Supabase.instance.client
+  //                                   .from('rooms')
+  //                                   .delete()
+  //                                   .eq('${table['table_num']}', table)
+  //                                   .select();
+
+
+
+
+//? done :
+// extracting the button and make it the same for the hole buttons
+//fix exeptions in the supabase and InternetConnectionChecker  intilazation(but still need to found better solution)

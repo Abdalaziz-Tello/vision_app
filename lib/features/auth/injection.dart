@@ -10,22 +10,37 @@ import 'package:vision_app/features/auth/domain/use_cases/sign_in_usecase.dart';
 import 'package:vision_app/features/auth/domain/use_cases/sign_up_usecase.dart';
 
 final sl = GetIt.instance;
+bool _supabaseInitialized = false; //TODO : search for better way
 
 Future<void> init() async {
   //supabase :
 
-  await Supabase.initialize(
-    url: AppKeys.supabaseUrl,
-    anonKey: AppKeys.supabaseAnonKey,
-  );
+  // await Supabase.initialize(
+  //   url: AppKeys.supabaseUrl,
+  //   anonKey: AppKeys.supabaseAnonKey,
+  // );
+
+  if (!_supabaseInitialized) {
+    await Supabase.initialize(
+      url: AppKeys.supabaseUrl,
+      anonKey: AppKeys.supabaseAnonKey,
+    );
+    _supabaseInitialized = true;
+  }
 
   // Register the auth instance directly
-  sl.registerLazySingleton<GoTrueClient>(() => Supabase.instance.client.auth);
-
+  if (!sl.isRegistered<GoTrueClient>()) {
+    sl.registerLazySingleton<GoTrueClient>(() => Supabase.instance.client.auth);
+  }
   //_________________________________________________________________
-  sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
 
-  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+  if (!sl.isRegistered<InternetConnectionChecker>()) {
+    sl.registerLazySingleton(() => InternetConnectionChecker.createInstance());
+  }
+
+  if (!sl.isRegistered<NetworkInfo>()) {
+    sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+  }
 
   //_________________________________________________________________
   // Data sources

@@ -3,7 +3,6 @@
 
 //   AuthResponse({required this.id});
 // }
-// features/auth/domain/entities/auth_entity.dart
 
 class AuthEntity {
   final String id;
