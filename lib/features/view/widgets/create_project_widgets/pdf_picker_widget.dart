@@ -2,14 +2,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/add_attachments_widget.dart';
+
 class PdfPickerWidget extends StatefulWidget {
   final void Function(List<PlatformFile>) onFilesPicked;
   final List<PlatformFile>? currentFiles;
+  final double? width;
 
   const PdfPickerWidget({
     super.key,
     required this.onFilesPicked,
     this.currentFiles,
+    this.width,
   });
 
   @override
@@ -41,21 +44,22 @@ class _PdfPickerWidgetState extends State<PdfPickerWidget> {
       widget.onFilesPicked(result.files);
     } catch (e, stack) {
       debugPrint('PDF picker error: $e\n$stack');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to select PDF')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Failed to select PDF')));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final hasFiles = _selectedFiles.isNotEmpty ||
-                     (widget.currentFiles?.isNotEmpty ?? false);
+    final hasFiles =
+        _selectedFiles.isNotEmpty || (widget.currentFiles?.isNotEmpty ?? false);
     final displayFile = _selectedFiles.isNotEmpty
         ? _selectedFiles.first
         : widget.currentFiles?.first;
 
     return AddAttachments(
+      width: widget.width,
       onTap: _pickFiles,
       title: hasFiles ? "PDF Selected" : AppString.addFiles,
       icon: Icons.file_present_outlined,

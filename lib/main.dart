@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vision_app/core/go_router/go_router.dart';
-import 'package:vision_app/features/auth/injection.dart';
+import 'package:vision_app/core/storage/di.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +49,9 @@ class MyApp extends StatelessWidget {
 //2- depend on it , to make rather than the sign buttons a user container
 //
 //make the api keys in seperated class
+//! fix the DI
+// make the attachement non required
+//!fix this :  Another exception was thrown: Error: Could not find the correct Provider<ProjectDomainsBloc> above this DialogScreen Widget
 
 
 
@@ -82,5 +85,5 @@ class MyApp extends StatelessWidget {
 
 
 //? done :
-// extracting the button and make it the same for the hole buttons
-//fix exeptions in the supabase and InternetConnectionChecker  intilazation(but still need to found better solution)
+//start with ProjectDetailsPage ui
+//

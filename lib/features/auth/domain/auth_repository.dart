@@ -3,12 +3,17 @@ import 'package:vision_app/core/errors/failures.dart';
 import 'package:vision_app/features/auth/domain/auth_response.dart';
 
 abstract class AuthRepository {
+ //singIN :
   Future<Either<Failure, AuthEntity>> signInWithEmailAndPassword({
     required String email,
     required String password,
   });
+ //signUP :
   Future<Either<Failure, AuthEntity>> signUpWithEmailAndPassword({
     required String email,
     required String password,
   });
+//to check the userstate :
+ Future<Either<Failure, AuthEntity?>> getCurrentUser();
+
 }

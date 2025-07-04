@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/app_keys.dart';
+import 'package:vision_app/core/storage/di.dart';
+import 'package:vision_app/features/auth/presentation/current_user_bloc/current_user_bloc.dart';
+import 'package:vision_app/features/projects/presentation/create_project_bloc/create_project_bloc.dart';
+import 'package:vision_app/features/projects/presentation/project_domains_bloc/project_domains_bloc.dart';
 import 'package:vision_app/features/view/pages/advanced_resources_request_page.dart';
-import 'package:vision_app/features/view/pages/create_project_page.dart';
+import 'package:vision_app/features/projects/presentation/create_project_page.dart';
 import 'package:vision_app/features/auth/presentation/home_page.dart';
 import 'package:vision_app/features/view/pages/project_details_page.dart';
 
@@ -13,15 +18,24 @@ class Routes {
         path: AppKeys.homePageKey,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child:ProjectDetailsPage(), //HomePage(),
+          child: BlocProvider(
+            create: (_) => sl<CurrentUserBloc>(),//!fix this
+            child: HomePage(),
+          ),
           transitionsBuilder: _fadeTransition,
         ),
       ),
       GoRoute(
         path: AppKeys.createProjectPageKey,
         pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: DialogScreen(),
+          key: state.pageKey, //! must fix here
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => sl<ProjectDomainsBloc>()),
+              BlocProvider(create: (_) => sl<CreateProjectBloc>()),
+            ],
+            child: DialogScreen(),
+          ),
           transitionsBuilder: _fadeTransition,
         ),
       ),

@@ -147,7 +147,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:vision_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/custom_text_field.dart';
 
 class AuthDialog extends StatefulWidget {

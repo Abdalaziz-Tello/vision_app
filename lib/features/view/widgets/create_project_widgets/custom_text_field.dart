@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/features/view/widgets/create_project_widgets/input_field_widget.dart';
 import 'package:vision_app/features/view/widgets/create_project_widgets/lable_row.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -34,30 +34,10 @@ class CustomTextField extends StatelessWidget {
                   ),
                 ),
           const SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: const Color.fromRGBO(228, 228, 228, 1),
-            ),
-            child: TextFormField(
-              controller: controller,
-              validator: validator,
-              cursorColor: AppColors.navyBlue,
-              // validator: (value) {
-              //   if (value == null || value.trim().isEmpty) {
-              //     return 'هذا الحقل مطلوب';
-              //   }
-              //   return null;
-              // },
-              decoration: InputDecoration(
-                hintText: hintText,
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
-            ),
+          InputFieldWidget(
+            controller: controller,
+            validator: validator,
+            hintText: hintText,
           ),
         ],
       ),

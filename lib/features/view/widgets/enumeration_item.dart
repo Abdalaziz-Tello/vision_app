@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vision_app/core/res/color/app_colors.dart';
 
 class EnumerationItem extends StatelessWidget {
   final String text;
@@ -12,9 +13,9 @@ class EnumerationItem extends StatelessWidget {
     super.key,
     required this.text,
     this.circleSize = 10,
-    this.circleColor = Colors.green,
+    this.circleColor = AppColors.green,
     this.fontSize = 16,
-    this.textColor = Colors.black,
+    this.textColor = AppColors.blackColor,
     this.isBold = false,
   });
 

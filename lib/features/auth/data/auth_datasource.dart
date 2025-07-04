@@ -13,10 +13,12 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<AuthResponseModel?> getCurrentUser();
 }
 
 //TODO : change the netwrok connection ...DONE✅
-
+//! the normal way for auth :
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final GoTrueClient auth;
 
@@ -50,10 +52,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'is_verified': response.user!.confirmedAt != null,
         'access_token': response.session?.accessToken,
         'refresh_token': response.session?.refreshToken,
+
         'user_metadata': response.user!.userMetadata ?? {},
       });
 
-      print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
+      // print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
 
       return model;
     } on AuthException catch (e) {
@@ -76,7 +79,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       print('[AuthRemote] Initiating sign up for $email');
 
-      final response = await auth.signUp(email: email, password: password);
+      final response = await auth.signUp(
+        email: email,
+        password: password,
+        data: {'role': 'student'},
+      );
 
       print('[AuthRemote] Received sign up response: ${response.user?.id}');
 
@@ -87,16 +94,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
+      print('User email: ${response.user!.email}');
+      print('Access token: ${response.session?.accessToken}');
+
       final model = AuthResponseModel.fromJson({
         'id': response.user!.id,
-        'email': response.user!.email,
+        'email': response.user!.email ?? '',
         'is_verified': response.user!.confirmedAt != null,
-        'access_token': response.session?.accessToken,
-        'refresh_token': response.session?.refreshToken,
+        'access_token': response.session?.accessToken ?? '',
+        'refresh_token': response.session?.refreshToken ?? '',
         'user_metadata': response.user!.userMetadata ?? {},
       });
 
-      print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
+      //  print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
 
       return model;
     } on AuthException catch (e) {
@@ -108,5 +118,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         errorModel: ErrorModel(errorMessage: 'Sign up failed'),
       );
     }
+  }
+
+  //______________________________________________________________________
+  @override
+  Future<AuthResponseModel?> getCurrentUser() async {
+    final user = auth.currentUser;
+
+    if (user == null) return null;
+
+    final session = auth.currentSession;
+
+    return AuthResponseModel.fromJson({
+      'id': user.id,
+      'email': user.email ?? '',
+      'is_verified': user.confirmedAt != null,
+      'access_token': session?.accessToken,
+      'refresh_token': session?.refreshToken,
+      'user_metadata': user.userMetadata ?? {},
+    });
   }
 }

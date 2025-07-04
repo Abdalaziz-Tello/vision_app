@@ -6,11 +6,12 @@ import 'package:vision_app/features/view/widgets/create_project_widgets/add_atta
 class CoverImagePickerWidget extends StatefulWidget {
   final void Function(PlatformFile?) onImagePicked;
   final PlatformFile? currentImage;
-
+  final double? width;
   const CoverImagePickerWidget({
     super.key,
     required this.onImagePicked,
     this.currentImage,
+    this.width,
   });
 
   @override
@@ -31,22 +32,23 @@ class _CoverImagePickerWidgetState extends State<CoverImagePickerWidget> {
 
       final file = result.files.first;
       if (file.bytes == null && file.path == null) {
-        throw Exception('No image data available');//TODO :fix this
+        throw Exception('No image data available'); //TODO :fix this
       }
 
       setState(() => _selectedImage = file);
       widget.onImagePicked(file);
     } catch (e, stack) {
       debugPrint('Image picker error: $e\n$stack');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to select image')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Failed to select image')));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AddAttachments(
+      width: widget.width,
       onTap: _pickCoverImage,
       title: _selectedImage != null || widget.currentImage != null
           ? "Image Selected"

@@ -11,12 +11,14 @@ class AddAttachments extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.previewFile,
+    this.width = 212,
   });
 
   final String title;
   final IconData icon;
   final void Function()? onTap;
   final PlatformFile? previewFile;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class AddAttachments extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 212,
+        width:212, //width,// 212,//!fix this
         height: 170,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -41,7 +43,7 @@ class AddAttachments extends StatelessWidget {
                   ? _buildPdfPlaceholder()
                   : isImage
                   ? _buildImagePreview()
-                  : _buildPlaceholder() // Fallback for unknown types
+                  : _buildPlaceholder()
             : _buildPlaceholder(),
       ),
     );

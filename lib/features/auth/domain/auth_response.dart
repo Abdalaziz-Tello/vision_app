@@ -1,9 +1,4 @@
-// class AuthResponse {
-//   final String id;// (role)
-
-//   AuthResponse({required this.id});
-// }
-
+//default supabase :
 class AuthEntity {
   final String id;
   final String email;
@@ -32,3 +27,28 @@ class AuthEntity {
   @override
   int get hashCode => id.hashCode ^ email.hashCode;
 }
+
+// class AuthEntity {
+//   final String id;
+//   final String email;
+//   final String role;
+//   final String? accessToken;
+
+//   const AuthEntity({
+//     required this.id,
+//     required this.email,
+//     required this.role,
+//     this.accessToken,
+//   });
+
+//   @override
+//   bool operator ==(Object other) =>
+//       identical(this, other) ||
+//       other is AuthEntity &&
+//           runtimeType == other.runtimeType &&
+//           id == other.id &&
+//           email == other.email;
+
+//   @override
+//   int get hashCode => id.hashCode ^ email.hashCode;
+// }

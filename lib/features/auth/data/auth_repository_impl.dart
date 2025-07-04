@@ -38,7 +38,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure(e.errorMessage));
     }
   }
-//_________________________________________________________________________
+
+  //_________________________________________________________________________
   @override
   Future<Either<Failure, AuthEntity>> signUpWithEmailAndPassword({
     required String email,
@@ -57,6 +58,20 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(response.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(e.errorMessage));
+    }
+  }
+
+  //____________________________________________________________
+  //? shall i check the netwrok here ?!
+  @override
+  Future<Either<Failure, AuthEntity?>> getCurrentUser() async {
+    try {
+      final model = await remoteDataSource.getCurrentUser();
+      if (model == null) return Right(null);
+
+      return Right(model.toEntity());
+    } catch (e) {
+      return Left(ServerFailure("فشل التحقق من المستخدم الحالي"));
     }
   }
 }

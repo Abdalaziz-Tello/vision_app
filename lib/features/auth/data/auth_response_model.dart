@@ -21,31 +21,62 @@ class AuthResponseModel {
 
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
     return AuthResponseModel(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      isVerified: json['is_verified'] as bool? ?? false,
-      accessToken: json['access_token'] as String?,
-      refreshToken: json['refresh_token'] as String?,
-      userMetadata: json['user_metadata'] as Map<String, dynamic>?,
+      id: json['id'] ?? '',
+      email: json['email'] ?? '',
+      isVerified: json['is_verified'] ?? false,
+      accessToken: json['access_token'],
+      refreshToken: json['refresh_token'],
+      userMetadata: json['user_metadata'] ?? {},
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'email': email,
-        'is_verified': isVerified,
-        'access_token': accessToken,
-        'refresh_token': refreshToken,
-        'user_metadata': userMetadata,
-      };
+    'id': id,
+    'email': email,
+    'is_verified': isVerified,
+    'access_token': accessToken,
+    'refresh_token': refreshToken,
+    'user_metadata': userMetadata,
+  };
 
   // Convert model to entity
   AuthEntity toEntity() => AuthEntity(
-        id: id,
-        email: email,
-        isVerified: isVerified,
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        userMetadata: userMetadata,
-      );
+    id: id,
+    email: email,
+    isVerified: isVerified,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    userMetadata: userMetadata,
+  );
 }
+
+// class AuthResponseModel {
+//   final String id;
+//   final String email;
+//   final String role;
+//   final String? accessToken;
+
+//   AuthResponseModel({
+//     required this.id,
+//     required this.email,
+//     required this.role,
+//     this.accessToken,
+//   });
+
+//   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
+//     return AuthResponseModel(
+//       id: json['id'] as String,
+//       email: json['email'] as String,
+//       role: json['role'] as String,
+//       accessToken: json['access_token'] as String?,
+//     );
+//   }
+
+//   // Convert to entity
+//   AuthEntity toEntity() => AuthEntity(
+//         id: id,
+//         email: email,
+//         role: role,
+//         accessToken: accessToken,
+//       );
+// }

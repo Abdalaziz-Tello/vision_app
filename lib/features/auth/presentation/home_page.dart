@@ -5,8 +5,9 @@ import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_keys.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/features/auth/injection.dart';
-import 'package:vision_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:vision_app/core/storage/di.dart';
+import 'package:vision_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:vision_app/features/auth/presentation/current_user_bloc/current_user_bloc.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog_manager.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
@@ -27,6 +28,12 @@ class _HomePageState extends State<HomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    context.read<CurrentUserBloc>().add(LoadCurrentUser());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -45,46 +52,85 @@ class _HomePageState extends State<HomePage> {
               flexibleSpace: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  isWide
-                      ? Wrap(
-                          spacing: 12,
-                          children: [
-                            _buildAuthButton(
-                              text: AppString.login,
-                              isLogin: true,
+                  BlocBuilder<CurrentUserBloc, CurrentUserState>(
+                    builder: (context, state) {
+                      print('CurrentUserBloc state: $state');
+                      if (state is CurrentUserLoaded) {
+                        final email = state.user.email;
+                        final firstLetter = email.isNotEmpty
+                            ? email[0].toUpperCase()
+                            : '?';
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: PopupMenuButton<int>(
+                            tooltip: 'logOut',
+                            color: AppColors.lightGrey,
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                value: 0,
+                                child: const Text("تسجيل الخروج"),
+                                onTap: () {
+                                  // Future.delayed(Duration.zero, () {
+                                  //   context.read<CurrentUserBloc>().add(LogoutRequested());
+                                  // });
+                                },
+                              ),
+                            ],
+                            child: CircleAvatar(
+                              backgroundColor: AppColors.navyBlue,
+                              child: Text(
+                                firstLetter,
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             ),
-                            _buildAuthButton(
-                              text: AppString.signup,
-                              isLogin: false,
-                            ),
-                          ],
-                        )
-                      : PopupMenuButton<int>(
-                          color: AppColors.lightGrey,
-                          tooltip: 'Account',
-                          icon: const Icon(
-                            Icons.manage_accounts,
-                            color: AppColors.navyBlue,
                           ),
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              value: 0,
-                              child: Text(AppString.login),
-                              onTap: () => Future.delayed(
-                                Duration.zero,
-                                () => _showAuthDialog(context, true),
-                              ),
-                            ),
-                            PopupMenuItem(
-                              value: 1,
-                              child: Text(AppString.signup),
-                              onTap: () => Future.delayed(
-                                Duration.zero,
-                                () => _showAuthDialog(context, false),
-                              ),
-                            ),
-                          ],
-                        ),
+                        );
+                      } else {
+                        // المستخدم غير مسجل دخول
+                        return isWide
+                            ? Wrap(
+                                spacing: 12,
+                                children: [
+                                  _buildAuthButton(
+                                    text: AppString.login,
+                                    isLogin: true,
+                                  ),
+                                  _buildAuthButton(
+                                    text: AppString.signup,
+                                    isLogin: false,
+                                  ),
+                                ],
+                              )
+                            : PopupMenuButton<int>(
+                                color: AppColors.lightGrey,
+                                tooltip: 'Account',
+                                icon: const Icon(
+                                  Icons.manage_accounts,
+                                  color: AppColors.navyBlue,
+                                ),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    value: 0,
+                                    child: Text(AppString.login),
+                                    onTap: () => Future.delayed(
+                                      Duration.zero,
+                                      () => _showAuthDialog(context, true),
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 1,
+                                    child: Text(AppString.signup),
+                                    onTap: () => Future.delayed(
+                                      Duration.zero,
+                                      () => _showAuthDialog(context, false),
+                                    ),
+                                  ),
+                                ],
+                              );
+                      }
+                    },
+                  ),
                   Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
                 ],
               ),
@@ -92,6 +138,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
+
       backgroundColor: AppColors.whiteColor,
       body: ListView(
         children: [
@@ -113,17 +160,6 @@ class _HomePageState extends State<HomePage> {
                     context.push(AppKeys.createProjectPageKey);
                   },
                 ),
-
-                //  _buildButton(
-                //   text: AppString.showYourProjectNow,
-                //   bgColor: AppColors.brightBlue,
-                //   textColor: AppColors.navyBlue,
-                //   height: 50,
-                //   width: 170,
-                //   onTap: () {
-                //     context.push(AppKeys.createProjectPageKey);
-                //   },
-                // ),
               ),
             ],
           ),
@@ -181,45 +217,6 @@ class _HomePageState extends State<HomePage> {
         textColor: isLogin ? Colors.white : AppColors.lightBlue,
         onTap: null, // Handled by AuthDialogManager
       ),
-
-      //  _buildButton(
-      //   text: text,
-      //   bgColor: isLogin ? AppColors.lightBlue : Colors.white,
-      //   textColor: isLogin ? Colors.white : AppColors.lightBlue,
-      //   onTap: null, // Handled by AuthDialogManager
-      // ),
-    );
-  }
-
-  Widget _buildButton({
-    required String text,
-    required Color bgColor,
-    required Color textColor,
-    double width = 160,
-    double height = 40,
-    VoidCallback? onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: width,
-        height: height,
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: bgColor,
-          border: Border.all(color: AppColors.lightBlue),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
     );
   }
 
@@ -227,10 +224,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => BlocProvider(
-        create: (_) => AuthBloc(
-          signInWithEmailAndPassword: sl(),
-          signUpWithEmailAndPassword: sl(),
-        ),
+        create: (_) => sl<AuthBloc>(),
         child: AuthDialog(
           isLogin: isLogin,
           onSuccess: () {
