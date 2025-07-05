@@ -3,8 +3,10 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/network/network_info.dart';
 import 'package:vision_app/core/res/app_keys.dart';
+import 'package:vision_app/core/storage/user_id.dart';
 import 'package:vision_app/features/auth/auth_injection.dart';
 import 'package:vision_app/features/projects/project_injection.dart';
+import 'package:vision_app/features/resources_feature/resources_di.dart';
 
 final sl = GetIt.instance;
 
@@ -14,6 +16,7 @@ Future<void> init() async {
   //feautres :
   await initAuth();
   await initProject();
+  await initResources();
 }
 
 Future<void> _initCore() async {
@@ -21,8 +24,16 @@ Future<void> _initCore() async {
     await Supabase.initialize(
       url: AppKeys.supabaseUrl,
       anonKey: AppKeys.supabaseAnonKey,
+      authOptions: FlutterAuthClientOptions(
+        authFlowType: AuthFlowType.pkce,
+        autoRefreshToken: true,
+        detectSessionInUri: true,
+        // localStorage: LocalStorageWeb(),
+        // pkceAsyncStorage: PkceAsyncStorageWeb(),
+      ),
     );
     sl.registerLazySingleton(() => Supabase.instance.client);
+
   }
   if (!sl.isRegistered<GoTrueClient>()) {
     sl.registerLazySingleton(() => sl<SupabaseClient>().auth);
@@ -35,4 +46,9 @@ Future<void> _initCore() async {
   if (!sl.isRegistered<NetworkInfo>()) {
     sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   }
+
+//To get the id :
+  if (!sl.isRegistered<UserSession>()) {
+  sl.registerLazySingleton(() => UserSession(sl<GoTrueClient>()));
+}
 }

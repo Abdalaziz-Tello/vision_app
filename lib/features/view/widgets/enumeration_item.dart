@@ -29,12 +29,14 @@ class EnumerationItem extends StatelessWidget {
           decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
         ),
         const SizedBox(width: 8),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: fontSize,
-            color: textColor,
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: fontSize,
+              color: textColor,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
           ),
         ),
       ],

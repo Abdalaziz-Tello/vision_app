@@ -125,9 +125,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthResponseModel?> getCurrentUser() async {
     final user = auth.currentUser;
 
-    if (user == null) return null;
-
+    if (user == null) {
+      print('[Remote] No current user found.');
+      return null;
+    }
+    print('user : $user');
     final session = auth.currentSession;
+
+    print("CurrentUserBloc: Fetched user: ${user.email}");
+    print('session: ${session?.accessToken}');
 
     return AuthResponseModel.fromJson({
       'id': user.id,

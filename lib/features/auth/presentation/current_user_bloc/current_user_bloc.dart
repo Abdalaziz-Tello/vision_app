@@ -17,16 +17,25 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
     LoadCurrentUser event,
     Emitter<CurrentUserState> emit,
   ) async {
+    print('[CurrentUserBloc] Loading current user...');
     emit(CurrentUserLoading());
 
     final result = await getCurrentUserUseCase();
 
-    result.fold((failure) => emit(CurrentUserFailure(failure.message)), (user) {
-      if (user == null) {
-        emit(CurrentUserNotLoggedIn());
-      } else {
-        emit(CurrentUserLoaded(user));
-      }
-    });
+    result.fold(
+      (failure) {
+        print('[CurrentUserBloc] Failed: ${failure.message}');
+        emit(CurrentUserFailure(failure.message));
+      },
+      (user) {
+        if (user == null) {
+          print('[CurrentUserBloc] No user found. Not logged in.');
+          emit(CurrentUserNotLoggedIn());
+        } else {
+          print('[CurrentUserBloc] User loaded: ${user.email}');
+          emit(CurrentUserLoaded(user));
+        }
+      },
+    );
   }
 }

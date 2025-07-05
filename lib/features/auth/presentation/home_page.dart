@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<CurrentUserBloc>().add(LoadCurrentUser());
+    print('call the bloc of loadCurrentUser ');
   }
 
   @override
@@ -41,7 +42,6 @@ class _HomePageState extends State<HomePage> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final isWide = constraints.maxWidth > 600;
-
             return AppBar(
               backgroundColor: AppColors.whiteColor,
               elevation: 0,
