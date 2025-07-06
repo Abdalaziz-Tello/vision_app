@@ -27,6 +27,8 @@ class AppString {
   static String get emailInvalid => 'email_invalid'.tr();
   static String get passwordRequired => 'password_required'.tr();
   static String get passwordTooShort => 'password_too_short'.tr();
+  static String get nameRequired => 'name_required'.tr();
+
   static String get advancedResourcesRequest =>
       'advanced_resources_request'.tr();
   static String get project => 'project'.tr();
@@ -38,4 +40,13 @@ class AppString {
   static String get pleaseFillRequiredFields =>
       'please_fill_required_fields'.tr();
   static String get submitRequest => 'submit_request'.tr();
+  static String get name => 'name'.tr();
+  static String get thereAreNoFieldsAvailable =>
+      'there_are_no_fields_available'.tr();
+  static String get anErrorOccurredTryAgain =>
+      'an_error_occurred_tryagain'.tr();
+  static String get loading => 'loading'.tr();
+  static String get chooseProjectField => 'choose_project_field'.tr();
+  static String get pleaseEnterAllFieldsAndAddCoverImage =>
+      'please_enter_all_fields_and_add_cover_image'.tr();
 }

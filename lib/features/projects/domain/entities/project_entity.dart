@@ -1,3 +1,6 @@
+
+import 'package:vision_app/features/projects/domain/entities/project_attachment_entity.dart';
+
 class ProjectEntity {
   final String id;
   final String title;
@@ -5,9 +8,17 @@ class ProjectEntity {
   final int percentageCompleted;
   final String? description;
   final String? status;
-  final bool isPublic;// is_approved_for_visitor
+  final bool isPublic;
   final String? coverImageUrl;
   final bool isUniversityStudent;
+
+  final String? createdBy;
+  final DateTime? createdAt;
+  final bool? isApprovedForInvestors;
+  final String? projectDomainName;
+  final String projectOwnerName;
+
+  final List<ProjectAttachmentEntity> attachments;
 
   ProjectEntity({
     required this.id,
@@ -19,6 +30,12 @@ class ProjectEntity {
     required this.isPublic,
     this.coverImageUrl,
     required this.isUniversityStudent,
+    this.createdBy,
+    this.createdAt,
+    this.isApprovedForInvestors,
+    this.projectDomainName,
+    required this.projectOwnerName,
+    this.attachments = const [],
   });
 
   @override

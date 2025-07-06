@@ -79,14 +79,28 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
     print("📁 File Info:");
     print("- Name: ${file.name}");
     print("- Size: ${file.size} bytes");
-    print("- Path: ${file.path}");
+    print(
+      "- Path: ${file.path}",
+    ); //! maybe it have problem here //Path: blob:http://localhost:49852/345283cc-8dae-43b6-be03-2c952cce5a19
     print("- Bytes: ${file.bytes != null ? 'In memory' : 'null'}");
 
     Uint8List bytes;
 
-    // Step 1: Read the file bytes safely
+    // Read the file bytes safely
     try {
-      bytes = file.bytes ?? await File(file.path!).readAsBytes();
+      //  bytes = file.bytes ?? await File(file.path!).readAsBytes();
+      if (file.bytes != null) {
+        bytes = file.bytes!;
+      } else if (file.path != null) {
+        bytes = await File(file.path!).readAsBytes();
+      } else {
+        throw ServerException(
+          errorModel: ErrorModel(
+            errorMessage: "لا يمكن قراءة الملف، لا توجد بيانات أو مسار.",
+          ),
+        );
+      }
+
       print("✅ File bytes loaded (${bytes.length} bytes)");
     } catch (e, stackTrace) {
       print("❌ Failed to read file bytes: $e");
@@ -96,7 +110,7 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
       );
     }
 
-    //Step 2: Ensure user is authenticated
+    // Ensure user is authenticated
     final user = supabase.auth.currentUser;
     if (user == null) {
       print("❌ User not logged in");
@@ -105,16 +119,18 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
       );
     }
 
-    //Step 3: Prepare file info
+    // Prepare file info
     final mime = lookupMimeType(file.name) ?? 'application/octet-stream';
-    final uniqueName = '${DateTime.now().millisecondsSinceEpoch}_${file.name}';
-    final path = '${user.id}/$uniqueName';
+    // final uniqueName = '${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+    final safeFileName = Uri.encodeComponent(file.name);
+    final path = '${user.id}/$safeFileName';
+    //  final path = '${user.id}/${file.name}';
 
     print("📤 Uploading to Supabase...");
     print("- MimeType: $mime");
     print("- Storage Path: $path");
 
-    //Step 4: Try to upload
+    // Try to upload
     String? res;
     try {
       res = await supabase.storage
@@ -122,8 +138,13 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
           .uploadBinary(
             path,
             Uint8List.fromList(bytes),
-            fileOptions: FileOptions(contentType: mime, upsert: true),
+            //   fileOptions: FileOptions(contentType: mime, upsert: true),
           );
+      /*
+final res = await supabase.storage.from('project-attachments').createSignedUrl(path, 60 * 60);
+
+*/
+
       print("📥 Supabase response: $res");
     } catch (e, stackTrace) {
       print("❌ Upload error: $e");
@@ -133,7 +154,7 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
       );
     }
 
-    // Step 5: Validate upload result
+    // Validate upload result
     if (res == null || res.isEmpty) {
       print("❌ Upload failed (empty response)");
       throw ServerException(
@@ -141,7 +162,7 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
       );
     }
 
-    //  Step 6: Generate public URL
+    // Generate public URL
     final url = supabase.storage.from('project-attachments').getPublicUrl(path);
     print("✅ Upload successful!");
     print("🔗 Public URL: $url");
@@ -160,16 +181,27 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
     try {
       final response = await supabase
           .from('projects')
-          .select()
+          .select('''
+          *,
+          project_attachments (
+            id,
+            file_url,
+            file_name,
+            file_type,
+            file_size,
+            uploaded_at
+          )
+        ''')
           .eq('id', projectId)
           .maybeSingle();
+
       if (response == null) {
-        print('project respons null');
         throw ServerException(
-          errorModel: ErrorModel(errorMessage: "Not found"),
+          errorModel: ErrorModel(errorMessage: "Project not found"),
         );
       }
       print('successfully>>');
+      print(response);
       return ProjectModel.fromJson(response);
     } on PostgrestException catch (e) {
       throw ServerException(errorModel: ErrorModel(errorMessage: e.message));

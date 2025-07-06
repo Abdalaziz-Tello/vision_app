@@ -17,9 +17,9 @@
   "password": "كلمة المرور",
   "enter_password": "أدخل كلمة المرور",
   "email_required": "البريد الإلكتروني مطلوب",
-"email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
-"password_required": "كلمة المرور مطلوبة",
-"password_too_short": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+  "password_required": "كلمة المرور مطلوبة",
+  "password_too_short": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
   "advanced_resources_request": "طلب موارد متقدمة",
   "project": "المشروع",
   "completed_part_of_project": "المنجز من المشروع",
@@ -28,6 +28,12 @@
   "select_resource": "اختر المورد",
   "required_resource": "المورد المطلوب",
   "please_fill_required_fields": "يرجى تعبئة جميع الحقول المطلوبة وإضافة مرفقات",
-  "submit_request": "رفع الطلب"
-
+  "submit_request": "رفع الطلب",
+  "name_required": "يرجى إدخال الاسم",
+  "name": "الاسم",
+  "there_are_no_fields_available": "لا توجد مجالات متاحة",
+  "an_error_occurred_tryagain": "حدث خطأ، حاول مرة أخرى",
+  "loading": "جاري التحميل...",
+  "choose_project_field": "اختر مجال المشروع",
+  "please_enter_all_fields_and_add_cover_image": "يرجى تعبئة جميع الحقول المطلوبة وإضافة صورة الغلاف"
 }

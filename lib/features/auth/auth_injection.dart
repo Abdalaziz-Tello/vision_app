@@ -1,12 +1,12 @@
-import 'package:vision_app/core/storage/di.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
 import 'package:vision_app/features/auth/data/auth_datasource.dart';
 import 'package:vision_app/features/auth/data/auth_repository_impl.dart';
 import 'package:vision_app/features/auth/domain/auth_repository.dart';
 import 'package:vision_app/features/auth/domain/use_cases/get_current_user_usecase.dart';
 import 'package:vision_app/features/auth/domain/use_cases/sign_in_usecase.dart';
 import 'package:vision_app/features/auth/domain/use_cases/sign_up_usecase.dart';
-import 'package:vision_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:vision_app/features/auth/presentation/current_user_bloc/current_user_bloc.dart';
+import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
+import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 
 Future<void> initAuth() async {
   //remote :

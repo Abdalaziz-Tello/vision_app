@@ -4,7 +4,7 @@ class CreateProjectEntity {
   final String coverImageUrl;
   final bool isUniversityStudent;
   final String projectDomainId;
-  final List<ProjectAttachmentEntity> attachments;
+  final List<ProjectAttachmentEntityForcreating> attachments;
 
   CreateProjectEntity({
     required this.title,
@@ -38,13 +38,13 @@ class CreateProjectEntity {
 }
 
 //_____________________________________________________
-class ProjectAttachmentEntity {
+class ProjectAttachmentEntityForcreating {
   final String fileUrl;
   final String fileName;
   final String fileType;
   final int fileSize;
 
-  ProjectAttachmentEntity({
+  ProjectAttachmentEntityForcreating({
     required this.fileUrl,
     required this.fileName,
     required this.fileType,

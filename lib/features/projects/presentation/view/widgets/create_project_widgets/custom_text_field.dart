@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:vision_app/features/view/widgets/create_project_widgets/lable_row.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/input_field_widget.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/lable_row.dart';
 
-class CustomDisplayField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String title;
-  final String value;
+  final String hintText;
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
   final bool required;
-
-  const CustomDisplayField({
+  const CustomTextField({
     super.key,
     required this.title,
-    required this.value,
+    required this.hintText,
+    required this.controller,
+    this.validator,
     this.required = true,
   });
 
@@ -30,17 +34,10 @@ class CustomDisplayField extends StatelessWidget {
                   ),
                 ),
           const SizedBox(height: 10),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: const Color.fromRGBO(228, 228, 228, 1),
-            ),
-            child: Text(
-              value.isNotEmpty ? value : '—',
-              style: const TextStyle(fontSize: 16, color: Colors.black87),
-            ),
+          InputFieldWidget(
+            controller: controller,
+            validator: validator,
+            hintText: hintText,
           ),
         ],
       ),

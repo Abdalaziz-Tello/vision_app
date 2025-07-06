@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vision_app/core/res/app_keys.dart';
-import 'package:vision_app/core/storage/di.dart';
-import 'package:vision_app/features/auth/presentation/current_user_bloc/current_user_bloc.dart';
+import 'package:vision_app/core/res/keys/navigation_keys.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
+import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 import 'package:vision_app/features/projects/presentation/create_project_bloc/create_project_bloc.dart';
 import 'package:vision_app/features/projects/presentation/project_details_bloc/project_details_bloc.dart';
 import 'package:vision_app/features/projects/presentation/project_domains_bloc/project_domains_bloc.dart';
@@ -12,15 +12,15 @@ import 'package:vision_app/features/resources_feature/presentation/academic_bloc
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/resource_request_bloc/resource_request_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/view/advanced_resources_request_page.dart';
-import 'package:vision_app/features/projects/presentation/view/create_project_page.dart';
+import 'package:vision_app/features/projects/presentation/view/pages/create_project_page.dart';
 import 'package:vision_app/features/auth/presentation/home_page.dart';
-import 'package:vision_app/features/projects/presentation/view/project_details_page.dart';
+import 'package:vision_app/features/projects/presentation/view/pages/project_details_page.dart';
 
 class Routes {
   GoRouter router = GoRouter(
     routes: [
       GoRoute(
-        path: AppKeys.homePageKey,
+        path: NavigationKeys.homePageKey,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           child: BlocProvider(
@@ -31,7 +31,7 @@ class Routes {
         ),
       ),
       GoRoute(
-        path: AppKeys.createProjectPageKey,
+        path: NavigationKeys.createProjectPageKey,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey, //! must fix here
           child: MultiBlocProvider(
@@ -46,7 +46,7 @@ class Routes {
         ),
       ),
       GoRoute(
-        path: AppKeys.advancedResourcesRequestPageKey,
+        path: NavigationKeys.advancedResourcesRequestPageKey,
         pageBuilder: (context, state) {
           final data = state.extra as Map<String, dynamic>;
           return CustomTransitionPage(
@@ -59,11 +59,15 @@ class Routes {
               ],
               child: AdvancedResourcesRequestPage(
                 projectId:
-                    data['projectId'], //!TODO : put these keys to the Appkeys class
-                projectTitle: data['projectTitle'],
+                    data[NavigationKeys
+                        .projectIdKey], //!TODO : put these keys to the Appkeys class
+                projectTitle: data[NavigationKeys.projectTitleKey],
                 //  projectOwner: data['projectOwner'],
-                completedPercentage: data['completedPercentage'],
-                projectFieldId: data['projectFieldID'],
+                completedPercentage:
+                    data[NavigationKeys.completedPercentageKey],
+                projectFieldId: data[NavigationKeys.projectFieldIdKey],
+                projectDomainName: data[NavigationKeys.projectDomainName],
+                projectOwnerName: data[NavigationKeys.projectOwnerName],
               ),
             ),
             transitionsBuilder: _fadeTransition,
@@ -71,17 +75,14 @@ class Routes {
         },
       ),
       GoRoute(
-        path: AppKeys.projectDetailsPageKey,
+        path: NavigationKeys.projectDetailsPageKey,
         pageBuilder: (context, state) {
-          //    final projectId = state.extra as String;
+          final projectId = state.extra as String;
           return CustomTransitionPage(
             key: state.pageKey,
             child: BlocProvider(
               create: (_) => sl<ProjectDetailsBloc>(),
-              child: ProjectDetailsPage(
-                projectId:
-                    '60248d28-6de3-489e-9d97-659cc5b5367b', //!dont' forget this
-              ),
+              child: ProjectDetailsPage(projectId: projectId),
             ),
             transitionsBuilder: _fadeTransition,
           );

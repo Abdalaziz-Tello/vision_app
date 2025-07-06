@@ -147,18 +147,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:vision_app/features/view/widgets/create_project_widgets/custom_text_field.dart';
+import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/custom_text_field.dart';
 
 class AuthDialog extends StatefulWidget {
   final bool isLogin;
   final VoidCallback onSuccess;
 
-  const AuthDialog({
-    super.key,
-    required this.isLogin,
-    required this.onSuccess,
-  });
+  const AuthDialog({super.key, required this.isLogin, required this.onSuccess});
 
   @override
   State<AuthDialog> createState() => _AuthDialogState();
@@ -168,11 +164,13 @@ class _AuthDialogState extends State<AuthDialog> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -180,11 +178,16 @@ class _AuthDialogState extends State<AuthDialog> {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
+      final name = _nameController.text.trim();
 
       if (widget.isLogin) {
-        context.read<AuthBloc>().add(SignInRequested(email: email ,password:  password));
+        context.read<AuthBloc>().add(
+          SignInRequested(email: email, password: password),
+        );
       } else {
-        context.read<AuthBloc>().add(SignUpRequested( email:email,password:  password));
+        context.read<AuthBloc>().add(
+          SignUpRequested(email: email, password: password, name: name),
+        );
       }
     }
   }
@@ -196,9 +199,9 @@ class _AuthDialogState extends State<AuthDialog> {
         if (state is AuthSuccess) {
           widget.onSuccess();
         } else if (state is AuthFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: AlertDialog(
@@ -223,6 +226,14 @@ class _AuthDialogState extends State<AuthDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (!widget.isLogin)
+                  CustomTextField(
+                    title: AppString.name,
+                    hintText: 'جميل جمال',
+                    controller: _nameController,
+                    validator: _validateName,
+                    //  obscureText: true,
+                  ),
                 CustomTextField(
                   title: AppString.email,
                   hintText: AppString.enterEmail,
@@ -234,7 +245,7 @@ class _AuthDialogState extends State<AuthDialog> {
                   hintText: AppString.enterPassword,
                   controller: _passwordController,
                   validator: _validatePassword,
-                //  obscureText: true,
+                  //  obscureText: true,
                 ),
                 const SizedBox(height: 20),
                 BlocBuilder<AuthBloc, AuthState>(
@@ -280,6 +291,11 @@ class _AuthDialogState extends State<AuthDialog> {
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) return AppString.passwordRequired;
     if (value.length < 6) return AppString.passwordTooShort;
+    return null;
+  }
+
+  String? _validateName(String? name) {
+    if (name == null || name.isEmpty) return AppString.nameRequired;
     return null;
   }
 }

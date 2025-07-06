@@ -1,4 +1,4 @@
-import 'package:vision_app/core/storage/di.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
 import 'package:vision_app/features/projects/data/datasource/project_remote_datasource.dart';
 import 'package:vision_app/features/projects/data/repo/project_repositoryImpl.dart';
 import 'package:vision_app/features/projects/domain/repo/project_repository.dart';

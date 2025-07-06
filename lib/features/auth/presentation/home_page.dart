@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:vision_app/core/di_storage_listner/auth_listener.dart';
 import 'package:vision_app/core/res/app_images.dart';
-import 'package:vision_app/core/res/app_keys.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/core/storage/di.dart';
-import 'package:vision_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:vision_app/features/auth/presentation/current_user_bloc/current_user_bloc.dart';
+import 'package:vision_app/core/res/keys/navigation_keys.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
+import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
+import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog_manager.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
-import 'package:vision_app/features/view/widgets/custom_button.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,16 +29,25 @@ class _HomePageState extends State<HomePage> {
     const Color(0xFFFFF6CC),
   ];
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   context.read<CurrentUserBloc>().add(LoadCurrentUser());
+  //   print('call the bloc of loadCurrentUser ');
+  // }
+
   @override
   void initState() {
     super.initState();
-    context.read<CurrentUserBloc>().add(LoadCurrentUser());
-    print('call the bloc of loadCurrentUser ');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startAuthStateListener(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: LayoutBuilder(
@@ -157,11 +168,15 @@ class _HomePageState extends State<HomePage> {
                   bgColor: AppColors.brightBlue,
                   textColor: AppColors.navyBlue,
                   onTap: () {
-                    context.push(AppKeys.createProjectPageKey);
+                    context.push(NavigationKeys.createProjectPageKey);
                   },
                 ),
               ),
             ],
+          ).animate().slideX(
+            delay: 0.2.seconds,
+            duration: 0.2.seconds,
+            begin: -1,
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -173,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ),
+          ).animate().fadeIn(delay: 0.3.seconds, duration: 0.4.seconds),
           Padding(
             padding: const EdgeInsets.all(20),
             child: SizedBox(
@@ -187,7 +202,8 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       return SizedBox(
                         width: cardWidth,
-                        child: LoadingCard(
+                        child: // have another widget here : ColoredCardWithContent
+                        LoadingCard(
                           backgroundColor:
                               cardColors[index % cardColors.length],
                         ),
@@ -197,11 +213,15 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-          ),
+          ).animate().fadeIn(delay: 0.35.seconds, duration: 0.45.seconds),
           Image.asset(
             AppImages.footer,
             width: double.infinity,
             fit: BoxFit.cover,
+          ).animate().slideX(
+            delay: 0.2.seconds,
+            duration: 0.2.seconds,
+            begin: 1,
           ),
         ],
       ),

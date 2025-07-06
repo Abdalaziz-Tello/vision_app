@@ -12,6 +12,7 @@ abstract class AuthRepository {
   Future<Either<Failure, AuthEntity>> signUpWithEmailAndPassword({
     required String email,
     required String password,
+    required String name,
   });
 //to check the userstate :
  Future<Either<Failure, AuthEntity?>> getCurrentUser();

@@ -1,9 +1,4 @@
 class AppKeys {
-  static const String homePageKey = '/';
-  static const String createProjectPageKey = '/createProjectPageKey';
-  static const String advancedResourcesRequestPageKey =
-      '/advancedResourcesRequestPageKey';
-  static const String projectDetailsPageKey = '/projectDetailsPageKey';
 
   //backend keys :
   //_______________________________________________________________________

@@ -11,10 +11,13 @@ class SignUpWithEmailAndPassword {
   Future<Either<Failure, AuthEntity>> call({
     required String email,
     required String password,
+    required String name,
   }) async {
     return await repository.signUpWithEmailAndPassword(
       email: email,
       password: password,
+      name:  name,
+
     );
   }
 }

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/core/storage/di.dart';
-import 'package:vision_app/core/storage/user_id.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
+import 'package:vision_app/core/di_storage_listner/user_id.dart';
 import 'package:vision_app/features/resources_feature/domain/entity/resource_request_entity.dart';
 import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/resource_request_bloc/resource_request_bloc.dart';
-import 'package:vision_app/features/view/widgets/create_project_widgets/custom_display_field.dart';
-import 'package:vision_app/features/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
-import 'package:vision_app/features/view/widgets/custom_button.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/custom_display_field.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
 
 class AdvancedResourcesRequestPage extends StatefulWidget {
   final String projectId;
@@ -19,6 +20,8 @@ class AdvancedResourcesRequestPage extends StatefulWidget {
   //  final String projectOwner;
   final int completedPercentage;
   final String projectFieldId;
+  final String projectDomainName;
+  final String projectOwnerName;
   const AdvancedResourcesRequestPage({
     super.key,
     required this.projectId,
@@ -26,6 +29,8 @@ class AdvancedResourcesRequestPage extends StatefulWidget {
     //  required this.projectOwner,
     required this.completedPercentage,
     required this.projectFieldId,
+    required this.projectDomainName,
+    required this.projectOwnerName,
   });
 
   @override
@@ -50,65 +55,103 @@ class _AdvancedResourcesRequestPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      appBar: AppBar(
-        //   automaticallyImplyLeading: false,
+    return BlocListener<ResourceRequestBloc, ResourceRequestState>(
+      listener: (context, state) {
+        if (state is ResourceRequestSuccess) {
+          //TODO : shall we navigate to the home page ?
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("done"), backgroundColor: AppColors.green),
+          );
+        } else if (state is ResourceRequestFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("خطأ: ${state.message}"),
+              backgroundColor: AppColors.redColor,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
         backgroundColor: AppColors.whiteColor,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        shadowColor: AppColors.whiteColor,
-        //  title: const SizedBox(),
-        actions: [Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain)],
-      ),
+        appBar: AppBar(
+          //   automaticallyImplyLeading: false,
+          backgroundColor: AppColors.whiteColor,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          shadowColor: AppColors.whiteColor,
+          //  title: const SizedBox(),
+          actions: [
+            Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
+          ],
+        ),
 
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            AppImages.footer,
-            fit: BoxFit.cover,
-            width: double.infinity,
-          ),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              AppImages.footer,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
 
-          Center(
-            child: SingleChildScrollView(
-              child: Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                backgroundColor: AppColors.whiteColor,
-                insetPadding: const EdgeInsets.all(30),
+            Center(
+              child: SingleChildScrollView(
                 child: Container(
+                  margin: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppColors.whiteColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildTitle(),
+                      _buildTitle().animate().fadeIn(
+                        delay: 0.1.seconds,
+                        duration: 0.2.seconds,
+                      ),
                       const SizedBox(height: 16),
-                      _buildProjectNameField(),
+                      _buildProjectNameField().animate().fadeIn(
+                        delay: 0.15.seconds,
+                        duration: 0.25.seconds,
+                      ),
                       LayoutBuilder(
                         builder: (context, constraints) {
                           final isWide = constraints.maxWidth >= 800;
                           return _buildDualFieldsRow(isWide);
                         },
+                      ).animate().fadeIn(
+                        delay: 0.2.seconds,
+                        duration: 0.3.seconds,
+                      ), //? or let make them with differnt prop?
+                      const SizedBox(height: 10),
+                      _buildProjectOwnerField().animate().fadeIn(
+                        delay: 0.25.seconds,
+                        duration: 0.35.seconds,
                       ),
                       const SizedBox(height: 10),
-                      _buildProjectOwnerField(),
+                      _buildUniversityField().animate().fadeIn(
+                        delay: 0.3.seconds,
+                        duration: 0.4.seconds,
+                      ),
                       const SizedBox(height: 10),
-                      _buildUniversityField(),
+                      _buildResourceField().animate().fadeIn(
+                        delay: 0.35.seconds,
+                        duration: 0.45.seconds,
+                      ),
                       const SizedBox(height: 10),
-                      _buildResourceField(),
-                      const SizedBox(height: 10),
-                      _buildUploadButton(),
+                      _buildUploadButton().animate().fadeIn(
+                        delay: 0.4.seconds,
+                        duration: 0.5.seconds,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -156,7 +199,7 @@ class _AdvancedResourcesRequestPageState
 
   Widget _buildProjectTypeField() => CustomDisplayField(
     title: AppString.projectField,
-    value: "برمجة ويب",//TODO : i have the ID not the name
+    value: widget.projectDomainName, //TODO : i have the ID not the name
     required: false,
   ); //TODO : make it static caming from the privous page or backend
   // //TODO : options from back
@@ -279,7 +322,7 @@ class _AdvancedResourcesRequestPageState
 
   Widget _buildProjectOwnerField() => CustomDisplayField(
     title: 'مالك المشروع',
-    value: 'اسم صاحب المشروع',
+    value: widget.projectOwnerName,
     required: false,
   );
 

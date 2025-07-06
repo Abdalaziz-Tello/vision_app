@@ -43,6 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await signUpWithEmailAndPassword(
       email: event.email,
       password: event.password,
+      name: event.name,
     );
 
     result.fold(

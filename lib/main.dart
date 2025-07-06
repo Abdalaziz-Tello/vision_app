@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vision_app/core/go_router/go_router.dart';
-import 'package:vision_app/core/storage/di.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
 //to save the role after get it
 //extrac the button and make it the same for the hole buttons
 
-//handle no newtork will opining it
+//handle no newtork will opining it //can't handle this case >>>>
 //! know more about this : This uses the HTML renderer instead of CanvasKit — no internet needed to load it.
 //
 //1-save the access and refresh token , using 'FlutterSecureStorage'
@@ -53,8 +53,9 @@ class MyApp extends StatelessWidget {
 // make the attachement non required
 //!fix this :  Another exception was thrown: Error: Could not find the correct Provider<ProjectDomainsBloc> above this DialogScreen Widget
 
+//? handle if projct id in the project details page null
 
-
+//! must fix the user login state
 
 //** remember:
 // >Supabase Uses a Direct Client SDK,that allows to connect and interact directly:
@@ -85,5 +86,10 @@ class MyApp extends StatelessWidget {
 
 
 //? done :
-//start with ProjectDetailsPage ui
-//
+//adding the showcasewidget
+//fix the border of TextWithExpansionTileSelector
+//fix the problem in the image
+//add the domain and the owner name to the ui
+//fix the image svg problem
+//fix the login refresh page needed (but have to recheck it )
+//join the attachements with the get projectID and make show it in the ui

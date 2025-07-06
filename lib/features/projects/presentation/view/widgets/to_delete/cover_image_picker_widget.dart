@@ -1,7 +1,3 @@
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:vision_app/core/res/app_string.dart';
-import 'package:vision_app/features/view/widgets/create_project_widgets/add_attachments_widget.dart';
 
 // class CoverImagePickerWidget extends StatefulWidget {
 //   final void Function(PlatformFile?) onImagePicked;

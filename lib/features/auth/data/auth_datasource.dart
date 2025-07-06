@@ -12,6 +12,7 @@ abstract class AuthRemoteDataSource {
   Future<AuthResponseModel> signUp({
     required String email,
     required String password,
+    required String name,
   });
 
   Future<AuthResponseModel?> getCurrentUser();
@@ -75,6 +76,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthResponseModel> signUp({
     required String email,
     required String password,
+    required String name,
   }) async {
     try {
       print('[AuthRemote] Initiating sign up for $email');
@@ -82,7 +84,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final response = await auth.signUp(
         email: email,
         password: password,
-        data: {'role': 'student'},
+        data: {'role': 'student', 'name': name},
       );
 
       print('[AuthRemote] Received sign up response: ${response.user?.id}');

@@ -1,4 +1,4 @@
-import 'package:vision_app/core/storage/di.dart';
+import 'package:vision_app/core/di_storage_listner/di.dart';
 import 'package:vision_app/features/resources_feature/data/remote_resources.dart';
 import 'package:vision_app/features/resources_feature/data/resources_repo_imp.dart';
 import 'package:vision_app/features/resources_feature/domain/usecase/get_all_academics_usecase.dart';

@@ -20,7 +20,7 @@
   "email_invalid": "Enter a valid email",
   "password_required": "Password is required",
   "password_too_short": "Password must be at least 6 characters",
-    "advanced_resources_request": "Advanced Resources Request",
+  "advanced_resources_request": "Advanced Resources Request",
   "project": "Project",
   "completed_part_of_project": "Completed part of the project",
   "select_education_entity": "Select education entity",
@@ -28,5 +28,12 @@
   "select_resource": "Select resource",
   "required_resource": "Required Resource",
   "please_fill_required_fields": "Please fill all required fields and add attachments",
-  "submit_request": "Submit Request"
+  "submit_request": "Submit Request",
+  "name_required": "please enter the name ",
+  "name": "name",
+  "there_are_no_fields_available": "there Are No Fields Available",
+  "an_error_occurred_tryagain": "An Error Occurred .. TryAgain",
+  "loading": "loading ..",
+  "choose_project_field": "choose project field",
+  "please_enter_all_fields_and_add_cover_image": "please Enter All Fields And Add CoverImage"
 }

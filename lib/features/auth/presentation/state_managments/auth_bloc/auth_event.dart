@@ -13,6 +13,11 @@ class SignInRequested extends AuthEvent {
 class SignUpRequested extends AuthEvent {
   final String email;
   final String password;
+  final String name;
 
-  SignUpRequested({required this.email, required this.password});
+  SignUpRequested({
+    required this.email,
+    required this.password,
+    required this.name,
+  });
 }

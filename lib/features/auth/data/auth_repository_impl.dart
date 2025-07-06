@@ -44,6 +44,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, AuthEntity>> signUpWithEmailAndPassword({
     required String email,
     required String password,
+    required String name,
   }) async {
     final isConnected = await networkInfo.isConnected;
     if (!isConnected) {
@@ -54,6 +55,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await remoteDataSource.signUp(
         email: email,
         password: password,
+        name: name,
       );
       return Right(response.toEntity());
     } on ServerException catch (e) {
