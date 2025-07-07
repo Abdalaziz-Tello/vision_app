@@ -16,6 +16,9 @@ abstract class ProjectRemoteDataSource {
   Future<String> createProject(CreateProjectModel model);
   Future<UploadFileEntity> uploadFile(PlatformFile file);
   Future<ProjectModel> getProjectById(String projectId);
+  Future<List<ProjectModel>> getTopCompletedProjects();
+
+  //  Future<void> createInvitation(InvitationModel invitation);
 }
 
 class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
@@ -122,10 +125,18 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
     // Prepare file info
     final mime = lookupMimeType(file.name) ?? 'application/octet-stream';
     // final uniqueName = '${DateTime.now().millisecondsSinceEpoch}_${file.name}';
-    final safeFileName = Uri.encodeComponent(file.name);
-    final path = '${user.id}/$safeFileName';
-    //  final path = '${user.id}/${file.name}';
+    // final safeFileName = Uri.encodeComponent(file.name);
+    // final path = '${user.id}/$safeFileName';
 
+    // Get the file extension safely
+    String extension = file.extension ?? 'bin'; // fallback to .bin
+
+    // Generate a unique and safe filename
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final safeFileName = 'file_$timestamp.$extension';
+
+    // Construct the full storage path
+    final path = '${user.id}/$safeFileName';
     print("📤 Uploading to Supabase...");
     print("- MimeType: $mime");
     print("- Storage Path: $path");
@@ -155,7 +166,7 @@ final res = await supabase.storage.from('project-attachments').createSignedUrl(p
     }
 
     // Validate upload result
-    if (res == null || res.isEmpty) {
+    if (res.isEmpty) {
       print("❌ Upload failed (empty response)");
       throw ServerException(
         errorModel: ErrorModel(errorMessage: "فشل رفع الملف"),
@@ -211,4 +222,63 @@ final res = await supabase.storage.from('project-attachments').createSignedUrl(p
       );
     }
   }
+  //_____________________________________________________________________
+
+  @override
+  Future<List<ProjectModel>> getTopCompletedProjects() async {
+    try {
+      final response = await supabase
+          .from('projects')
+          .select('''
+          *,
+          project_attachments (
+            id,
+            file_url,
+            file_name,
+            file_type,
+            file_size,
+            uploaded_at
+          )
+        ''')
+          .eq('is_public', true) // Only public projects
+          .lte('percentage_completed', 100) // Up to 100%
+          .order('percentage_completed', ascending: false) // Highest first
+          .limit(3); // Top 3 only
+
+      print('top projects : $response');
+      return (response as List<dynamic>)
+          .map((json) => ProjectModel.fromJson(json))
+          .toList();
+    } on PostgrestException catch (e) {
+      print(e);
+      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
+    } catch (e) {
+      print(e);
+      throw ServerException(
+        errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
+      );
+    }
+  }
+
+  //_____________________________________________________________________
+  //? get projects by user id :
+  /*
+  final response = await supabase
+      .from('projects')
+      .select('''
+          *,
+          project_attachments (
+            id,
+            file_url,
+            file_name,
+            file_type,
+            file_size,
+            uploaded_at
+          )
+        ''')
+      .eq('created_by', currentUserId)
+      .order('created_at', ascending: false);
+*/
+
+  //_______________________________________________________________________
 }

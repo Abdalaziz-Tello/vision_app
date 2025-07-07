@@ -288,13 +288,15 @@ class _DialogScreenState extends State<DialogScreen> {
           );
   }
 
- Widget _buildUploadButton() {
+  Widget _buildUploadButton() {
     return Align(
       alignment: Alignment.bottomRight,
       child: BlocBuilder<CreateProjectBloc, CreateProjectState>(
         builder: (context, state) {
           if (_isUploading || state is CreateProjectLoading) {
-            return CircularProgressIndicator(color: AppColors.navyBlue);
+            return Center(
+              child: CircularProgressIndicator(color: AppColors.navyBlue),
+            );
           }
 
           return CustomButton(
@@ -313,7 +315,9 @@ class _DialogScreenState extends State<DialogScreen> {
                   _projectDescriptionController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(AppString.pleaseEnterAllFieldsAndAddCoverImage),
+                    content: Text(
+                      AppString.pleaseEnterAllFieldsAndAddCoverImage,
+                    ),
                     backgroundColor: AppColors.redColor,
                   ),
                 );

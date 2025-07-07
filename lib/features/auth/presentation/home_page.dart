@@ -8,11 +8,14 @@ import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
 import 'package:vision_app/core/di_storage_listner/di.dart';
+import 'package:vision_app/core/widgets/custom_snack_bar_function.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/animated_custom_button.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/top_project_card.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dialog_manager.dart';
-import 'package:vision_app/features/auth/presentation/homePage_widgets/loading_card_with_lines.dart';
+import 'package:vision_app/features/projects/presentation/top_projects_bloc/top_projects_bloc.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,18 +26,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final buttonKey = GlobalKey<AnimatedCustomButtonState>();
+
   final List<Color> cardColors = [
     const Color(0xFFFFD5CA),
     const Color(0xFFC2FFDB),
     const Color(0xFFFFF6CC),
   ];
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   context.read<CurrentUserBloc>().add(LoadCurrentUser());
-  //   print('call the bloc of loadCurrentUser ');
-  // }
 
   @override
   void initState() {
@@ -151,79 +149,130 @@ class _HomePageState extends State<HomePage> {
       ),
 
       backgroundColor: AppColors.whiteColor,
-      body: ListView(
-        children: [
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Image.asset(
-                AppImages.header,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: CustomButton(
-                  text: AppString.showYourProjectNow,
-                  bgColor: AppColors.brightBlue,
-                  textColor: AppColors.navyBlue,
-                  onTap: () {
-                    context.push(NavigationKeys.createProjectPageKey);
-                  },
-                ),
-              ),
-            ],
-          ).animate().slideX(
-            delay: 0.2.seconds,
-            duration: 0.2.seconds,
-            begin: -1,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              AppString.topProjects,
-              style: const TextStyle(
-                color: Color(0xff3A433E),
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                        AppImages.header,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                      AnimatedCustomButton(
+                        key: buttonKey,
+                        text: AppString.showYourProjectNow,
+                        bgColor: AppColors.brightBlue,
+                        textColor: AppColors.navyBlue,
+                        onTap: () {
+                          final state = context.read<CurrentUserBloc>().state;
+                          if (state is CurrentUserLoaded) {
+                            context.push(NavigationKeys.createProjectPageKey);
+                          } else {
+                            buttonKey.currentState?.triggerShake();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              customSnackBar(
+                                'Please login to create a project',
+                                AppColors.redColor,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ).animate().slideX(
+                    delay: 0.2.seconds,
+                    duration: 0.2.seconds,
+                    begin: -1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      AppString.topProjects,
+                      style: const TextStyle(
+                        color: Color(0xff3A433E),
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ).animate().fadeIn(delay: 0.3.seconds, duration: 0.4.seconds),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: SizedBox(
+                      height: 250,
+                      child: BlocBuilder<TopProjectsBloc, TopProjectsState>(
+                        builder: (context, state) {
+                          if (state is TopProjectsLoading) {
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 3,
+                              itemBuilder: (context, index) {
+                                final color =
+                                    cardColors[index % cardColors.length];
+                                return ProjectCard(
+                                  isLoading: true,
+                                  loadingColor: color,
+                                );
+                              },
+                            );
+                          } else if (state is TopProjectsSuccess) {
+                            final projects = state.projects;
+                            if (projects.isEmpty) {
+                              return const Center(
+                                child: Text("لا توجد مشاريع بعد"),
+                              );
+                            }
+
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: projects.length,
+                              itemBuilder: (context, index) {
+                                final project = projects[index];
+                                return ProjectCard(
+                                  imageUrl: project.coverImageUrl,
+                                  title: project.title,
+                                  subtitle:
+                                      "${project.percentageCompleted}٪ مكتمل",
+                                  onTap: () {
+                                    // navigate to details
+                                  },
+                                );
+                              },
+                            );
+                          } else if (state is TopProjectsFailure) {
+                            return Center(child: Text("خطأ: ${state.error}"));
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                      ),
+                    ),
+                  ).animate().fadeIn(
+                    delay: 0.35.seconds,
+                    duration: 0.45.seconds,
+                  ),
+                  //  Spacer(),//!
+                  Image.asset(
+                    AppImages.footer,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ).animate().slideX(
+                    delay: 0.2.seconds,
+                    duration: 0.2.seconds,
+                    begin: 1,
+                  ),
+                ],
               ),
             ),
-          ).animate().fadeIn(delay: 0.3.seconds, duration: 0.4.seconds),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: SizedBox(
-              height: 250,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final cardWidth = constraints.maxWidth * 0.45;
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        width: cardWidth,
-                        child: // have another widget here : ColoredCardWithContent
-                        LoadingCard(
-                          backgroundColor:
-                              cardColors[index % cardColors.length],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ).animate().fadeIn(delay: 0.35.seconds, duration: 0.45.seconds),
-          Image.asset(
-            AppImages.footer,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ).animate().slideX(
-            delay: 0.2.seconds,
-            duration: 0.2.seconds,
-            begin: 1,
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -249,10 +298,80 @@ class _HomePageState extends State<HomePage> {
           isLogin: isLogin,
           onSuccess: () {
             context.pop();
+
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('success'), backgroundColor: Colors.green),
+              customSnackBar(
+                isLogin
+                    ? 'success'
+                    : "Check your email ..We've sent a confirmation link to your email",
+                AppColors.green,
+              ),
+              //  SnackBar(content: Text(), backgroundColor: Colors.green),
             );
+            if (!isLogin) {
+              // فقط إذا كانت تسجيل جديد
+              showDialog(
+                context: context,
+                builder: (_) => const VerificationDialog(),
+              );
+            }
           },
+        ),
+      ),
+    );
+  }
+}
+
+class VerificationDialog extends StatelessWidget {
+  const VerificationDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: AppColors.reallyWhite,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 300, minHeight: 200),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: const [
+                  Icon(
+                    Icons.mark_email_read_outlined,
+                    color: AppColors.lightBlue,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'تحقق من بريدك الإلكتروني',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'لقد أرسلنا رابط تأكيد إلى بريدك الإلكتروني.\nيرجى فتحه لتفعيل الحساب.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'حسناً',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

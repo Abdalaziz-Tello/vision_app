@@ -7,6 +7,7 @@ import 'package:vision_app/features/auth/presentation/state_managments/current_u
 import 'package:vision_app/features/projects/presentation/create_project_bloc/create_project_bloc.dart';
 import 'package:vision_app/features/projects/presentation/project_details_bloc/project_details_bloc.dart';
 import 'package:vision_app/features/projects/presentation/project_domains_bloc/project_domains_bloc.dart';
+import 'package:vision_app/features/projects/presentation/top_projects_bloc/top_projects_bloc.dart';
 import 'package:vision_app/features/projects/presentation/upload_file_bloc/upload_file_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
@@ -23,8 +24,15 @@ class Routes {
         path: NavigationKeys.homePageKey,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => sl<CurrentUserBloc>(), //!fix this
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => sl<CurrentUserBloc>(), //!fix this
+              ),
+              BlocProvider(
+                create: (_) => sl<TopProjectsBloc>()..add(FetchTopProjects()),
+              ),
+            ],
             child: HomePage(),
           ),
           transitionsBuilder: _fadeTransition,

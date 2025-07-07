@@ -1,10 +1,14 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
 import 'package:vision_app/features/projects/presentation/project_details_bloc/project_details_bloc.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/add_attachments_widget.dart';
@@ -13,7 +17,6 @@ import 'package:vision_app/features/projects/presentation/view/widgets/create_pr
 import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/custom_circular_progress.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/enumeration_item.dart';
-
 //TODO : make them static
 
 class ProjectDetailsPage extends StatefulWidget {
@@ -66,6 +69,20 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                 textColor: AppColors.whiteColor,
                 bgColor: AppColors.vibrantMintGreen,
                 borderColor: AppColors.vibrantMintGreen,
+                onTap: () async {
+                  final appUrl = AppKeys.webUrl;
+                  //to share the project :
+                  Share.share('''
+                  🌟 اكتشف منصة Vision  لمساعدة الطلاب والمهندسين وكل من لديه شغف في إنجاز المشاريع!
+
+                  🔗 ${appUrl}
+                    ''');
+
+                  await Clipboard.setData(ClipboardData(text: appUrl));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('📋 تم نسخ رابط الموقع!')),
+                  );
+                },
               ),
             ),
             Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),

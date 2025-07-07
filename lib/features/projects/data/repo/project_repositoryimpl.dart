@@ -107,4 +107,19 @@ class ProjectRepositoryImpl implements ProjectRepository {
       return Left(ServerFailure(e.errorModel.errorMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ProjectEntity>>> getTopCompletedProjects() async {
+    if (!await networkInfo.isConnected) {
+      return Left(NoConnectionFailure("No internet"));
+    }
+
+    try {
+      final models = await remoteDataSource.getTopCompletedProjects();
+      final entities = models.map((e) => e.toEntity()).toList();
+      return Right(entities);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorModel.errorMessage));
+    }
+  }
 }

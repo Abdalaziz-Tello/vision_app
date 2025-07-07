@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vision_app/core/di_storage_listner/build_context_extensions.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/input_field_widget.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/lable_row.dart';
 
@@ -8,6 +9,8 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final bool required;
+  final bool isPassword;
+
   const CustomTextField({
     super.key,
     required this.title,
@@ -15,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     this.validator,
     this.required = true,
+    this.isPassword = false,
   });
 
   @override
@@ -28,8 +32,8 @@ class CustomTextField extends StatelessWidget {
               ? LableRow(title: title)
               : Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: context.screenWidth * 0.2,
                     color: Color(0XFF3A433E),
                   ),
                 ),
@@ -38,6 +42,7 @@ class CustomTextField extends StatelessWidget {
             controller: controller,
             validator: validator,
             hintText: hintText,
+            isPassword: isPassword, // pass here
           ),
         ],
       ),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/di_storage_listner/di.dart';
 import 'package:vision_app/core/di_storage_listner/user_id.dart';
+import 'package:vision_app/core/res/keys/navigation_keys.dart';
 import 'package:vision_app/features/resources_feature/domain/entity/resource_request_entity.dart';
 import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
@@ -62,6 +64,7 @@ class _AdvancedResourcesRequestPageState
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("done"), backgroundColor: AppColors.green),
           );
+          context.go(NavigationKeys.homePageKey);
         } else if (state is ResourceRequestFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

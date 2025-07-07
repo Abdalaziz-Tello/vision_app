@@ -10,5 +10,9 @@ abstract class ProjectRepository {
   Future<Either<Failure, List<ProjectDomainsEntity>>> getAllProjectDomains();
   Future<Either<Failure, String>> createProject(CreateProjectEntity entity);
   Future<Either<Failure, UploadFileEntity>> uploadFile(PlatformFile file);
- Future<Either<Failure, ProjectEntity>> getProjectById(String projectId);
+  Future<Either<Failure, ProjectEntity>> getProjectById(String projectId);
+  Future<Either<Failure, List<ProjectEntity>>> getTopCompletedProjects();
+
+  //! shall i make it as saperated feature ?
+ // Future<Either<Failure, void>> createInvitation(InvitationEntity entity);
 }

@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
 //slove this error : 10_Another exception was thrown: Incorrect use of ParentDataWidget// already why its 10 times ?!
 //to save the role after get it
 //extrac the button and make it the same for the hole buttons
-
 //handle no newtork will opining it //can't handle this case >>>>
 //! know more about this : This uses the HTML renderer instead of CanvasKit — no internet needed to load it.
 //
@@ -52,10 +51,10 @@ class MyApp extends StatelessWidget {
 //! fix the DI
 // make the attachement non required
 //!fix this :  Another exception was thrown: Error: Could not find the correct Provider<ProjectDomainsBloc> above this DialogScreen Widget
-
 //? handle if projct id in the project details page null
-
 //! must fix the user login state
+//add the navigate in the homepage into the project details , with somefixes
+
 
 //** remember:
 // >Supabase Uses a Direct Client SDK,that allows to connect and interact directly:
@@ -83,13 +82,41 @@ class MyApp extends StatelessWidget {
   //                                   .select();
 
 
+/*
+//flutter pub add webview_flutter
+------------------------------------------------------------------
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/686c02ebe27303190bc1358c/1iviumqrk';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+----------------------------------------------------------------
 
 
+
+*/
 //? done :
-//adding the showcasewidget
-//fix the border of TextWithExpansionTileSelector
-//fix the problem in the image
-//add the domain and the owner name to the ui
-//fix the image svg problem
-//fix the login refresh page needed (but have to recheck it )
-//join the attachements with the get projectID and make show it in the ui
+/*
+-fix the onTap properities
+-add customSnackBar func to use it in the widgets
+-fix the footer image in the homepage
+-fix the dialog size
+-fix the password validation
+-add the confirm password snackbar
+-change the navigation of the resources into the homepage if success
+-make the button shake animation
+-add get top projects depends on percentage_completed
+-make the passwrod toggle between hidden and visible
+-fix the arabic file name problem
+-fix the ui of the top project card
+*/
+
+
