@@ -16,6 +16,7 @@ import 'package:vision_app/features/resources_feature/presentation/view/advanced
 import 'package:vision_app/features/projects/presentation/view/pages/create_project_page.dart';
 import 'package:vision_app/features/auth/presentation/home_page.dart';
 import 'package:vision_app/features/projects/presentation/view/pages/project_details_page.dart';
+import 'package:vision_app/features/resources_feature/presentation/view/testing.dart';
 
 class Routes {
   GoRouter router = GoRouter(

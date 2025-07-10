@@ -40,6 +40,7 @@ class _InputFieldWidgetState extends State<InputFieldWidget> {
         obscureText: widget.isPassword ? _obscureText : false,
         decoration: InputDecoration(
           hintText: widget.hintText,
+          hintStyle: TextStyle(color: AppColors.shadowGreyColor),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,

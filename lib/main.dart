@@ -41,18 +41,18 @@ class MyApp extends StatelessWidget {
 //slove this error : 10_Another exception was thrown: Incorrect use of ParentDataWidget// already why its 10 times ?!
 //to save the role after get it
 //extrac the button and make it the same for the hole buttons
-//handle no newtork will opining it //can't handle this case >>>>
+//handle no newtork will opining it //<<<can't handle this case >>>>
 //! know more about this : This uses the HTML renderer instead of CanvasKit — no internet needed to load it.
 //
 //1-save the access and refresh token , using 'FlutterSecureStorage'
-//2- depend on it , to make rather than the sign buttons a user container
+//2- depend on it , to make rather than the sign buttons a user container<<done>>
 //
-//make the api keys in seperated class
+//make the api keys in seperated class <<done>>
 //! fix the DI
-// make the attachement non required
+// make the attachement non required <<done>>
 //!fix this :  Another exception was thrown: Error: Could not find the correct Provider<ProjectDomainsBloc> above this DialogScreen Widget
 //? handle if projct id in the project details page null
-//! must fix the user login state
+//! must fix the user login state <<done>>
 //add the navigate in the homepage into the project details , with somefixes
 
 
@@ -105,18 +105,7 @@ s0.parentNode.insertBefore(s1,s0);
 */
 //? done :
 /*
--fix the onTap properities
--add customSnackBar func to use it in the widgets
--fix the footer image in the homepage
--fix the dialog size
--fix the password validation
--add the confirm password snackbar
--change the navigation of the resources into the homepage if success
--make the button shake animation
--add get top projects depends on percentage_completed
--make the passwrod toggle between hidden and visible
--fix the arabic file name problem
--fix the ui of the top project card
+- add verification dialog for the confirm email after signUp
 */
 
 

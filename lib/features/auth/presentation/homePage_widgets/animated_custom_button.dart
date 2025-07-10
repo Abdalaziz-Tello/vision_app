@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
+import 'package:vision_app/core/widgets/custom_button.dart';
 
 class AnimatedCustomButton extends StatefulWidget {
   final String text;
   final Color bgColor;
   final Color textColor;
   final VoidCallback onTap;
+  final double? width;
+  final double? height;
+  final double? fontSize;
+  final bool enableHoverEffect;
+  final double hoverScale;
 
   const AnimatedCustomButton({
     super.key,
@@ -14,13 +19,17 @@ class AnimatedCustomButton extends StatefulWidget {
     required this.bgColor,
     required this.textColor,
     required this.onTap,
+    this.width,
+    this.height,
+    this.fontSize,
+    this.enableHoverEffect = true,
+    this.hoverScale = 1.05,
   });
 
   @override
   AnimatedCustomButtonState createState() => AnimatedCustomButtonState();
 }
 
-// Remove the underscore to make it public
 class AnimatedCustomButtonState extends State<AnimatedCustomButton>
     with TickerProviderStateMixin {
   late AnimationController _shakeController;
@@ -52,6 +61,11 @@ class AnimatedCustomButtonState extends State<AnimatedCustomButton>
           bgColor: widget.bgColor,
           textColor: widget.textColor,
           onTap: widget.onTap,
+          height: widget.height,
+          width: widget.width,
+          fontSize: widget.fontSize,
+          enableHoverEffect: widget.enableHoverEffect,
+          hoverScale: widget.hoverScale,
         )
         .animate(controller: _shakeController)
         .shake(hz: 4, curve: Curves.easeInOut, duration: 400.ms);

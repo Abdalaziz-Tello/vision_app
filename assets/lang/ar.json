@@ -35,5 +35,10 @@
   "an_error_occurred_tryagain": "حدث خطأ، حاول مرة أخرى",
   "loading": "جاري التحميل...",
   "choose_project_field": "اختر مجال المشروع",
-  "please_enter_all_fields_and_add_cover_image": "يرجى تعبئة جميع الحقول المطلوبة وإضافة صورة الغلاف"
+  "please_enter_all_fields_and_add_cover_image": "يرجى تعبئة جميع الحقول المطلوبة وإضافة صورة الغلاف",
+  "name_hint": "جميل جمال",
+  "password_upper": "يجب أن تحتوي على حرف كبير واحد على الأقل",
+  "password_lower": "يجب أن تحتوي على حرف صغير واحد على الأقل",
+  "password_number": "يجب أن تحتوي على رقم واحد على الأقل",
+  "password_special": "يجب أن تحتوي على رمز خاص واحد على الأقل"
 }

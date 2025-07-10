@@ -1,5 +1,4 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,7 +13,7 @@ import 'package:vision_app/features/projects/presentation/project_details_bloc/p
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/add_attachments_widget.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/glowing_circle_with_text.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/input_field_widget.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
+import 'package:vision_app/core/widgets/custom_button.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/custom_circular_progress.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/enumeration_item.dart';
 //TODO : make them static

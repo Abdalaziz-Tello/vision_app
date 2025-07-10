@@ -35,5 +35,10 @@
   "an_error_occurred_tryagain": "An Error Occurred .. TryAgain",
   "loading": "loading ..",
   "choose_project_field": "choose project field",
-  "please_enter_all_fields_and_add_cover_image": "please Enter All Fields And Add CoverImage"
+  "please_enter_all_fields_and_add_cover_image": "please Enter All Fields And Add CoverImage",
+  "nameHint": "Jamil Jamal",
+  "passwordUpper": "Password must include at least one uppercase letter",
+  "passwordLower": "Password must include at least one lowercase letter",
+  "passwordNumber": "Password must include at least one number",
+  "passwordSpecial": "Password must include at least one special character"
 }

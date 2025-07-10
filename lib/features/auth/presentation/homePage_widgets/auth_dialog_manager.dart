@@ -20,12 +20,13 @@ class AuthDialogManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () => _showAuthDialog(context, isLogin),
+      onTap: () => show(context, isLogin: isLogin),
       child: child,
     );
   }
 
-  void _showAuthDialog(BuildContext context, bool isLogin) {
+  /// Static method to show the auth dialog manually
+  static void show(BuildContext context, {required bool isLogin}) {
     showDialog(
       context: context,
       builder: (context) => BlocProvider(

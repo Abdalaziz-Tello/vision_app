@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:vision_app/core/di_storage_listner/build_context_extensions.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/core/widgets/custom_button.dart';
+import 'package:vision_app/core/widgets/custom_snack_bar_function.dart';
+import 'package:vision_app/features/auth/presentation/homePage_widgets/verification_dialog.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/custom_text_field.dart';
 
@@ -47,148 +52,241 @@ class _AuthDialogState extends State<AuthDialog> {
     }
   }
 
+  //responsive width calculation
+  double _getDialogWidth(BuildContext context) {
+    final screenWidth = context.screenWidth;
+
+    // breakpoints
+    if (screenWidth <= 600) {
+      return screenWidth * 0.95; // Mobile: 95% width
+    } else if (screenWidth <= 1024) {
+      return screenWidth * 0.7; // Tablet: 70% width
+    } else if (screenWidth <= 1440) {
+      return screenWidth * 0.5; // Desktop: 50% width
+    } else {
+      return screenWidth * 0.5; // Large desktop: 35% width
+    }
+  }
+
+  // padding
+  EdgeInsets _getDialogPadding(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth <= 600) {
+      return const EdgeInsets.all(16); // Mobile: smaller padding
+    } else {
+      return const EdgeInsets.all(24); // Tablet/Desktop: larger padding
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          widget.onSuccess();
+          widget.onSuccess(); //context.pop() //Close dialog
+          ScaffoldMessenger.of(context).showSnackBar(
+            customSnackBar(
+              widget.isLogin ? 'log in correctly' : 'signUp correctly',
+              AppColors.green,
+            ),
+          );
+
+          if (!widget.isLogin) {
+            showDialog(
+              context: context,
+              builder: (context) => VerificationDialog(),
+            );
+          }
         } else if (state is AuthFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            customSnackBar(state.message, AppColors.redColor),
+            // SnackBar(
+            //   content: Text(state.message),
+            //   backgroundColor: AppColors.redColor,
+            //   behavior: SnackBarBehavior.floating,
+            // ),
+          );
         }
       },
       child: Dialog(
         backgroundColor: AppColors.reallyWhite,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 300, //تمنع التمدد الزائد
-            minHeight: 200,
-            maxHeight: 600,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final dialogWidth = _getDialogWidth(context);
+            final dialogPadding = _getDialogPadding(context);
+
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: dialogWidth,
+                minWidth: 280,
+                maxHeight:
+                    MediaQuery.of(context).size.height *
+                    0.9, // Increased max height
+              ),
+              child: Container(
+                padding: dialogPadding,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.isLogin ? AppString.login : AppString.signup,
-                          style: const TextStyle(fontSize: 25),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                      ],
+                    // Header with close button
+                    _buildHeader(context),
+
+                    // Form content - wrapped in Flexible to allow scrolling
+                    Flexible(
+                      child: SingleChildScrollView(child: _buildFormContent()),
                     ),
-                    const SizedBox(height: 12),
-                    if (!widget.isLogin)
-                      CustomTextField(
-                        title: AppString.name,
-                        hintText: 'جميل جمال',
-                        controller: _nameController,
-                        validator: _validateName,
-                      ),
-                    CustomTextField(
-                      title: AppString.email,
-                      hintText: AppString.enterEmail,
-                      controller: _emailController,
-                      validator: _validateEmail,
-                    ),
-                    CustomTextField(
-                      title: AppString.password,
-                      hintText: AppString.enterPassword,
-                      controller: _passwordController,
-                      validator: _validatePassword,
-                      isPassword: true,
-                    ),
+
+                    // Submit button - always visible at bottom
                     const SizedBox(height: 20),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        if (state is AuthLoading) {
-                          return const CircularProgressIndicator(
-                            color: AppColors.lightBlue,
-                          );
-                        }
-                        return ElevatedButton(
-                          onPressed: _submit,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.lightBlue,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            widget.isLogin ? AppString.login : AppString.signup,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        );
-                      },
-                    ),
+                    _buildSubmitButton(),
                   ],
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
   }
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) return AppString.emailRequired;
-    if (!value.contains('@')) return AppString.emailInvalid;
-    return null;
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            widget.isLogin ? AppString.login : AppString.signup,
+            style:
+                Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ) ??
+                const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => context.pop(),
+          tooltip: 'Close',
+        ),
+      ],
+    );
   }
 
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return AppString.passwordRequired;
-    }
+  Widget _buildFormContent() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 20),
 
-    if (value.length < 8) {
-      return AppString
-          .passwordTooShort; // "يجب أن تكون كلمة المرور على الأقل 8 حروف"
-    }
+          // Name field for signup
+          if (!widget.isLogin) ...[
+            CustomTextField(
+              title: AppString.name,
+              hintText: AppString.nameHint,
+              controller: _nameController,
+              validator: _validateName,
+            ),
+            const SizedBox(height: 16),
+          ],
 
-    final hasUpperCase = value.contains(RegExp(r'[A-Z]'));
-    final hasLowerCase = value.contains(RegExp(r'[a-z]'));
-    final hasDigit = value.contains(RegExp(r'[0-9]'));
-    final hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+          // Email field
+          CustomTextField(
+            title: AppString.email,
+            hintText: AppString.enterEmail,
+            controller: _emailController,
+            validator: _validateEmail,
+          ),
+          const SizedBox(height: 16),
 
-    if (!hasUpperCase) {
-      return "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل";
-    }
+          // Password field
+          CustomTextField(
+            title: AppString.password,
+            hintText: AppString.enterPassword,
+            controller: _passwordController,
+            validator: _validatePassword,
+            isPassword: true,
+          ),
+        ],
+      ),
+    );
+  }
 
-    if (!hasLowerCase) {
-      return "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل";
-    }
+  Widget _buildSubmitButton() {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthLoading) {
+          return const SizedBox(
+            height: 48,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.lightBlue,
+                strokeWidth: 2,
+              ),
+            ),
+          );
+        }
 
-    if (!hasDigit) {
-      return "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل";
-    }
+        return CustomButton(
+          text: widget.isLogin ? AppString.login : AppString.signup,
+          onTap: _submit,
+          bgColor: AppColors.lightBlue,
+          textColor: Colors.white,
+          width: double.infinity,
+          height: 48,
+          fontSize: 16,
+          borderRadius: 12,
+          margin: EdgeInsets.zero,
+        );
+      },
+    );
+  }
 
-    if (!hasSpecialChar) {
-      return "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل";
-    }
+  //validators :
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) return AppString.emailRequired;
 
-    return null; // password okay!
+    // More comprehensive email validation
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    if (!emailRegex.hasMatch(value)) return AppString.emailInvalid;
+
+    return null;
   }
 
   String? _validateName(String? name) {
     if (name == null || name.isEmpty) return AppString.nameRequired;
+
+    //name validation
+    if (name.trim().length < 2) return 'Name must be at least 2 characters';
+
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) return AppString.passwordRequired;
+
+    // For login, basic validation is enough
+    if (widget.isLogin) return null;
+
+    //password validation for signup
+    if (value.length < 8) return AppString.passwordTooShort;
+
+    final hasUpper = value.contains(RegExp(r'[A-Z]'));
+    final hasLower = value.contains(RegExp(r'[a-z]'));
+    final hasDigit = value.contains(RegExp(r'[0-9]'));
+    final hasSpecial = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+    if (!hasUpper) return AppString.passwordUpper;
+    if (!hasLower) return AppString.passwordLower;
+    if (!hasDigit) return AppString.passwordNumber;
+    if (!hasSpecial) return AppString.passwordSpecial;
+
     return null;
   }
 }

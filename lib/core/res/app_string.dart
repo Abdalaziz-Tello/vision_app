@@ -49,4 +49,9 @@ class AppString {
   static String get chooseProjectField => 'choose_project_field'.tr();
   static String get pleaseEnterAllFieldsAndAddCoverImage =>
       'please_enter_all_fields_and_add_cover_image'.tr();
+  static String nameHint = 'name_hint'.tr();
+  static String passwordUpper = 'password_upper'.tr();
+  static String passwordLower = 'password_lower'.tr();
+  static String passwordNumber = 'password_number'.tr();
+  static String passwordSpecial = 'password_special'.tr();
 }

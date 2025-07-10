@@ -7,6 +7,7 @@ import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
+import 'package:vision_app/core/widgets/custom_snack_bar_function.dart';
 import 'package:vision_app/features/projects/domain/entities/create_project_entity.dart';
 import 'package:vision_app/features/projects/domain/entities/upload_file_entity.dart';
 import 'package:vision_app/features/projects/presentation/create_project_bloc/create_project_bloc.dart';
@@ -17,7 +18,7 @@ import 'package:vision_app/features/projects/presentation/view/widgets/create_pr
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/section_title.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/university_student_checkbox.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/custom_button.dart';
+import 'package:vision_app/core/widgets/custom_button.dart';
 
 class DialogScreen extends StatefulWidget {
   const DialogScreen({super.key});
@@ -314,11 +315,15 @@ class _DialogScreenState extends State<DialogScreen> {
                   _projectTypeController.text.isEmpty ||
                   _projectDescriptionController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppString.pleaseEnterAllFieldsAndAddCoverImage,
-                    ),
-                    backgroundColor: AppColors.redColor,
+                  // SnackBar(
+                  //   content: Text(
+                  //
+                  //   ),
+                  //   backgroundColor: AppColors.redColor,
+                  // ),
+                  customSnackBar(
+                    AppString.pleaseEnterAllFieldsAndAddCoverImage,
+                    AppColors.redColor,
                   ),
                 );
                 return;
@@ -382,10 +387,11 @@ class _DialogScreenState extends State<DialogScreen> {
               );
 
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("تم إرسال المشروع بنجاح"),
-                  backgroundColor: AppColors.green,
-                ),
+                // const SnackBar(
+                //   content: Text(),
+                //   backgroundColor:
+                // ),
+                customSnackBar("تم إرسال المشروع بنجاح", AppColors.green),
               );
 
               setState(() => _isUploading = false); //  end loading
