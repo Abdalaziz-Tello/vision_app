@@ -22,7 +22,7 @@ class HeaderSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
-        final isSmallScreen = screenWidth < 600;
+        final isSmallScreen = screenWidth < 800;
 
         return Stack(
           alignment: isSmallScreen ? Alignment.center : Alignment.bottomCenter,
@@ -38,16 +38,16 @@ class HeaderSection extends StatelessWidget {
               child: Padding(
                 padding: isSmallScreen
                     ? EdgeInsets.only(top: context.screenHeight * 0.09)
-                    : EdgeInsets.only(bottom: context.screenHeight * 0.09),
+                    : EdgeInsets.only(bottom: context.screenHeight * 0.07),
                 child: AnimatedCustomButton(
-                  width: screenWidth * 0.22,
-                  height: screenWidth * 0.08,
+                  width: screenWidth * 0.21,
+                  height: screenWidth * 0.075,
                   fontSize: screenWidth * 0.02,
                   key: buttonKey,
                   text: AppString.showYourProjectNow,
                   bgColor: AppColors.brightBlue,
                   textColor: AppColors.navyBlue,
-                  enableHoverEffect: true, // Optional, defaults to true
+                  enableHoverEffect: true,
                   hoverScale: 1.1,
                   onTap: () {
                     final state = context.read<CurrentUserBloc>().state;
@@ -57,7 +57,7 @@ class HeaderSection extends StatelessWidget {
                       buttonKey.currentState?.triggerShake();
                       ScaffoldMessenger.of(context).showSnackBar(
                         customSnackBar(
-                          'الرجاء تسجيل الدخول لإنشاء مشروع',
+                          AppString.pleaseLoginToCreateProject,
                           AppColors.redColor,
                         ),
                       );

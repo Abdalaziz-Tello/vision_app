@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
 import 'package:vision_app/core/errors/failures.dart';
 import 'package:vision_app/core/network/network_info.dart';
+import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/features/projects/data/datasource/project_remote_datasource.dart';
 import 'package:vision_app/features/projects/data/models/create_project_model.dart';
 import 'package:vision_app/features/projects/domain/entities/create_project_entity.dart';
@@ -44,7 +45,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
     final isConnected = await networkInfo.isConnected;
 
     if (!isConnected) {
-      return Left(NoConnectionFailure("No internet connection"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
@@ -80,7 +81,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   ) async {
     final isConnected = await networkInfo.isConnected;
     if (!isConnected) {
-      return Left(NoConnectionFailure("No internet connection"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
@@ -97,7 +98,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
     String projectId,
   ) async {
     if (!await networkInfo.isConnected) {
-      return Left(NoConnectionFailure("No internet"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
@@ -108,14 +109,31 @@ class ProjectRepositoryImpl implements ProjectRepository {
     }
   }
 
+  //__________________________________________________________
   @override
   Future<Either<Failure, List<ProjectEntity>>> getTopCompletedProjects() async {
     if (!await networkInfo.isConnected) {
-      return Left(NoConnectionFailure("No internet"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
       final models = await remoteDataSource.getTopCompletedProjects();
+      final entities = models.map((e) => e.toEntity()).toList();
+      return Right(entities);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorModel.errorMessage));
+    }
+  }
+
+  //__________________________________________________________
+
+  @override
+  Future<Either<Failure, List<ProjectEntity>>> getAllProjects() async {
+    if (!await networkInfo.isConnected) {
+      return Left(NoConnectionFailure(AppString.noInternet));
+    }
+    try {
+      final models = await remoteDataSource.getProjects();
       final entities = models.map((e) => e.toEntity()).toList();
       return Right(entities);
     } on ServerException catch (e) {

@@ -1,4 +1,3 @@
-// features/auth/presentation/widgets/auth_dialog_manager.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:vision_app/core/di_storage_listner/di.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
 import 'auth_dialog.dart';
 
+//*benifit of using it : Don't Repeat Yourself (DRY).
 class AuthDialogManager extends StatelessWidget {
   final bool isLogin;
   final Widget child;
@@ -19,7 +19,7 @@ class AuthDialogManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
+      //  behavior: HitTestBehavior.opaque,
       onTap: () => show(context, isLogin: isLogin),
       child: child,
     );
@@ -30,10 +30,7 @@ class AuthDialogManager extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => BlocProvider(
-        create: (_) => AuthBloc(
-          signInWithEmailAndPassword: sl(),
-          signUpWithEmailAndPassword: sl(),
-        ),
+        create: (_) => sl<AuthBloc>(),
         child: AuthDialog(isLogin: isLogin, onSuccess: () => context.pop()),
       ),
     );

@@ -1,8 +1,3 @@
-// class AppString {
-//   static const String login = "Login";
-//   static const String signup = "Signup";
-// }
-
 import 'package:easy_localization/easy_localization.dart';
 
 class AppString {
@@ -54,4 +49,42 @@ class AppString {
   static String passwordLower = 'password_lower'.tr();
   static String passwordNumber = 'password_number'.tr();
   static String passwordSpecial = 'password_special'.tr();
+  static String get account => 'account'.tr();
+  static String get logout => 'logout'.tr();
+  static String get close => 'close'.tr();
+  static String get nameMinLength => 'name_min_length'.tr();
+  static String get loginSuccess => 'login_success'.tr();
+  static String get signupSuccess => 'signup_success'.tr();
+  static String get pleaseLoginToCreateProject =>
+      'please_login_to_create_project'.tr();
+  static String get noProjectsYet => 'no_projects_yet'.tr();
+  static String get percentageCompleted => 'percentage_completed'.tr();
+  static String get checkEmail => 'check_email'.tr();
+  static String get emailConfirmationSent => 'email_confirmation_sent'.tr();
+  static String get ok => 'ok'.tr();
+  static String get notLoggedIn => 'not_logged_in'.tr();
+  static String get pleaseFillAllRequiredFields =>
+      'please_fill_all_required_fields'.tr();
+  static String get projectOwner => 'project_owner'.tr();
+  static String get noEducationEntities => 'no_education_entities'.tr();
+  static String get noResources => 'no_resources'.tr();
+  static String get requestSubmitted => 'request_submitted'.tr();
+  static String get linkCopied => 'link_copied'.tr();
+  static String get visionPlatformIntro => 'vision_platform_intro'.tr();
+  static String get shareProject => 'share_project'.tr();
+  static String get missingToolsPrompt => 'missing_tools_prompt'.tr();
+  static String get requestAdvancedResources =>
+      'request_advanced_resources'.tr();
+  static String get projectObjectives => 'project_objectives'.tr();
+  static String get cannotActivateUntilApproved =>
+      'cannot_activate_until_approved'.tr();
+  static String get projectVisibleAfterHalfDone =>
+      'project_visible_after_half_done'.tr();
+  static String get createdByLabel => 'created_by_label'.tr();
+  static String get notVisible => 'not_visible'.tr();
+  static String get visibleToPublic => 'visible_to_public'.tr();
+  static String get projects => 'projects'.tr();
+  static String get requests => 'requests'.tr();
+  static String get equipment => 'equipment'.tr();
+  static String get noInternet => 'noInternet'.tr();
 }

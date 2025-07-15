@@ -30,6 +30,7 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
       (user) {
         if (user == null) {
           print('[CurrentUserBloc] No user found. Not logged in.');
+          print(user);
           emit(CurrentUserNotLoggedIn());
         } else {
           print('[CurrentUserBloc] User loaded: ${user.email}');

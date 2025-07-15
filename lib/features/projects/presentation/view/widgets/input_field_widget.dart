@@ -23,7 +23,9 @@ class _InputFieldWidgetState extends State<InputFieldWidget> {
   bool _obscureText = true;
 
   void _toggleVisibility() {
-    setState(() => _obscureText = !_obscureText);
+    setState(
+      () => _obscureText = !_obscureText,
+    ); //TODO :think about  change this setState
   }
 
   @override

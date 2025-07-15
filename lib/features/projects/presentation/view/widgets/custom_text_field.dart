@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vision_app/core/di_storage_listner/build_context_extensions.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/input_field_widget.dart';
+import 'package:vision_app/features/projects/presentation/view/widgets/input_field_widget.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/lable_row.dart';
 
 class CustomTextField extends StatelessWidget {

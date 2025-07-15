@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vision_app/features/auth/presentation/homePage_widgets/top_project_card.dart';
-import 'package:vision_app/features/projects/presentation/top_projects_bloc/top_projects_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:vision_app/core/res/app_string.dart';
+import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/core/res/keys/navigation_keys.dart';
+import 'package:vision_app/core/widgets/top_project_card.dart';
+import 'package:vision_app/features/projects/presentation/state_managments/top_projects_bloc/top_projects_bloc.dart';
 
 class TopProjectsListView extends StatelessWidget {
   final List<Color> cardColors;
@@ -18,21 +22,32 @@ class TopProjectsListView extends StatelessWidget {
         child: BlocBuilder<TopProjectsBloc, TopProjectsState>(
           builder: (context, state) {
             if (state is TopProjectsFailure) {
-              return Center(child: Text("خطأ: ${state.error}"));
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<TopProjectsBloc>().add(FetchTopProjects());
+                      },
+                      icon: Icon(Icons.bug_report, color: AppColors.redColor),
+                    ), //TODO : changge this icon
+                    Text("خطأ: ${state.error}"),
+                  ],
+                ),
+              );
             }
 
             final isLoading = state is TopProjectsLoading;
             final projects = state is TopProjectsSuccess ? state.projects : [];
 
             if (!isLoading && projects.isEmpty) {
-              return const Center(child: Text("لا توجد مشاريع بعد"));
+              return Center(child: Text(AppString.noProjectsYet));
             }
-
-            final itemCount = isLoading ? 3 : projects.length;
 
             return ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: itemCount,
+              itemCount: isLoading ? 3 : projects.length,
               itemBuilder: (context, index) {
                 if (isLoading) {
                   final color = cardColors[index % cardColors.length];
@@ -46,6 +61,10 @@ class TopProjectsListView extends StatelessWidget {
                   subtitle: "${project.percentageCompleted}٪ مكتمل",
                   onTap: () {
                     // TODO: Navigate to details
+                    context.push(
+                      NavigationKeys.projectDetailsPageKey,
+                      extra: project.id,
+                    );
                   },
                 );
               },

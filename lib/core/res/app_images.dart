@@ -1,5 +1,5 @@
 class AppImages {
-  static const String logo = 'assets/logo.png';
-  static const String header = 'assets/header.png';
-  static const String footer = 'assets/footer.png';
+  static const String logo = 'assets/images/logo.png';
+  static const String header = 'assets/images/header.png';
+  static const String footer = 'assets/images/footer.png';
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 
 class VerificationDialog extends StatelessWidget {
@@ -17,36 +19,37 @@ class VerificationDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
-                children: const [
+                children: [
                   Icon(
                     Icons.mark_email_read_outlined,
                     color: AppColors.lightBlue,
                   ),
                   SizedBox(width: 8),
                   Text(
-                    'تحقق من بريدك الإلكتروني',
+                    AppString.checkEmail,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const Text(
-                'لقد أرسلنا رابط تأكيد إلى بريدك الإلكتروني.\nيرجى فتحه لتفعيل الحساب.',
+              Text(
+                AppString
+                    .emailConfirmationSent, // 'لقد أرسلنا رابط تأكيد إلى بريدك الإلكتروني.\nيرجى فتحه لتفعيل الحساب.',,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.lightBlue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
-                  'حسناً',
-                  style: TextStyle(color: Colors.white),
+                child: Text(
+                  AppString.ok,
+                  style: TextStyle(color: AppColors.whiteColor),
                 ),
               ),
             ],

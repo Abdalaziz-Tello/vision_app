@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/network/network_info.dart';
 import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/di_storage_listner/user_id.dart';
-import 'package:vision_app/features/auth/auth_injection.dart';
+import 'package:vision_app/features/auth/utils/auth_injection.dart';
 import 'package:vision_app/features/projects/project_injection.dart';
 import 'package:vision_app/features/resources_feature/resources_di.dart';
 

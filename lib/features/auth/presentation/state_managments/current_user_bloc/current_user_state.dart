@@ -10,6 +10,8 @@ class CurrentUserLoaded extends CurrentUserState {
   final AuthEntity user;
 
   CurrentUserLoaded(this.user);
+
+  String get role => user.userMetadata?['role'] ?? '';
 }
 
 class CurrentUserNotLoggedIn extends CurrentUserState {}

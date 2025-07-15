@@ -4,6 +4,9 @@ class NavigationKeys {
   static const String advancedResourcesRequestPageKey =
       '/advancedResourcesRequestPageKey';
   static const String projectDetailsPageKey = '/projectDetailsPageKey';
+
+  static const String microboostHomePage = '/microboostHomePage';
+
   //keys for the advanced Resources page :
 
   static const String projectIdKey = 'projectId';

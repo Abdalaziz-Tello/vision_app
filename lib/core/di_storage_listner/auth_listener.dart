@@ -10,6 +10,7 @@ void startAuthStateListener(BuildContext context) {
 
     if (session != null) {
       print('[AuthListener] User signed in');
+
       context.read<CurrentUserBloc>().add(LoadCurrentUser());
     } else {
       print('[AuthListener] User signed out');

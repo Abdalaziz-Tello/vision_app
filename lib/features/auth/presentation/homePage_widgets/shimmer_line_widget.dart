@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:vision_app/core/res/color/app_colors.dart';
+
+class ShimmerLineWidget extends StatelessWidget {
+  final double widthFactor;
+  final double shimmerHeight;
+  final Color? containerColor;
+
+  const ShimmerLineWidget({
+    super.key,
+    required this.widthFactor,
+    required this.shimmerHeight,
+    this.containerColor = AppColors.gray200,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(
+      alignment: Alignment.centerRight,
+      widthFactor: widthFactor,
+      child: Container(
+        height: shimmerHeight,
+        decoration: BoxDecoration(color: containerColor),
+      ),
+    );
+  }
+}

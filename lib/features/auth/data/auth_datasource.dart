@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/errors/error_model.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/features/auth/data/auth_response_model.dart';
 import '../../../core/errors/exceptions.dart';
 
@@ -46,7 +47,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           errorModel: ErrorModel(errorMessage: 'Authentication failed'),
         );
       }
-
+      print(response);
       final model = AuthResponseModel.fromJson({
         'id': response.user!.id,
         'email': response.user!.email,
@@ -57,7 +58,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'user_metadata': response.user!.userMetadata ?? {},
       });
 
-      // print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
+      print('[AuthRemote] Successfully created auth model: ${model.toJson()}');
 
       return model;
     } on AuthException catch (e) {
@@ -84,7 +85,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final response = await auth.signUp(
         email: email,
         password: password,
-        data: {'role': 'student', 'name': name},
+        data: {
+          'role': AppKeys.studentKey, //AppKeys.microboostAdminKey
+          'name': name,
+        },
       );
 
       print('[AuthRemote] Received sign up response: ${response.user?.id}');

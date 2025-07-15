@@ -1,22 +1,24 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/core/widgets/project_network_image.dart';
 
 class AttachmentPicker extends StatefulWidget {
   final String title;
   final IconData icon;
   final PlatformFile? initialFile;
-  final void Function(PlatformFile) onPicked;
+  final void Function(PlatformFile)? onPicked;
   final bool isPdf; // true = PDF, false = Image
 
   const AttachmentPicker({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     this.initialFile,
     required this.onPicked,
     this.isPdf = false,
-  }) : super(key: key);
+  });
 
   @override
   _AttachmentPickerState createState() => _AttachmentPickerState();
@@ -45,7 +47,9 @@ class _AttachmentPickerState extends State<AttachmentPicker> {
 
     if (result != null && result.files.isNotEmpty) {
       setState(() => _file = result.files.first);
-      widget.onPicked(_file!);
+      if (widget.onPicked != null) {
+        widget.onPicked!(_file!);
+      }
     }
   }
 
@@ -54,12 +58,12 @@ class _AttachmentPickerState extends State<AttachmentPicker> {
     final hasFile = _file != null;
 
     return InkWell(
-      onTap: _pick,
+      onTap: widget.onPicked == null ? null : _pick,
       child: Container(
         width: 300,
         height: 150,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
+          border: Border.all(color: AppColors.gray200),
           borderRadius: BorderRadius.circular(12),
         ),
         child: hasFile
@@ -84,15 +88,20 @@ class _AttachmentPickerState extends State<AttachmentPicker> {
         height: double.infinity,
       );
     } else if (file.path != null && file.path!.startsWith('http')) {
-      return Image.network(
-        file.path!,
-        fit: BoxFit.cover,
-        width: double.infinity,
+      // return Image.network(
+      //   file.path!,
+      //   fit: BoxFit.fill,
+      //   width: double.infinity,
+      //   height: double.infinity,
+      // );
+      return ProjectNetworkImage(
+        imageUrl: file.path!,
+        borderRadius: 12,
         height: double.infinity,
       );
     } else {
       return Center(
-        child: Icon(Icons.broken_image, size: 40, color: Colors.grey),
+        child: Icon(Icons.broken_image, size: 40, color: AppColors.gray200),
       );
     }
   }
@@ -118,10 +127,20 @@ class _AttachmentPickerState extends State<AttachmentPicker> {
         children: [
           Icon(widget.icon, size: 40, color: AppColors.gray600),
           const SizedBox(height: 8),
-          Text(
-            widget.title,
+          RichText(
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.gray600),
+            text: TextSpan(
+              text: '',
+              style: TextStyle(color: AppColors.gray600, fontSize: 14),
+              children: [
+                if (widget.title == AppString.addCoverImage)
+                  const TextSpan(
+                    text: ' * ',
+                    style: TextStyle(color: AppColors.redColor),
+                  ),
+                TextSpan(text: widget.title),
+              ],
+            ),
           ),
         ],
       ),

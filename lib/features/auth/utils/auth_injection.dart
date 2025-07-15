@@ -8,6 +8,7 @@ import 'package:vision_app/features/auth/domain/use_cases/sign_up_usecase.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/auth_bloc/auth_bloc.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 
+//Single Source of Truth
 Future<void> initAuth() async {
   //remote :
   if (!sl.isRegistered<AuthRemoteDataSource>()) {

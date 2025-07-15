@@ -17,7 +17,7 @@ abstract class ProjectRemoteDataSource {
   Future<UploadFileEntity> uploadFile(PlatformFile file);
   Future<ProjectModel> getProjectById(String projectId);
   Future<List<ProjectModel>> getTopCompletedProjects();
-
+  Future<List<ProjectModel>> getProjects();
   //  Future<void> createInvitation(InvitationModel invitation);
 }
 
@@ -260,6 +260,36 @@ final res = await supabase.storage.from('project-attachments').createSignedUrl(p
     }
   }
 
+  //_____________________________________________________________
+  @override
+  Future<List<ProjectModel>> getProjects() async {
+    try {
+      final response = await supabase.from('projects').select('''
+          *,
+          project_attachments (
+            id,
+            file_url,
+            file_name,
+            file_type,
+            file_size,
+            uploaded_at
+          )
+        ''');
+
+      print('all projects : $response');
+      return (response as List<dynamic>)
+          .map((json) => ProjectModel.fromJson(json))
+          .toList();
+    } on PostgrestException catch (e) {
+      print(e);
+      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
+    } catch (e) {
+      print(e);
+      throw ServerException(
+        errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
+      );
+    }
+  }
   //_____________________________________________________________________
   //? get projects by user id :
   /*

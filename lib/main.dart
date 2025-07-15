@@ -99,13 +99,30 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 ----------------------------------------------------------------
-
-
-
 */
-//? done :
+
 /*
-- add verification dialog for the confirm email after signUp
-*/
+? done :
+new fixes :
+      - refix the button position
+      - adding hover effect for the button
+      - optimize the auth dialog, and separate its widgets
+      - make the top projects navigate to a project details
+      - add the required for the image cover
+      - optimize the create project page
+      - validate form the role to know where to navigate
+      - add the navigation to the project details form the top projects , and check if he is the owner of the porject or not , to know how to deal with the page
+      - adding animation for EnergeticCircleWithFocus widget
+      - start with the appbar of the microbos admin page
+      - adding condition , to know if the user is the same as the project creator , if not he cannot change the images in the project details page
 
+TODO :
+      - the logOut functionality
+      - in resources to change the changenotifier into cubit
+      - to change this discription : "vision_platform_intro" with share
+      - fix the attachements widgets !! (important to do this )
+      - handle not to change any thing in the options when loading (project details page )
+      - fix this widget "ProjectCard" not correct at all
+
+*/
 
