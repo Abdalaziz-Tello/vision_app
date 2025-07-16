@@ -140,4 +140,20 @@ class ProjectRepositoryImpl implements ProjectRepository {
       return Left(ServerFailure(e.errorModel.errorMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ProjectEntity>>> getProjectsByUserId(
+    String userId,
+  ) async {
+    if (!await networkInfo.isConnected) {
+      return Left(NoConnectionFailure(AppString.noInternet));
+    }
+    try {
+      final models = await remoteDataSource.getProjectsByUserId(userId);
+      final entities = models.map((e) => e.toEntity()).toList();
+      return Right(entities);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorModel.errorMessage));
+    }
+  }
 }

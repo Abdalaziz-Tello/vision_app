@@ -69,9 +69,10 @@
   "project_visible_after_half_done": "يتم عرض مشروعك عند إنجاز 50% على الأقل من المشروع",
   "created_by_label": "من قبل :",
   "not_visible": "غير معروض",
-  "visible_to_public": "معروض للعامة",
+  "visible_to_public": "معروض",
   "projects": "مشاريع",
   "requests": "طلبات",
   "equipment": "معدات",
-  "noInternet": "لايوجد اتصال بالانترنت"
+  "noInternet": "لايوجد اتصال بالانترنت",
+  "project_completed": "المنجز من المشروع"
 }

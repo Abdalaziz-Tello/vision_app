@@ -87,4 +87,5 @@ class AppString {
   static String get requests => 'requests'.tr();
   static String get equipment => 'equipment'.tr();
   static String get noInternet => 'noInternet'.tr();
+  static String get projectCompleted => 'project_completed'.tr();
 }

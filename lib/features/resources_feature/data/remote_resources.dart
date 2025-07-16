@@ -11,6 +11,7 @@ abstract class RemoteResources {
     String? departmentId,
   });
   Future<void> submitResourceRequest(ResourceRequestModel model);
+  Future<List<ResourceRequestModel>> getUsersResourcesRequest();
 }
 
 class RemoteResourcesImpl implements RemoteResources {
@@ -96,5 +97,11 @@ class RemoteResourcesImpl implements RemoteResources {
         errorModel: ErrorModel(errorMessage: "Unexpected error: $e"),
       );
     }
+  }
+ //________________________________________________________________
+  @override
+  Future<List<ResourceRequestModel>> getUsersResourcesRequest() {
+    // TODO: implement getUsersResourcesRequest
+    throw UnimplementedError();
   }
 }

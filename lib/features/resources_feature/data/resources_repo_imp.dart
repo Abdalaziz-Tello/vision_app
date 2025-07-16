@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
 import 'package:vision_app/core/errors/failures.dart';
 import 'package:vision_app/core/network/network_info.dart';
+import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/features/resources_feature/data/models/resource_request_model.dart';
 import 'package:vision_app/features/resources_feature/data/remote_resources.dart';
 import 'package:vision_app/features/resources_feature/domain/entity/academic_departments_entity.dart';
@@ -20,7 +21,7 @@ class ResourcesRepoImp implements ResourcesRepo {
   getAllAcademics() async {
     final isConnected = await networkInfo.isConnected;
     if (!isConnected) {
-      return Left(NoConnectionFailure("No internet connection"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
@@ -38,7 +39,7 @@ class ResourcesRepoImp implements ResourcesRepo {
     final isConnected = await networkInfo.isConnected;
 
     if (!isConnected) {
-      return Left(NoConnectionFailure("No internet connection"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
@@ -60,7 +61,7 @@ class ResourcesRepoImp implements ResourcesRepo {
     final isConnected = await networkInfo.isConnected;
 
     if (!isConnected) {
-      return Left(NoConnectionFailure("No internet connection"));
+      return Left(NoConnectionFailure(AppString.noInternet));
     }
 
     try {
@@ -70,5 +71,13 @@ class ResourcesRepoImp implements ResourcesRepo {
     } on ServerException catch (e) {
       return Left(ServerFailure(e.errorMessage));
     }
+  }
+
+  //___________________________________________________________
+  @override
+  Future<Either<Failure, List<ResourceRequestEntity>>>
+  getUsersResourcesRequest() {
+    // TODO: implement getUsersResourcesRequest
+    throw UnimplementedError();
   }
 }

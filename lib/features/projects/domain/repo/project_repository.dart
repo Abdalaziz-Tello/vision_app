@@ -14,6 +14,9 @@ abstract class ProjectRepository {
   Future<Either<Failure, List<ProjectEntity>>> getTopCompletedProjects();
   Future<Either<Failure, List<ProjectEntity>>> getAllProjects();
 
+  Future<Either<Failure, List<ProjectEntity>>> getProjectsByUserId(
+    String userId,
+  );
   //! shall i make it as saperated feature ?
   // Future<Either<Failure, void>> createInvitation(InvitationEntity entity);
 }

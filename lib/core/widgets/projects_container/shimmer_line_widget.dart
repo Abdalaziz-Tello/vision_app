@@ -10,7 +10,7 @@ class ShimmerLineWidget extends StatelessWidget {
     super.key,
     required this.widthFactor,
     required this.shimmerHeight,
-    this.containerColor = AppColors.gray200,
+    this.containerColor = AppColors.gray100,
   });
 
   @override

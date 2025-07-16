@@ -103,26 +103,31 @@ s0.parentNode.insertBefore(s1,s0);
 
 /*
 ? done :
-new fixes :
-      - refix the button position
-      - adding hover effect for the button
-      - optimize the auth dialog, and separate its widgets
-      - make the top projects navigate to a project details
-      - add the required for the image cover
-      - optimize the create project page
-      - validate form the role to know where to navigate
-      - add the navigation to the project details form the top projects , and check if he is the owner of the porject or not , to know how to deal with the page
-      - adding animation for EnergeticCircleWithFocus widget
-      - start with the appbar of the microbos admin page
-      - adding condition , to know if the user is the same as the project creator , if not he cannot change the images in the project details page
+
+- fix the project cards , make it as saperated widget in order to reuse it in the microbots
+- start with the ui of microbots admin page
+- adding get projects by user id , inorder to add it to the
+- adding the projects card to the user avatar
+
+
+
+
+
+
+//! to ask :
+- how the user went back into the homePage , if he is in the project details ?!:)
+
 
 TODO :
+      -
       - the logOut functionality
       - in resources to change the changenotifier into cubit
       - to change this discription : "vision_platform_intro" with share
       - fix the attachements widgets !! (important to do this )
       - handle not to change any thing in the options when loading (project details page )
-      - fix this widget "ProjectCard" not correct at all
+      - fix this widget "ProjectCard" <<<<<<
+      - need to make the updates project details page , if the user is the creator
+      - fix the ui of the projects and notificatio n
 
 */
 

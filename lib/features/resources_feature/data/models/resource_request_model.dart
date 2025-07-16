@@ -1,3 +1,4 @@
+import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/features/resources_feature/domain/entity/resource_request_entity.dart';
 
 class ResourceRequestModel extends ResourceRequestEntity {
@@ -37,7 +38,7 @@ class ResourceRequestModel extends ResourceRequestEntity {
       academicDepartmentId: entity.academicDepartmentId,
       projectDomainId: entity.projectDomainId,
       percentageCompleted: entity.percentageCompleted,
-      status: entity.status,
+      status: entity.status ?? AppKeys.pending, //'pending',
       notes: entity.notes,
       requestedAt: entity.requestedAt ?? DateTime.now(),
       updatedAt: entity.updatedAt ?? DateTime.now(),

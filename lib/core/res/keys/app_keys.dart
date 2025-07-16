@@ -7,6 +7,7 @@ class AppKeys {
   static const String webUrl = 'http://www.tech-sauce.com/vision/';
   static const String microboostAdminKey = 'microboost_admin';
   static const String studentKey = 'student';
+  static const String pending = 'pending';
 }
 
 

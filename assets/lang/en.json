@@ -73,5 +73,6 @@
   "projects": "Projects",
   "requests": "Requests",
   "equipment": "Equipment",
-  "noInternet": "No internet connection"
+  "noInternet": "No internet connection",
+  "project_completed": "Project completed"
 }

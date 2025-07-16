@@ -12,4 +12,5 @@ abstract class ResourcesRepo {
   Future<Either<Failure, void>> submitResourceRequest(
     ResourceRequestEntity entity,
   );
+  Future<Either<Failure, List<ResourceRequestEntity>>> getUsersResourcesRequest();
 }

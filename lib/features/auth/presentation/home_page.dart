@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vision_app/core/di_storage_listner/auth_listener.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
@@ -29,12 +30,44 @@ class _HomePageState extends State<HomePage> {
     Color(0xFFFFF6CC),
   ];
 
+  //TODO : how to create it the best way ?!
+
+  late CurrentUserBloc _currentUserBloc;
+
+  StreamSubscription<AuthState>? _authStateSubscription;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _currentUserBloc = context.read<CurrentUserBloc>();
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      startAuthStateListener(context);
+      startAuthStateListener();
     });
+  }
+
+  void startAuthStateListener() {
+    _authStateSubscription = Supabase.instance.client.auth.onAuthStateChange
+        .listen((event) {
+          final session = event.session;
+
+          if (session != null) {
+            print('[AuthListener] User signed in');
+            _currentUserBloc.add(LoadCurrentUser());
+          } else {
+            print('[AuthListener] User signed out');
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel();
+    super.dispose();
   }
 
   @override

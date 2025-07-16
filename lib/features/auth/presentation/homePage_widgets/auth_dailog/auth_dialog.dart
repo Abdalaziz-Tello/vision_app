@@ -68,8 +68,13 @@ class _AuthDialogState extends State<AuthDialog> {
           builder: (context, constraints) {
             return ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: ResponsiveHelper.getDialogWidth(screenWidth),
-                minWidth: 280,
+                // maxWidth: ResponsiveHelper.getDialogWidth(screenWidth),
+                // minWidth:
+                //     screenWidth *
+                //     0.8.clamp(280, double.infinity), //  minWidth: 280,
+                // maxHeight: context.screenHeight * 0.9,
+                minWidth: 280.0,
+                maxWidth: (screenWidth * 0.8).clamp(280.0, double.infinity),
                 maxHeight: context.screenHeight * 0.9,
               ),
               child: Padding(

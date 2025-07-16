@@ -10,6 +10,7 @@ import 'package:vision_app/features/projects/presentation/state_managments/proje
 import 'package:vision_app/features/projects/presentation/state_managments/project_domains_bloc/project_domains_bloc.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/top_projects_bloc/top_projects_bloc.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/upload_file_bloc/upload_file_bloc.dart';
+import 'package:vision_app/features/projects/presentation/state_managments/user_projects_bloc/user_projects_bloc.dart';
 import 'package:vision_app/features/projects/presentation/view/pages/create_project_page.dart';
 import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
@@ -34,6 +35,7 @@ class Routes {
               BlocProvider(
                 create: (_) => sl<TopProjectsBloc>()..add(FetchTopProjects()),
               ),
+              BlocProvider(create: (_) => sl<UserProjectsBloc>()),
             ],
             child: HomePage(),
           ),

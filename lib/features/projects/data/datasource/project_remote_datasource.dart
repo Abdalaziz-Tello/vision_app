@@ -18,6 +18,8 @@ abstract class ProjectRemoteDataSource {
   Future<ProjectModel> getProjectById(String projectId);
   Future<List<ProjectModel>> getTopCompletedProjects();
   Future<List<ProjectModel>> getProjects();
+  Future<List<ProjectModel>> getProjectsByUserId(String userId);
+
   //  Future<void> createInvitation(InvitationModel invitation);
 }
 
@@ -290,25 +292,38 @@ final res = await supabase.storage.from('project-attachments').createSignedUrl(p
       );
     }
   }
-  //_____________________________________________________________________
-  //? get projects by user id :
-  /*
-  final response = await supabase
-      .from('projects')
-      .select('''
-          *,
-          project_attachments (
-            id,
-            file_url,
-            file_name,
-            file_type,
-            file_size,
-            uploaded_at
-          )
-        ''')
-      .eq('created_by', currentUserId)
-      .order('created_at', ascending: false);
-*/
 
+  //_____________________________________________________________________
+  @override
+  Future<List<ProjectModel>> getProjectsByUserId(String userId) async {
+    try {
+      final response = await supabase
+          .from('projects')
+          .select('''
+        *,
+        project_attachments (
+          id,
+          file_url,
+          file_name,
+          file_type,
+          file_size,
+          uploaded_at
+        )
+      ''')
+          .eq('created_by', userId);
+      print(response);
+      return (response as List).map((e) => ProjectModel.fromJson(e)).toList();
+    } on PostgrestException catch (e) {
+      print(e);
+      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
+    } catch (e) {
+      print(e);
+      throw ServerException(
+        errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
+      );
+    }
+  }
+
+  //? get projects by user id :
   //_______________________________________________________________________
 }

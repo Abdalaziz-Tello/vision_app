@@ -6,6 +6,7 @@ import 'package:vision_app/features/projects/domain/usecase/create_project_useca
 import 'package:vision_app/features/projects/domain/usecase/get_all_project_domains_usecase.dart';
 import 'package:vision_app/features/projects/domain/usecase/get_all_projects_usecase.dart';
 import 'package:vision_app/features/projects/domain/usecase/get_project_details_usecase.dart';
+import 'package:vision_app/features/projects/domain/usecase/get_projects_by_userid_usecase.dart';
 import 'package:vision_app/features/projects/domain/usecase/get_top_completed_projects_usecase.dart';
 import 'package:vision_app/features/projects/domain/usecase/upload_file_usecase.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/create_project_bloc/create_project_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:vision_app/features/projects/presentation/state_managments/proje
 import 'package:vision_app/features/projects/presentation/state_managments/project_domains_bloc/project_domains_bloc.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/top_projects_bloc/top_projects_bloc.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/upload_file_bloc/upload_file_bloc.dart';
+import 'package:vision_app/features/projects/presentation/state_managments/user_projects_bloc/user_projects_bloc.dart';
 
 Future<void> initProject() async {
   //remote :
@@ -56,6 +58,11 @@ Future<void> initProject() async {
   if (!sl.isRegistered<GetAllProjectsUsecase>()) {
     sl.registerFactory(() => GetAllProjectsUsecase(sl()));
   }
+
+  if (!sl.isRegistered<GetProjectsByUseridUsecase>()) {
+    sl.registerFactory(() => GetProjectsByUseridUsecase(sl()));
+  }
+
   //?___________________________________________________________
   //BLOC :
   if (!sl.isRegistered<ProjectDomainsBloc>()) {
@@ -81,6 +88,11 @@ Future<void> initProject() async {
   if (!sl.isRegistered<AllProjectsBloc>()) {
     sl.registerFactory(() => AllProjectsBloc(sl()));
   }
+
+  if (!sl.isRegistered<UserProjectsBloc>()) {
+    sl.registerFactory(() => UserProjectsBloc(sl()));
+  }
+
   //cubit :
   if (!sl.isRegistered<DialogFormCubit>()) {
     sl.registerFactory(() => DialogFormCubit());

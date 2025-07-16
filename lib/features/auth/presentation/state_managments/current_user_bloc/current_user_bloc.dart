@@ -20,7 +20,7 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
     print('[CurrentUserBloc] Loading current user...');
     emit(CurrentUserLoading());
 
-    final result = await getCurrentUserUseCase();
+    final result = await getCurrentUserUseCase.call();
 
     result.fold(
       (failure) {

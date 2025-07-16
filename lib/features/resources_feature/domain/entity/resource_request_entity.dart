@@ -17,7 +17,7 @@ class ResourceRequestEntity {
     this.academicDepartmentId,
     this.projectDomainId,
     this.percentageCompleted,
-    this.status,
+     this.status,
     this.notes,
     this.requestedAt,
     this.updatedAt,

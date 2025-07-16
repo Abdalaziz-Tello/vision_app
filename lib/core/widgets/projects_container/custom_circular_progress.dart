@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 
 class CustomCircularProgress extends StatelessWidget {
-  final double percentage; // from 0.0 to 1.0
+  final double percentage; // from 0.0 to 1.0, so we pass the percentaage/100
   final double size;
   final double strokeWidth;
   final Color activeColor;
@@ -33,7 +33,7 @@ class CustomCircularProgress extends StatelessWidget {
         ),
 
         CircularProgressIndicator(
-          value: clampedPercentage,
+          value: clampedPercentage.toDouble(),
           strokeWidth: strokeWidth,
           valueColor: AlwaysStoppedAnimation<Color>(activeColor),
           backgroundColor: AppColors.transparentColor,

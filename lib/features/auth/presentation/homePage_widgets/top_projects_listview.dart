@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
-import 'package:vision_app/core/widgets/top_project_card.dart';
+import 'package:vision_app/core/widgets/projects_container/project_card.dart';
+import 'package:vision_app/core/widgets/projects_container/project_card_shimmer.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/top_projects_bloc/top_projects_bloc.dart';
 
 class TopProjectsListView extends StatelessWidget {
@@ -18,7 +19,7 @@ class TopProjectsListView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
-        height: 250,
+        height: 300,
         child: BlocBuilder<TopProjectsBloc, TopProjectsState>(
           builder: (context, state) {
             if (state is TopProjectsFailure) {
@@ -50,15 +51,17 @@ class TopProjectsListView extends StatelessWidget {
               itemCount: isLoading ? 3 : projects.length,
               itemBuilder: (context, index) {
                 if (isLoading) {
-                  final color = cardColors[index % cardColors.length];
-                  return ProjectCard(isLoading: true, loadingColor: color);
+                  return ProjectCardShimmer(color: cardColors[index]);
                 }
 
                 final project = projects[index];
                 return ProjectCard(
                   imageUrl: project.coverImageUrl,
                   title: project.title,
-                  subtitle: "${project.percentageCompleted}٪ مكتمل",
+                  //  subtitle: "${project.percentageCompleted}٪ مكتمل",
+                  percentage: project.percentageCompleted/100,
+                  isVisible: project.isPublic,
+                  creatorName: project.projectOwnerName ?? "",
                   onTap: () {
                     // TODO: Navigate to details
                     context.push(

@@ -11,12 +11,12 @@ import 'package:vision_app/features/projects/presentation/state_managments/proje
 import 'package:vision_app/features/projects/presentation/view/widgets/attachment_pair_picker.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/glowing_circle_with_text.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/input_field_widget.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/custom_circular_progress.dart';
+import 'package:vision_app/core/widgets/projects_container/custom_circular_progress.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/enumeration_item.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/project_details_widgets/advanced_resource_request_banner.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/project_details_widgets/project_details_appbar.dart';
 import 'package:vision_app/core/widgets/project_details_failure_widget.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/project_details_widgets/visible_or_not_row.dart';
+import 'package:vision_app/core/widgets/projects_container/visible_or_not_row.dart';
 
 //TODO : make them static
 class ProjectDetailsPage extends StatefulWidget {
@@ -157,7 +157,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         child: Row(
                           children: [
                             CustomCircularProgress(
-                              percentage: project.percentageCompleted / 100,
+                              percentage: (project.percentageCompleted / 100)
+                                  ,
                               size: 140,
                             ),
                             const SizedBox(width: 10),
