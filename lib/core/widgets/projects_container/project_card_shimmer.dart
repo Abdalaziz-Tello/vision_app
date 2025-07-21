@@ -11,9 +11,9 @@ class ProjectCardShimmer extends StatelessWidget {
   static const double _cardPadding = 8;
   static const double _imageHeight = 150;
   static const double _borderRadius = 16;
-  static const double _shimmerHeight = 12;
-  static const double _spacing = 12;
-  static const double _smallSpacing = 8;
+  static const double _shimmerHeight = 13;
+  static const double _spacing = 20;
+  // static const double _smallSpacing = 8;
   static const double _shimmerTitleWidth = 0.95;
   static const double _shimmerSubtitleWidth = 0.75;
   static const double _shimmerSubtitle2Width = 0.65;
@@ -28,7 +28,7 @@ class ProjectCardShimmer extends StatelessWidget {
       decoration: _buildCardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildImageShimmer(),
           const SizedBox(height: _spacing),
@@ -51,23 +51,29 @@ class ProjectCardShimmer extends StatelessWidget {
     ],
   );
 
-  Widget _buildImageShimmer() => Container(
-    height: _imageHeight,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(_borderRadius),
-      color: color, // AppColors.gray200,
-    ),
-  );
+  Widget _buildImageShimmer() =>
+      Container(
+            height: _imageHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(_borderRadius),
+              color: color, // AppColors.gray200,
+            ),
+          )
+          .animate(onPlay: (c) => c.repeat())
+          .shimmer(
+            duration: _shimmerDuration,
+            color: AppColors.whiteColor.withOpacity(0.5),
+          );
 
   Widget _buildTextShimmer() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      _buildShimmerLine(_shimmerTitleWidth),
-      const SizedBox(height: _smallSpacing),
-      _buildShimmerLine(_shimmerSubtitleWidth),
-      const SizedBox(height: _smallSpacing),
       _buildShimmerLine(_shimmerSubtitle2Width),
+      const SizedBox(height: _spacing),
+      _buildShimmerLine(_shimmerTitleWidth),
+      const SizedBox(height: _spacing),
+      _buildShimmerLine(_shimmerSubtitleWidth),
     ],
   );
 
@@ -75,6 +81,7 @@ class ProjectCardShimmer extends StatelessWidget {
     return ShimmerLineWidget(
           widthFactor: widthFactor,
           shimmerHeight: _shimmerHeight,
+          radius: _borderRadius,
         )
         .animate(onPlay: (c) => c.repeat())
         .shimmer(

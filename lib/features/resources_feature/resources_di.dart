@@ -4,8 +4,10 @@ import 'package:vision_app/features/resources_feature/data/resources_repo_imp.da
 import 'package:vision_app/features/resources_feature/domain/usecase/get_all_academics_usecase.dart';
 import 'package:vision_app/features/resources_feature/domain/resources_repo.dart';
 import 'package:vision_app/features/resources_feature/domain/usecase/get_requested_resources_usecase.dart';
+import 'package:vision_app/features/resources_feature/domain/usecase/get_users_resource_request.dart';
 import 'package:vision_app/features/resources_feature/domain/usecase/submit_resource_request_usecase.dart';
 import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
+import 'package:vision_app/features/resources_feature/presentation/get_users_resource_request/users_resource_request_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/resource_request_bloc/resource_request_bloc.dart';
 
@@ -37,6 +39,11 @@ Future<void> initResources() async {
   if (!sl.isRegistered<SubmitResourceRequestUseCase>()) {
     sl.registerFactory(() => SubmitResourceRequestUseCase(sl()));
   }
+
+  if (!sl.isRegistered<GetUsersResourceRequest>()) {
+    sl.registerFactory(() => GetUsersResourceRequest(sl()));
+  }
+
   //________________________________________________________
   // Bloc
   if (!sl.isRegistered<AcademicBloc>()) {
@@ -49,5 +56,11 @@ Future<void> initResources() async {
 
   if (!sl.isRegistered<ResourceRequestBloc>()) {
     sl.registerFactory(() => ResourceRequestBloc(sl()));
+  }
+
+  if (!sl.isRegistered<UsersResourceRequestBloc>()) {
+    sl.registerFactory(
+      () => UsersResourceRequestBloc(getUsersResourceRequest: sl()),
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:vision_app/core/di_storage_listner/user_id.dart';
 import 'package:vision_app/features/auth/utils/auth_injection.dart';
 import 'package:vision_app/features/projects/project_injection.dart';
 import 'package:vision_app/features/resources_feature/resources_di.dart';
+import 'package:vision_app/features/tools_feature/tools_injuction.dart';
 
 final sl = GetIt.instance;
 
@@ -17,6 +18,7 @@ Future<void> init() async {
   await initAuth();
   await initProject();
   await initResources();
+  await initTools();
 }
 
 Future<void> _initCore() async {
@@ -33,7 +35,6 @@ Future<void> _initCore() async {
       ),
     );
     sl.registerLazySingleton(() => Supabase.instance.client);
-
   }
   if (!sl.isRegistered<GoTrueClient>()) {
     sl.registerLazySingleton(() => sl<SupabaseClient>().auth);
@@ -47,8 +48,8 @@ Future<void> _initCore() async {
     sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   }
 
-//To get the id :
+  //To get the id :
   if (!sl.isRegistered<UserSession>()) {
-  sl.registerLazySingleton(() => UserSession(sl<GoTrueClient>()));
-}
+    sl.registerLazySingleton(() => UserSession(sl<GoTrueClient>()));
+  }
 }

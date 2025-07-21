@@ -74,5 +74,8 @@
   "requests": "طلبات",
   "equipment": "معدات",
   "noInternet": "لايوجد اتصال بالانترنت",
-  "project_completed": "المنجز من المشروع"
+  "project_completed": "المنجز من المشروع",
+  "no_projects_for_you_yet": "لم تقم بإنشاء مشروع بعد — أنشئ واحداً ",
+  "errorOccurred": "حدث خطأ!",
+  "tryAgain": "حاول مرة أخرى"
 }

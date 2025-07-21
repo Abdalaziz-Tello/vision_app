@@ -77,6 +77,7 @@ class ProjectCard extends StatelessWidget {
     height: _imageHeight,
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
+      color: AppColors.gray100,
       borderRadius: BorderRadius.circular(_borderRadius),
     ),
     child: ProjectNetworkImage(

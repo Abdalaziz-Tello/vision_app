@@ -6,6 +6,7 @@ import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
+import 'package:vision_app/core/widgets/custom_loading_indicator/custom_loading_indicator.dart';
 import 'package:vision_app/features/auth/presentation/homePage_widgets/auth_dailog/auth_dialog_manager.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 import 'package:vision_app/core/widgets/custom_button.dart';
@@ -168,16 +169,17 @@ class AppBarContent extends StatelessWidget {
 
                       if (state is UserProjectsLoading) {
                         content = const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.navyBlue,
-                          ),
+                          // child: CircularProgressIndicator(
+                          //   color: AppColors.navyBlue,
+                          // ),
+                          child: Center(child: CustomLoadingIndicator()),
                         );
                       } else if (state is UserProjectsError) {
                         content = Center(child: Text(' ${state.message}'));
                       } else if (state is UserProjectsLoaded) {
                         if (state.projects.isEmpty) {
-                          content = const Center(
-                            child: Text('لا توجد مشاريع حالياً'),
+                          content = Center(
+                            child: Text(AppString.noProjectsForYouYet),
                           );
                         } else {
                           content = ListView.separated(

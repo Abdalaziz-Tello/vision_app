@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/di_storage_listner/di.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/features/microbots/presentation/widgets/microbots_admin_appbar.dart';
-import 'package:vision_app/features/microbots/presentation/widgets/projects_content_widget.dart';
+import 'package:vision_app/features/microbots/presentation/widgets/projects_widgets/projects_content_widget.dart';
+import 'package:vision_app/features/microbots/presentation/widgets/resource_content.dart';
 import 'package:vision_app/features/microbots/presentation/widgets/search_container.dart';
+import 'package:vision_app/features/microbots/presentation/widgets/tools_widgets/tools_content.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/get_all_projects_bloc/all_projects_bloc.dart';
+import 'package:vision_app/features/resources_feature/presentation/get_users_resource_request/users_resource_request_bloc.dart';
+import 'package:vision_app/features/tools_feature/presentation/all_tools_bloc/all_tools_bloc.dart';
 
 class MicrobotsAdminPage extends StatefulWidget {
   const MicrobotsAdminPage({super.key});
@@ -69,8 +73,14 @@ class _MicrobotsAdminPageState extends State<MicrobotsAdminPage> {
                 create: (_) => sl<AllProjectsBloc>(),
                 child: ProjectsContent(),
               ), //index:0 //TODO : change this ...
-              Center(child: Text('طلبات Page')), //index :1
-              Center(child: Text(' Page')), //index : 2
+              BlocProvider(
+                create: (context) => sl<UsersResourceRequestBloc>(),
+                child: ResourceContent(),
+              ), //index :1
+              BlocProvider(
+                create: (context) => sl<AllToolsBloc>(),
+                child: ToolsContent(),
+              ), //index : 2
             ],
           ),
         ),
@@ -97,3 +107,4 @@ class _MicrobotsAdminPageState extends State<MicrobotsAdminPage> {
     );
   }
 }
+

@@ -5,12 +5,14 @@ class ShimmerLineWidget extends StatelessWidget {
   final double widthFactor;
   final double shimmerHeight;
   final Color? containerColor;
+  final double radius;
 
   const ShimmerLineWidget({
     super.key,
     required this.widthFactor,
     required this.shimmerHeight,
     this.containerColor = AppColors.gray100,
+    required this.radius,
   });
 
   @override
@@ -20,7 +22,10 @@ class ShimmerLineWidget extends StatelessWidget {
       widthFactor: widthFactor,
       child: Container(
         height: shimmerHeight,
-        decoration: BoxDecoration(color: containerColor),
+        decoration: BoxDecoration(
+          color: containerColor,
+          borderRadius: BorderRadius.circular(radius),
+        ),
       ),
     );
   }

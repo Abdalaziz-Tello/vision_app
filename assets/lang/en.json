@@ -74,5 +74,8 @@
   "requests": "Requests",
   "equipment": "Equipment",
   "noInternet": "No internet connection",
-  "project_completed": "Project completed"
+  "project_completed": "Project completed",
+  "no_projects_for_you_yet": "You haven't created a project yet — create one",
+  "errorOccurred": "حدث خطأ!",
+  "tryAgain": "حاول مرة أخرى"
 }

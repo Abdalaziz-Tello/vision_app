@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/cubits/dialog_form_cubit/dialog_form_cubit.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/project_domains_bloc/project_domains_bloc.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
+import 'package:vision_app/core/widgets/text_with_expansion_tile_selector.dart';
 
 class ProjectTypeSelector extends StatelessWidget {
   const ProjectTypeSelector({super.key});

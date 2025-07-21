@@ -76,8 +76,18 @@ class ResourcesRepoImp implements ResourcesRepo {
   //___________________________________________________________
   @override
   Future<Either<Failure, List<ResourceRequestEntity>>>
-  getUsersResourcesRequest() {
-    // TODO: implement getUsersResourcesRequest
-    throw UnimplementedError();
+  getUsersResourcesRequest() async {
+    final isConnected = await networkInfo.isConnected;
+
+    if (!isConnected) {
+      return Left(NoConnectionFailure(AppString.noInternet));
+    }
+
+    try {
+      final result = await remoteDataSource.getUsersResourcesRequest();
+      return Right(result.map((e) => e.toEntity()).toList());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorMessage));
+    }
   }
 }

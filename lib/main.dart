@@ -104,10 +104,12 @@ s0.parentNode.insertBefore(s1,s0);
 /*
 ? done :
 
-- fix the project cards , make it as saperated widget in order to reuse it in the microbots
-- start with the ui of microbots admin page
-- adding get projects by user id , inorder to add it to the
-- adding the projects card to the user avatar
+- fix the shimmer card
+- change the loading indicator to a custom one
+- change failure widget
+- fix the Dimensions of MicrobotsAdminAppBar by adding icons with a tooltip if the width is small
+- fix TextWithExpansionTileSelector widget to make it suitable to used in  tools content
+- add get tools
 
 
 
@@ -115,11 +117,15 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 //! to ask :
-- how the user went back into the homePage , if he is in the project details ?!:)
+- how the user went back into the homePage , if he is in the project details ?!
 
 
 TODO :
-      -
+//important :
+      - make sure form the models and remove the extends
+      - opimize the microbots page
+      - make the keys of the data table in the key files
+____________________________________________________________
       - the logOut functionality
       - in resources to change the changenotifier into cubit
       - to change this discription : "vision_platform_intro" with share

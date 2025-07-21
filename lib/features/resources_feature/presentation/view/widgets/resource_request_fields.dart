@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/custom_display_field.dart';
-import 'package:vision_app/features/projects/presentation/view/widgets/create_project_widgets/text_with_expansion_tile_selector.dart';
+import 'package:vision_app/core/widgets/text_with_expansion_tile_selector.dart';
 import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
 import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
 import 'package:vision_app/features/resources_feature/utils/resource_request_controller.dart';

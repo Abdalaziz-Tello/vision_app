@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/di_storage_listner/build_context_extensions.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
+import 'package:vision_app/core/widgets/custom_loading_indicator/custom_loading_indicator.dart';
 import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/cubits/project_attachments_cubit/project_attachments_cubit.dart';
 import 'package:vision_app/features/projects/presentation/state_managments/project_details_bloc/project_details_bloc.dart';
@@ -15,7 +16,7 @@ import 'package:vision_app/core/widgets/projects_container/custom_circular_progr
 import 'package:vision_app/features/projects/presentation/view/widgets/enumeration_item.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/project_details_widgets/advanced_resource_request_banner.dart';
 import 'package:vision_app/features/projects/presentation/view/widgets/project_details_widgets/project_details_appbar.dart';
-import 'package:vision_app/core/widgets/project_details_failure_widget.dart';
+import 'package:vision_app/core/widgets/failure_widget.dart';
 import 'package:vision_app/core/widgets/projects_container/visible_or_not_row.dart';
 
 //TODO : make them static
@@ -57,10 +58,11 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         builder: (context, state) {
           if (state is ProjectDetailsLoading) {
             return const Center(
-              child: CircularProgressIndicator(color: AppColors.navyBlue),
+              child: CustomLoadingIndicator(),
+              //CircularProgressIndicator(color: AppColors.navyBlue),
             );
           } else if (state is ProjectDetailsFailure) {
-            return ProjectDetailsFailureWidget(
+            return FailureWidget(
               onTap: () {
                 context.read<ProjectDetailsBloc>().add(
                   FetchProjectDetails(widget.projectId),
@@ -157,8 +159,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         child: Row(
                           children: [
                             CustomCircularProgress(
-                              percentage: (project.percentageCompleted / 100)
-                                  ,
+                              percentage: (project.percentageCompleted / 100),
                               size: 140,
                             ),
                             const SizedBox(width: 10),
@@ -257,6 +258,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         AdvancedResourceRequestBanner(
                           project: project,
                         ).animate().fadeIn(delay: 0.55.seconds),
+                      SizedBox(height: 20),
                     ],
                   ),
                 );

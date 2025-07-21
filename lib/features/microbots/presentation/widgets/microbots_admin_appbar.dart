@@ -27,6 +27,13 @@ class MicrobotsAdminAppBar extends StatelessWidget
     AppString.equipment,
   ];
 
+  //icons for tabs
+  final List<IconData> tabIcons = [
+    Icons.dashboard_outlined, //  project
+    Icons.description_outlined, // requests
+    Icons.build_outlined, //  equipment
+  ];
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -41,48 +48,87 @@ class MicrobotsAdminAppBar extends StatelessWidget
           elevation: 0,
           title: Row(
             children: [
-              // Right: Tabs
+              // Right: Tabs //TODO : check the Dimensions
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: List.generate(tabs.length, (index) {
                   final isSelected = selectedIndex == index;
-                  return InkWell(
-                    onTap: () => onTabSelected(index),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.symmetric(horizontal: 12),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      decoration: BoxDecoration(
-                        border: isSelected
-                            ? const Border(
-                                bottom: BorderSide(
-                                  color: AppColors.navyBlue,
-                                  width: 2,
-                                ),
-                              )
-                            : null,
-                      ),
-                      child: Text(
-                        tabs[index],
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: isSelected
-                              ? AppColors.navyBlue
-                              : AppColors.blackColor,
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+
+                  if (isWide) {
+                    // Wide screen:text tabs
+                    return InkWell(
+                      onTap: () => onTabSelected(index),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        decoration: BoxDecoration(
+                          border: isSelected
+                              ? const Border(
+                                  bottom: BorderSide(
+                                    color: AppColors.navyBlue,
+                                    width: 2,
+                                  ),
+                                )
+                              : null,
+                        ),
+                        child: Text(
+                          tabs[index],
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: isSelected
+                                ? AppColors.navyBlue
+                                : AppColors.blackColor,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    // Small screen:icon with tooltip
+                    return Tooltip(
+                      message: tabs[index],
+                      waitDuration: const Duration(milliseconds: 500),
+                      child: InkWell(
+                        onTap: () => onTabSelected(index),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            border: isSelected
+                                ? const Border(
+                                    bottom: BorderSide(
+                                      color: AppColors.navyBlue,
+                                      width: 2,
+                                    ),
+                                  )
+                                : null,
+                          ),
+                          child: Icon(
+                            tabIcons[index],
+
+                            color: isSelected
+                                ? AppColors.navyBlue
+                                : AppColors.gray800,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 }),
               ),
+
               const Spacer(),
 
               // Center: Search
               if (isWide)
                 Expanded(child: Center(child: SearchContainer()))
-              else //TODO : make another better way
+              else
                 IconButton(
                   onPressed: onSearchTap,
                   icon: const Icon(Icons.search, color: AppColors.gray600),
