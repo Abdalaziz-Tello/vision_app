@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
+import 'package:vision_app/features/shared_features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
 
 // void startAuthStateListener(BuildContext context) {
 //   Supabase.instance.client.auth.onAuthStateChange.listen((event) {

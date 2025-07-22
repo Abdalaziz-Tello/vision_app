@@ -1,0 +1,143 @@
+import 'package:dartz/dartz.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/errors/failures.dart';
+import 'package:vision_app/core/network/network_info.dart';
+import 'package:vision_app/core/res/app_string.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/data/datasource/project_remote_datasource.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/data/models/create_project_model.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/domain/entities/create_project_entity.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/domain/entities/project_domains_entity.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/domain/entities/upload_file_entity.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/domain/repo/project_repository.dart';
+
+class ProjectRepositoryImpl implements ProjectRepository {
+  final ProjectRemoteDataSource remoteDataSource;
+  final NetworkInfo networkInfo;
+
+  ProjectRepositoryImpl({
+    required this.remoteDataSource,
+    required this.networkInfo,
+  });
+
+  @override
+  Future<Either<Failure, List<ProjectDomainsEntity>>>
+  getAllProjectDomains() async {
+    final isConnected = await networkInfo.isConnected;
+
+    if (!isConnected) {
+      return Left(NoConnectionFailure("No internet connection"));
+    }
+
+    try {
+      final result = await remoteDataSource.getAllProjectDomains();
+      return Right(result.map((model) => model.toEntity()).toList());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> createProject(
+    CreateProjectEntity entity,
+  ) async {
+    final isConnected = await networkInfo.isConnected;
+
+    if (!isConnected) {
+      return Left(NoConnectionFailure(AppString.noInternet));
+    }
+
+    try {
+      final model = CreateProjectModel(
+        title: entity.title,
+        description: entity.description,
+        coverImageUrl: entity.coverImageUrl,
+        isUniversityStudent: entity.isUniversityStudent,
+        projectDomainId: entity.projectDomainId,
+        attachments: entity.attachments
+            .map(
+              (e) => ProjectAttachmentModel(
+                fileUrl: e.fileUrl,
+                fileName: e.fileName,
+                fileType: e.fileType,
+                fileSize: e.fileSize,
+              ),
+            )
+            .toList(),
+      );
+
+      final projectId = await remoteDataSource.createProject(model);
+      return Right(projectId);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorModel.errorMessage));
+    }
+  }
+
+  //________________________________________________________________
+  @override
+  Future<Either<Failure, UploadFileEntity>> uploadFile(
+    PlatformFile file,
+  ) async {
+    final isConnected = await networkInfo.isConnected;
+    if (!isConnected) {
+      return Left(NoConnectionFailure(AppString.noInternet));
+    }
+
+    try {
+      final result = await remoteDataSource.uploadFile(file);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.errorModel.errorMessage));
+    }
+  }
+
+  //____________________________________________________________________
+
+  //__________________________________________________________
+  // @override
+  // Future<Either<Failure, List<ProjectEntity>>> getTopCompletedProjects() async {
+  //   if (!await networkInfo.isConnected) {
+  //     return Left(NoConnectionFailure(AppString.noInternet));
+  //   }
+
+  //   try {
+  //     final models = await remoteDataSource.getTopCompletedProjects();
+  //     final entities = models.map((e) => e.toEntity()).toList();
+  //     return Right(entities);
+  //   } on ServerException catch (e) {
+  //     return Left(ServerFailure(e.errorModel.errorMessage));
+  //   }
+  // }
+
+  //__________________________________________________________
+
+  // @override
+  // Future<Either<Failure, List<ProjectEntity>>> getAllProjects() async {
+  //   if (!await networkInfo.isConnected) {
+  //     return Left(NoConnectionFailure(AppString.noInternet));
+  //   }
+  //   try {
+  //     final models = await remoteDataSource.getProjects();
+  //     final entities = models.map((e) => e.toEntity()).toList();
+  //     return Right(entities);
+  //   } on ServerException catch (e) {
+  //     return Left(ServerFailure(e.errorModel.errorMessage));
+  //   }
+  // }
+
+  // @override
+  // Future<Either<Failure, List<ProjectEntity>>> getProjectsByUserId(
+  //   String userId,
+  // ) async {
+  //   if (!await networkInfo.isConnected) {
+  //     return Left(NoConnectionFailure(AppString.noInternet));
+  //   }
+  //   try {
+  //     final models = await remoteDataSource.getProjectsByUserId(userId);
+  //     final entities = models.map((e) => e.toEntity()).toList();
+  //     return Right(entities);
+  //   } on ServerException catch (e) {
+  //     return Left(ServerFailure(e.errorModel.errorMessage));
+  //   }
+  // }
+}

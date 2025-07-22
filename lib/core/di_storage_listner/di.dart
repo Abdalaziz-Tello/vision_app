@@ -4,10 +4,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/network/network_info.dart';
 import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/di_storage_listner/user_id.dart';
-import 'package:vision_app/features/auth/utils/auth_injection.dart';
-import 'package:vision_app/features/projects/project_injection.dart';
-import 'package:vision_app/features/resources_feature/resources_di.dart';
-import 'package:vision_app/features/tools_feature/tools_injuction.dart';
+import 'package:vision_app/features/microbots_features/micro_di.dart';
+import 'package:vision_app/features/shared_features/shared_di.dart';
+import 'package:vision_app/features/user_features/user_di.dart';
 
 final sl = GetIt.instance;
 
@@ -15,10 +14,10 @@ Future<void> init() async {
   // Core dependencies
   await _initCore();
   //feautres :
-  await initAuth();
-  await initProject();
-  await initResources();
-  await initTools();
+
+  await initSharedFeatures(); // await initAuth();
+  await initMicrobotsFeatures(); //  await initTools();
+  await initUserFeatures(); // await initResources();  // await initProject();
 }
 
 Future<void> _initCore() async {

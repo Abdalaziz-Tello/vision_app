@@ -3,22 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
 import 'package:vision_app/core/di_storage_listner/di.dart';
-import 'package:vision_app/features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/create_project_bloc/create_project_bloc.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/cubits/project_attachments_cubit/project_attachments_cubit.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/project_details_bloc/project_details_bloc.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/project_domains_bloc/project_domains_bloc.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/top_projects_bloc/top_projects_bloc.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/upload_file_bloc/upload_file_bloc.dart';
-import 'package:vision_app/features/projects/presentation/state_managments/user_projects_bloc/user_projects_bloc.dart';
-import 'package:vision_app/features/projects/presentation/view/pages/create_project_page.dart';
-import 'package:vision_app/features/resources_feature/presentation/academic_bloc/academic_bloc.dart';
-import 'package:vision_app/features/resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
-import 'package:vision_app/features/resources_feature/presentation/resource_request_bloc/resource_request_bloc.dart';
-import 'package:vision_app/features/auth/presentation/home_page.dart';
-import 'package:vision_app/features/projects/presentation/view/pages/project_details_page.dart';
-import 'package:vision_app/features/resources_feature/presentation/view/advanced_resources_request_page.dart';
-import 'package:vision_app/features/microbots/microbots_admin.dart';
+import 'package:vision_app/features/shared_features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';
+import 'package:vision_app/features/shared_features/get_project_details_feature/presentation/project_details_bloc/project_details_bloc.dart';
+import 'package:vision_app/features/shared_features/get_top_3_projects_feature/presentation/top_projects_bloc/top_projects_bloc.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/presentation/state_managments/create_project_bloc/create_project_bloc.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/presentation/state_managments/cubits/project_attachments_cubit/project_attachments_cubit.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/presentation/state_managments/project_domains_bloc/project_domains_bloc.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/presentation/state_managments/upload_file_bloc/upload_file_bloc.dart';
+import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/presentation/view/pages/create_project_page.dart';
+import 'package:vision_app/features/user_features/user_projects_features/get_projects_by_user_id/presentation/user_projects_bloc/user_projects_bloc.dart';
+import 'package:vision_app/features/user_features/request_resources_feature/presentation/academic_bloc/academic_bloc.dart';
+import 'package:vision_app/features/user_features/request_resources_feature/presentation/requested_resource_bloc/requested_resource_bloc.dart';
+import 'package:vision_app/features/user_features/request_resources_feature/presentation/resource_request_bloc/resource_request_bloc.dart';
+import 'package:vision_app/features/shared_features/auth/presentation/home_page.dart';
+import 'package:vision_app/features/shared_features/get_project_details_feature/presentation/view/project_details_page.dart';
+import 'package:vision_app/features/user_features/request_resources_feature/presentation/view/advanced_resources_request_page.dart';
+import 'package:vision_app/features/microbots_features/presentation/microbots_admin.dart';
 
 class Routes {
   GoRouter router = GoRouter(
