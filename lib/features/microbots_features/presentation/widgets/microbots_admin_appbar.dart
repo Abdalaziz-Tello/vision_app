@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
-import 'package:vision_app/features/microbots_features/presentation/widgets/search_container.dart';
 
 // appbar , that contains the logo , the tabs and the search
 
@@ -93,7 +92,9 @@ class MicrobotsAdminAppBar extends StatelessWidget
                       waitDuration: const Duration(milliseconds: 500),
                       child: InkWell(
                         onTap: () => onTabSelected(index),
-                        child: Container(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeInOut,
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           padding: const EdgeInsets.symmetric(
                             vertical: 8,
@@ -111,7 +112,6 @@ class MicrobotsAdminAppBar extends StatelessWidget
                           ),
                           child: Icon(
                             tabIcons[index],
-
                             color: isSelected
                                 ? AppColors.navyBlue
                                 : AppColors.gray800,
@@ -125,15 +125,16 @@ class MicrobotsAdminAppBar extends StatelessWidget
 
               const Spacer(),
 
-              // Center: Search
-              if (isWide)
-                Expanded(child: Center(child: SearchContainer()))
-              else
-                IconButton(
-                  onPressed: onSearchTap,
-                  icon: const Icon(Icons.search, color: AppColors.gray600),
-                ),
-
+              //!__________________________________________________________________________
+              //! Center: Search
+              // if (isWide)
+              //   Expanded(child: Center(child: SearchContainer()))
+              // else
+              //   IconButton(
+              //     onPressed: onSearchTap,
+              //     icon: const Icon(Icons.search, color: AppColors.gray600),
+              //   ),
+              //!__________________________________________________________________________
               const Spacer(),
 
               // Logo

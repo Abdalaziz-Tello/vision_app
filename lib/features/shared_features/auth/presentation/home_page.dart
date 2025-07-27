@@ -9,7 +9,7 @@ import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
 import 'package:vision_app/features/shared_features/auth/presentation/homePage_widgets/animated_custom_button.dart';
-import 'package:vision_app/features/shared_features/auth/presentation/homePage_widgets/app_bar_content.dart';
+import 'package:vision_app/features/shared_features/auth/presentation/homePage_widgets/appbar/app_bar_content.dart';
 import 'package:vision_app/features/shared_features/auth/presentation/homePage_widgets/header_section.dart';
 import 'package:vision_app/features/shared_features/auth/presentation/homePage_widgets/top_projects_listview.dart';
 import 'package:vision_app/features/shared_features/auth/presentation/state_managments/current_user_bloc/current_user_bloc.dart';

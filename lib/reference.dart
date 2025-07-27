@@ -108,6 +108,7 @@ handle no newtork will opining it //<<<can't handle this case >>>>
 
 TODO :
 //important :
+      - add search to the porjects
       - make sure form the models and remove the extends
       - opimize the microbots page
       - make the keys of the data table in the key files
@@ -121,6 +122,25 @@ ____________________________________________________________
       - fix this widget "ProjectCard" <<<<<<
       - need to make the updates project details page , if the user is the creator
       - fix the ui of the projects and notificatio n
+
+
+
+
+____________________________________________________________________
+
+? done :
+what new :)
+- separates 'showProjectsPopup' widget into the user features , and just call it in the 'homepage' appbar..
+- and make the ui of it 'showProjectsPopup' look better
+- optimize 'AppBarContent'
+- add 'Tawk.to' to the project
+- start optimize microbots ui :
+      - change SearchContainer into simple icon tap
+      - made a RefreshAndSearchRow widget , which contain the refresh and the search rather than put the search in the appbar
+      - adding a little scale animation into projects card
+      - fix the transitions in the appBar 'icons,small width ' microbots
+      - add search for 'ProjectsGrid' to search project by its name
+
 
 */
 

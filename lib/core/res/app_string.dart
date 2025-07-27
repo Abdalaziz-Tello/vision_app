@@ -91,4 +91,8 @@ class AppString {
   static String get noProjectsForYouYet => 'no_projects_for_you_yet'.tr();
   static String get tryAgain => 'tryAgain'.tr();
   static String get errorOccurred => 'errorOccurred'.tr();
+  static String get alerts => 'alerts'.tr();
+  static String get myProjects => 'my_projects'.tr();
+  static String get noResultsFoundForYourSearch =>
+      'no_results_found_for_your_search'.tr();
 }

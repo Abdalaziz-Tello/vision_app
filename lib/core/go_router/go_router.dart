@@ -18,7 +18,7 @@ import 'package:vision_app/features/user_features/request_resources_feature/pres
 import 'package:vision_app/features/shared_features/auth/presentation/home_page.dart';
 import 'package:vision_app/features/shared_features/get_project_details_feature/presentation/view/project_details_page.dart';
 import 'package:vision_app/features/user_features/request_resources_feature/presentation/view/advanced_resources_request_page.dart';
-import 'package:vision_app/features/microbots_features/presentation/microbots_admin.dart';
+import 'package:vision_app/features/microbots_features/presentation/view/microbots_admin.dart';
 
 class Routes {
   GoRouter router = GoRouter(

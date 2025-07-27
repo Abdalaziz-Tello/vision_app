@@ -76,6 +76,9 @@
   "noInternet": "No internet connection",
   "project_completed": "Project completed",
   "no_projects_for_you_yet": "You haven't created a project yet — create one",
-  "errorOccurred": "حدث خطأ!",
-  "tryAgain": "حاول مرة أخرى"
+  "errorOccurred": "An error occurred!",
+  "tryAgain": "Try again",
+  "alerts": "Alerts",
+  "my_projects": "My Projects",
+  "no_results_found_for_your_search": "No results found for your search."
 }
