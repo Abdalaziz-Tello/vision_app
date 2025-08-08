@@ -9,7 +9,7 @@ Future<void> initTools() async {
   //remote :
   if (!sl.isRegistered<ToolsRemoteDataSource>()) {
     sl.registerLazySingleton<ToolsRemoteDataSource>(
-      () => ToolsRemoteDataSourceImpl(supabase: sl()),
+      () => ToolsRemoteDataSourceImpl(supabaseService: sl()),
     );
   }
   //___________________________________________________________

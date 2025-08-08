@@ -2,6 +2,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/errors/error_model.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 
 import 'package:vision_app/core/shared/models/project_models/project_model.dart';
 
@@ -17,7 +18,7 @@ class RemoteGetPojectDetailsImpl implements RemoteGetPojectDetails {
   Future<ProjectModel> getProjectById(String projectId) async {
     try {
       final response = await supabase
-          .from('projects')
+          .from(AppKeys.projectsKey)
           .select('''
           *,
           project_attachments (
@@ -28,8 +29,8 @@ class RemoteGetPojectDetailsImpl implements RemoteGetPojectDetails {
             file_size,
             uploaded_at
           )
-        ''')
-          .eq('id', projectId)
+        ''')//? should we do it in better way ?
+          .eq(AppKeys.idKey, projectId)
           .maybeSingle();
 
       if (response == null) {

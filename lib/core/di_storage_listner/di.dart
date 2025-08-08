@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:vision_app/core/di_storage_listner/supabase_service.dart';
 import 'package:vision_app/core/network/network_info.dart';
 import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/di_storage_listner/user_id.dart';
@@ -35,6 +36,11 @@ Future<void> _initCore() async {
     );
     sl.registerLazySingleton(() => Supabase.instance.client);
   }
+
+  if (!sl.isRegistered<SupabaseService>()) {
+    sl.registerLazySingleton(() => SupabaseService(sl<SupabaseClient>()));
+  }
+
   if (!sl.isRegistered<GoTrueClient>()) {
     sl.registerLazySingleton(() => sl<SupabaseClient>().auth);
   }

@@ -95,33 +95,32 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 TODO:
-fix the exeption when choosing file !!
-slove this error : 10_Another exception was thrown: Incorrect use of ParentDataWidget// already why its 10 times ?!
+-fix the exeption when choosing file !!(done)
+-slove this error : 10_Another exception was thrown: Incorrect use of ParentDataWidget// already why its 10 times ?!
 to save the role after get it
-extrac the button and make it the same for the hole buttons
-handle no newtork will opining it //<<<can't handle this case >>>>
-! know more about this : This uses the HTML renderer instead of CanvasKit — no internet needed to load it.
-! fix the DI
-!fix this :  Another exception was thrown: Error: Could not find the correct Provider<ProjectDomainsBloc> above this DialogScreen Widget
-? handle if projct id in the project details page null
+-extrac the button and make it the same for the hole buttons(done)
+-handle no newtork will opining it //<<<can't handle this case >>>>
+-! know more about this : This uses the HTML renderer instead of CanvasKit — no internet needed to load it.
+-! fix the DI
+-? handle if projct id in the project details page null(in the call )
 
 
 TODO :
 //important :
-      - add search to the porjects
-      - make sure form the models and remove the extends
+      - add search to the porjects(done)
+      - make sure form the models and remove the extends<<
       - opimize the microbots page
-      - make the keys of the data table in the key files
+      - make the keys of the data table in the key files<<
       - change the text of attachements if not exist and he is a vistor
 ____________________________________________________________
-      - the logOut functionality
-      - in resources to change the changenotifier into cubit
-      - to change this discription : "vision_platform_intro" with share
+      - the logOut functionality (shall we do it ?)
+      - in resources to change the changenotifier into cubit<<
+      - to change this discription : "vision_platform_intro" with share <<
       - fix the attachements widgets !! (important to do this )
       - handle not to change any thing in the options when loading (project details page )
       - fix this widget "ProjectCard" <<<<<<
       - need to make the updates project details page , if the user is the creator
-      - fix the ui of the projects and notificatio n
+      - fix the ui of the projects and notification (done )
 
 
 
@@ -129,18 +128,50 @@ ____________________________________________________________
 ____________________________________________________________________
 
 ? done :
-what new :)
-- separates 'showProjectsPopup' widget into the user features , and just call it in the 'homepage' appbar..
-- and make the ui of it 'showProjectsPopup' look better
-- optimize 'AppBarContent'
-- add 'Tawk.to' to the project
-- start optimize microbots ui :
-      - change SearchContainer into simple icon tap
-      - made a RefreshAndSearchRow widget , which contain the refresh and the search rather than put the search in the appbar
-      - adding a little scale animation into projects card
-      - fix the transitions in the appBar 'icons,small width ' microbots
-      - add search for 'ProjectsGrid' to search project by its name
+- adding filterListByQuery to use it in projects and tools searching
+- adding search for tools by tool name
+- refactor: centralize Supabase logic via SupabaseService for cleaner and reusable data access
+ (Created SupabaseService to abstract common Supabase operations (select, insert, rpc, upload). Refactored remote data sources to use SupabaseService instead of direct SupabaseClient usage.This improves code reuse, reduces duplication, and standardizes error handling across all data sources.)
+____________________________________________________________________
+
+context.push(
+  NavigationKeys.projectDetailsPageKey,
+  extra: {
+    'projectId': someId,
+    'toolType': someToolType,
+  },
+);
+
+_____________________________________________________
+GoRoute(
+  path: NavigationKeys.projectDetailsPageKey,
+  pageBuilder: (context, state) {
+    final extra = state.extra as Map<String, dynamic>? ?? {};
+    final projectId = extra['projectId'] as String;
+    final toolType = extra['toolType'] as String?;
+
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<ProjectDetailsBloc>()),
+          BlocProvider(
+            create: (_) => sl<CurrentUserBloc>()..add(LoadCurrentUser()),
+          ),
+          BlocProvider(create: (_) => sl<ProjectAttachmentsCubit>()),
+        ],
+        child: ProjectDetailsPage(
+          projectId: projectId,
+          toolType: toolType,
+        ),
+      ),
+      transitionsBuilder: _fadeTransition,
+    );
+  },
+),
+
 
 
 */
+
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vision_app/core/res/app_images.dart';
 import 'package:vision_app/core/res/app_string.dart';
@@ -10,7 +11,9 @@ import 'package:vision_app/core/shared/widgets/custom_snack_bar_function.dart';
 
 class ProjectDetailsAppbar extends StatelessWidget
     implements PreferredSizeWidget {
-  const ProjectDetailsAppbar({super.key});
+  final String? toolType; // Optional: to show what tool type was used before
+
+  const ProjectDetailsAppbar({super.key, this.toolType});
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +34,34 @@ class ProjectDetailsAppbar extends StatelessWidget
               borderColor: AppColors.vibrantMintGreen,
               onTap: () async {
                 final appUrl = AppKeys.webUrl;
-                //to share the project :
                 Share.share('''
-               ${AppString.visionPlatformIntro}
+${AppString.visionPlatformIntro}
 
-                🔗 $appUrl
-                  ''');
-
+🔗 $appUrl
+''');
                 await Clipboard.setData(ClipboardData(text: appUrl));
                 ScaffoldMessenger.of(context).showSnackBar(
-                  // const SnackBar(content: Text('📋 تم نسخ رابط الموقع!')),
                   customSnackBar(AppString.linkCopied, AppColors.green),
                 );
               },
             ),
           ),
-          Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
+
+          //Add navigation logic to logo tap
+          GestureDetector(
+            onTap: () {
+              if (GoRouter.of(context).canPop()) {
+                context.pop(context);
+                if (toolType != null && toolType!.isNotEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    customSnackBar('Back to $toolType', AppColors.navyBlue),
+                  );
+                }
+              }
+              // else do nothing:
+            },
+            child: Image.asset(AppImages.logo, width: 120, fit: BoxFit.contain),
+          ),
         ],
       ),
     );

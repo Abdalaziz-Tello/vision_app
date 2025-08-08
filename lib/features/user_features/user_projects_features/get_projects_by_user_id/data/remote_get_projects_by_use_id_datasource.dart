@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/errors/error_model.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/shared/models/project_models/project_model.dart';
 
 abstract class RemoteGetProjectsByUseIdDatasource {
@@ -17,7 +18,7 @@ class RemoteGetProjectsByUseIdDatasourceImp
   Future<List<ProjectModel>> getProjectsByUserId(String userId) async {
     try {
       final response = await supabase
-          .from('projects')
+          .from(AppKeys.projectsKey)
           .select('''
         *,
         project_attachments (
@@ -28,8 +29,8 @@ class RemoteGetProjectsByUseIdDatasourceImp
           file_size,
           uploaded_at
         )
-      ''')
-          .eq('created_by', userId);
+      ''')//? should we do it in another better way ?
+          .eq(AppKeys.createdByKey, userId);
       print(response);
       return (response as List).map((e) => ProjectModel.fromJson(e)).toList();
     } on PostgrestException catch (e) {

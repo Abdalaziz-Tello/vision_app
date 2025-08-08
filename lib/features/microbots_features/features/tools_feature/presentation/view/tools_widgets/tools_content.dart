@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vision_app/core/di_storage_listner/build_context_extensions.dart';
+import 'package:vision_app/core/res/app_string.dart';
 import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/shared/widgets/failure_widget.dart';
+import 'package:vision_app/features/microbots_features/features/filter_list_by_query.dart';
 import 'package:vision_app/features/microbots_features/features/tools_feature/presentation/view/tools_widgets/tool_card.dart';
 import 'package:vision_app/features/microbots_features/presentation/widgets/shared_widgets/refresh_and_search_row.dart';
 import 'package:vision_app/features/microbots_features/features/tools_feature/presentation/all_tools_bloc/all_tools_bloc.dart';
@@ -21,6 +23,25 @@ class _ToolsContentState extends State<ToolsContent>
   bool get wantKeepAlive => true;
 
   bool _hasLoaded = false;
+  late TextEditingController _searchController;
+  late ValueNotifier<String> _searchTextNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _searchTextNotifier = ValueNotifier('');
+    _searchController.addListener(() {
+      _searchTextNotifier.value = _searchController.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchTextNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -46,29 +67,48 @@ class _ToolsContentState extends State<ToolsContent>
           return Column(
             children: [
               RefreshAndSearchRow(
-                //TODO : fix this , but first know , what the search here depends on
                 onRefresh: _onRefresh,
-                searchController: TextEditingController(),
-                onSearchChanged: (value) {},
-                onSearchCleared: () {},
+                searchController: _searchController,
+                onSearchChanged: (_) {}, // ValueNotifier handles this
+                onSearchCleared: () => _searchController.clear(),
               ),
-              //  if (kIsWeb ) WebRefreshWidget(onRefresh: _onRefresh),
               Expanded(
-                child: RefreshIndicator(
-                  color: AppColors.whiteColor,
-                  backgroundColor: AppColors.navyBlue,
-                  onRefresh: _onRefresh,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
-                        children: _buildToolCards(state.tools),
+                child: ValueListenableBuilder<String>(
+                  valueListenable: _searchTextNotifier,
+                  builder: (context, searchText, _) {
+                    final filteredTools = filterListByQuery(
+                      state.tools,
+                      searchText,
+                      (tool) => tool.name,
+                    );
+                    if (filteredTools.isEmpty) {
+                      return Center(
+                        child: Text(
+                          AppString.noResultsFoundForYourSearch,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyLarge, //TODO : change this
+                        ),
+                      );
+                    }
+
+                    return RefreshIndicator(
+                      color: AppColors.whiteColor,
+                      backgroundColor: AppColors.navyBlue,
+                      onRefresh: _onRefresh,
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Wrap(
+                            spacing: 16,
+                            runSpacing: 16,
+                            children: _buildToolCards(filteredTools),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             ],

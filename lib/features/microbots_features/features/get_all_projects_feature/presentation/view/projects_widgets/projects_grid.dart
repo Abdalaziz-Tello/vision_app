@@ -7,6 +7,7 @@ import 'package:vision_app/core/res/color/app_colors.dart';
 import 'package:vision_app/core/res/keys/navigation_keys.dart';
 import 'package:vision_app/core/shared/entities/project_entities/project_entity.dart';
 import 'package:vision_app/core/shared/widgets/projects_container/project_card.dart';
+import 'package:vision_app/features/microbots_features/features/filter_list_by_query.dart';
 import 'package:vision_app/features/microbots_features/presentation/widgets/shared_widgets/refresh_and_search_row.dart';
 
 class ProjectsGrid extends StatefulWidget {
@@ -56,13 +57,6 @@ class _ProjectsGridState extends State<ProjectsGrid> {
     return 1;
   }
 
-  List<ProjectEntity> _filterProjects(String query) {
-    if (query.isEmpty) return widget.projects;
-
-    return widget.projects.where((project) {
-      return project.title.toLowerCase().contains(query.toLowerCase());
-    }).toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +77,12 @@ class _ProjectsGridState extends State<ProjectsGrid> {
           child: ValueListenableBuilder<String>(
             valueListenable: _searchTextNotifier,
             builder: (context, searchText, _) {
-              final filteredProjects = _filterProjects(searchText);
+              //   final filteredProjects = _filterProjects(searchText);
+              final filteredProjects = filterListByQuery<ProjectEntity>(
+                widget.projects,
+                searchText,
+                (project) => project.title,
+              );
 
               if (filteredProjects.isEmpty) {
                 return Center(
@@ -123,6 +122,7 @@ class _ProjectsGridState extends State<ProjectsGrid> {
                       onTap: () => context.push(
                         NavigationKeys.projectDetailsPageKey,
                         extra: project.id,
+
                       ),
                     ).animate().scale(
                       duration: (0.1 * index).seconds,

@@ -9,7 +9,7 @@ Future<void> initGetAllResourceRequests() async {
   //remote :
   if (!sl.isRegistered<RemoteGetUsersResourceDatasource>()) {
     sl.registerLazySingleton<RemoteGetUsersResourceDatasource>(
-      () => RemoteGetUsersResourceDatasourceImp(supabase: sl()),
+      () => RemoteGetUsersResourceDatasourceImp(supabaseService: sl()),
     );
   }
 

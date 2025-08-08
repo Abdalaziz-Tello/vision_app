@@ -22,8 +22,9 @@ import 'package:vision_app/core/shared/widgets/input_field_widget.dart';
 //TODO : make them static
 class ProjectDetailsPage extends StatefulWidget {
   final String projectId;
+  final String? toolType;
 
-  const ProjectDetailsPage({super.key, required this.projectId});
+  const ProjectDetailsPage({super.key, required this.projectId, this.toolType});
 
   @override
   State<ProjectDetailsPage> createState() => _ProjectDetailsPageState();

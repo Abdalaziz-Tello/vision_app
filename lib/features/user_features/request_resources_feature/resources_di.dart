@@ -13,7 +13,7 @@ Future<void> initResources() async {
   // Remote
   if (!sl.isRegistered<RemoteResources>()) {
     sl.registerLazySingleton<RemoteResources>(
-      () => RemoteResourcesImpl(supabase: sl()),
+      () => RemoteResourcesImpl(supabaseService: sl()),
     );
   }
   //________________________________________________________

@@ -6,6 +6,7 @@ import 'package:mime/mime.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/errors/error_model.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/data/models/create_project_model.dart';
 import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/data/models/project_domains_model.dart';
 import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/domain/entities/upload_file_entity.dart';
@@ -15,18 +16,6 @@ abstract class ProjectRemoteDataSource {
   Future<List<ProjectDomainsModel>> getAllProjectDomains();
   Future<UploadFileEntity> uploadFile(PlatformFile file);
   Future<String> createProject(CreateProjectModel model);
- // Future<List<ProjectModel>> getProjectsByUserId(String userId);
-  //__________________________________________________________
-  //shared features:
- // Future<ProjectModel> getProjectById(String projectId);
-
- // Future<List<ProjectModel>> getTopCompletedProjects();
-  //__________________________________________________________
-  //micorbots features :
- // Future<List<ProjectModel>> getProjects();
-  //__________________________________________________________
-
-  //  Future<void> createInvitation(InvitationModel invitation);
 }
 
 class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
@@ -37,7 +26,7 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
   @override
   Future<List<ProjectDomainsModel>> getAllProjectDomains() async {
     try {
-      final response = await supabase.from('project_domains').select();
+      final response = await supabase.from(AppKeys.projectDomainsKey).select();
 
       final resultList = response;
       print('sucess getting the data form the back: $resultList');
@@ -65,7 +54,7 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
       print(" Payload: ${model.toJson()}");
 
       final result = await supabase.rpc<String>(
-        'create_project',
+        AppKeys.createProjectKey,
         params: model.toJson(),
       );
 
@@ -153,7 +142,7 @@ class ProjectDomainRemoteDataSourceImpl implements ProjectRemoteDataSource {
     String? res;
     try {
       res = await supabase.storage
-          .from('project-attachments')
+          .from(AppKeys.projectattachmentsKey)
           .uploadBinary(
             path,
             Uint8List.fromList(bytes),
@@ -182,7 +171,9 @@ final res = await supabase.storage.from('project-attachments').createSignedUrl(p
     }
 
     // Generate public URL
-    final url = supabase.storage.from('project-attachments').getPublicUrl(path);
+    final url = supabase.storage
+        .from(AppKeys.projectattachmentsKey)
+        .getPublicUrl(path);
     print("✅ Upload successful!");
     print("🔗 Public URL: $url");
 
@@ -193,143 +184,4 @@ final res = await supabase.storage.from('project-attachments').createSignedUrl(p
       fileUrl: url,
     );
   }
-
-  //_________________________________________________________________________
-  // @override
-  // Future<ProjectModel> getProjectById(String projectId) async {
-  //   try {
-  //     final response = await supabase
-  //         .from('projects')
-  //         .select('''
-  //         *,
-  //         project_attachments (
-  //           id,
-  //           file_url,
-  //           file_name,
-  //           file_type,
-  //           file_size,
-  //           uploaded_at
-  //         )
-  //       ''')
-  //         .eq('id', projectId)
-  //         .maybeSingle();
-
-  //     if (response == null) {
-  //       throw ServerException(
-  //         errorModel: ErrorModel(errorMessage: "Project not found"),
-  //       );
-  //     }
-  //     print('successfully>>');
-  //     print(response);
-  //     return ProjectModel.fromJson(response);
-  //   } on PostgrestException catch (e) {
-  //     throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-  //   } catch (e) {
-  //     throw ServerException(
-  //       errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
-  //     );
-  //   }
-  // }
-  //_____________________________________________________________________
-
-  // @override
-  // Future<List<ProjectModel>> getTopCompletedProjects() async {
-  //   try {
-  //     final response = await supabase
-  //         .from('projects')
-  //         .select('''
-  //         *,
-  //         project_attachments (
-  //           id,
-  //           file_url,
-  //           file_name,
-  //           file_type,
-  //           file_size,
-  //           uploaded_at
-  //         )
-  //       ''')
-  //         .eq('is_public', true) // Only public projects
-  //         .lte('percentage_completed', 100) // Up to 100%
-  //         .order('percentage_completed', ascending: false) // Highest first
-  //         .limit(3); // Top 3 only
-
-  //     print('top projects : $response');
-  //     return (response as List<dynamic>)
-  //         .map((json) => ProjectModel.fromJson(json))
-  //         .toList();
-  //   } on PostgrestException catch (e) {
-  //     print(e);
-  //     throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-  //   } catch (e) {
-  //     print(e);
-  //     throw ServerException(
-  //       errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
-  //     );
-  //   }
-  // }
-
-  //_____________________________________________________________
-  // @override
-  // Future<List<ProjectModel>> getProjects() async {
-  //   try {
-  //     final response = await supabase.from('projects').select('''
-  //         *,
-  //         project_attachments (
-  //           id,
-  //           file_url,
-  //           file_name,
-  //           file_type,
-  //           file_size,
-  //           uploaded_at
-  //         )
-  //       ''');
-
-  //     print('all projects : $response');
-  //     return (response as List<dynamic>)
-  //         .map((json) => ProjectModel.fromJson(json))
-  //         .toList();
-  //   } on PostgrestException catch (e) {
-  //     print(e);
-  //     throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-  //   } catch (e) {
-  //     print(e);
-  //     throw ServerException(
-  //       errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
-  //     );
-  //   }
-  // }
-
-  //_____________________________________________________________________
-  // @override
-  // Future<List<ProjectModel>> getProjectsByUserId(String userId) async {
-  //   try {
-  //     final response = await supabase
-  //         .from('projects')
-  //         .select('''
-  //       *,
-  //       project_attachments (
-  //         id,
-  //         file_url,
-  //         file_name,
-  //         file_type,
-  //         file_size,
-  //         uploaded_at
-  //       )
-  //     ''')
-  //         .eq('created_by', userId);
-  //     print(response);
-  //     return (response as List).map((e) => ProjectModel.fromJson(e)).toList();
-  //   } on PostgrestException catch (e) {
-  //     print(e);
-  //     throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-  //   } catch (e) {
-  //     print(e);
-  //     throw ServerException(
-  //       errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
-  //     );
-  //   }
-  // }
-
-  //? get projects by user id :
-  //_______________________________________________________________________
 }

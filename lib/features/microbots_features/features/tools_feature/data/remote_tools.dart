@@ -1,6 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:vision_app/core/errors/error_model.dart';
-import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/di_storage_listner/supabase_service.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/features/microbots_features/features/tools_feature/data/tools_model.dart';
 
 abstract class ToolsRemoteDataSource {
@@ -8,26 +7,21 @@ abstract class ToolsRemoteDataSource {
 }
 
 class ToolsRemoteDataSourceImpl implements ToolsRemoteDataSource {
-  final SupabaseClient supabase;
-  ToolsRemoteDataSourceImpl({required this.supabase});
+  //  final SupabaseClient supabase;
+  final SupabaseService supabaseService;
+  ToolsRemoteDataSourceImpl({required this.supabaseService});
 
   @override
   Future<List<ToolsModel>> getAllTools() async {
     try {
-      final response = await supabase.from('tools').select();
-
-      final resultList = response;
-      print('sucess getting  "tools" form the back: $resultList');
-
-      return resultList.map((json) => ToolsModel.fromJson(json)).toList();
-    } on PostgrestException catch (e) {
-      print(e);
-      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-    } catch (e) {
-      print(e);
-      throw ServerException(
-        errorModel: ErrorModel(errorMessage: "Unexpected error: $e"),
+      final result = await supabaseService.select(
+        from: AppKeys.toolsKey,
+        columns: '*',
       );
+      print('getting  "tools in micro" form the back: $result');
+      return result.map((json) => ToolsModel.fromJson(json)).toList();
+    } catch (e) {
+      rethrow; // Error already handled inside SupabaseService
     }
   }
 }

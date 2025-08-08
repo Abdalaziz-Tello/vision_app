@@ -2,6 +2,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/errors/error_model.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/res/keys/app_keys.dart';
 
 import 'package:vision_app/core/shared/models/project_models/project_model.dart';
 
@@ -18,7 +19,7 @@ class TopCompletedProjectDatasourceImp
   Future<List<ProjectModel>> getTopCompletedProjects() async {
     try {
       final response = await supabase
-          .from('projects')
+          .from(AppKeys.projectsKey)
           .select('''
           *,
           project_attachments (
@@ -29,10 +30,13 @@ class TopCompletedProjectDatasourceImp
             file_size,
             uploaded_at
           )
-        ''')
-          .eq('is_public', true) // Only public projects
-          .lte('percentage_completed', 100) // Up to 100%
-          .order('percentage_completed', ascending: false) // Highest first
+        ''') //? should we do it in better way ?
+          .eq(AppKeys.isPublicKey, true) // Only public projects
+          .lte(AppKeys.percentageCompletedKey, 100) // Up to 100%
+          .order(
+            AppKeys.percentageCompletedKey,
+            ascending: false,
+          ) // Highest first
           .limit(3); // Top 3 only
 
       print('top projects : $response');

@@ -10,7 +10,7 @@ Future<void> initGetAllProjects() async {
 
   if (!sl.isRegistered<GetAllProjectsRemoteDatasource>()) {
     sl.registerLazySingleton<GetAllProjectsRemoteDatasource>(
-      () => GetAllProjectsRemoteDatasourceImp(supabase: sl()),
+      () => GetAllProjectsRemoteDatasourceImp(supabaseService: sl()),
     );
   }
   //___________________________________________________________
