@@ -13,15 +13,15 @@ class ToolsRemoteDataSourceImpl implements ToolsRemoteDataSource {
 
   @override
   Future<List<ToolsModel>> getAllTools() async {
-    try {
-      final result = await supabaseService.select(
-        from: AppKeys.toolsKey,
-        columns: '*',
-      );
-      print('getting  "tools in micro" form the back: $result');
-      return result.map((json) => ToolsModel.fromJson(json)).toList();
-    } catch (e) {
-      rethrow; // Error already handled inside SupabaseService
-    }
+    //    try {
+    final result = await supabaseService.select(
+      from: AppKeys.toolsKey,
+      columns: '*',
+    );
+    print('getting  "tools in micro" form the back: $result');
+    return result.map((json) => ToolsModel.fromJson(json)).toList();
+    // } catch (e) {
+    //   rethrow; // Error already handled inside SupabaseService
+    // }
   }
 }

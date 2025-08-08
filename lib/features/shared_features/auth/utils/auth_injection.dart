@@ -11,8 +11,8 @@ import 'package:vision_app/features/shared_features/auth/presentation/state_mana
 //Single Source of Truth
 Future<void> initAuth() async {
   //remote :
-  if (!sl.isRegistered<AuthRemoteDataSource>()) {
-    sl.registerLazySingleton<AuthRemoteDataSource>(
+  if (!sl.isRegistered<AuthService>()) {
+    sl.registerLazySingleton<AuthService>(
       () => AuthRemoteDataSourceImpl(auth: sl()),
     );
   }

@@ -15,7 +15,7 @@ Future<void> initCreateProject() async {
   //remote :
   if (!sl.isRegistered<ProjectRemoteDataSource>()) {
     sl.registerLazySingleton<ProjectRemoteDataSource>(
-      () => ProjectDomainRemoteDataSourceImpl(supabase: sl()),
+      () => ProjectDomainRemoteDataSourceImpl(supabaseService: sl()),
     );
   }
   //?___________________________________________________________
@@ -39,7 +39,6 @@ Future<void> initCreateProject() async {
   if (!sl.isRegistered<UploadFileUseCase>()) {
     sl.registerFactory(() => UploadFileUseCase(sl()));
   }
-
 
   // if (!sl.isRegistered<GetTopCompletedProjectsUseCase>()) {
   //   sl.registerFactory(() => GetTopCompletedProjectsUseCase(sl()));

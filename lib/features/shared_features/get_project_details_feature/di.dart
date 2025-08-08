@@ -9,7 +9,7 @@ Future<void> initProjectDetails() async {
   //remote :
   if (!sl.isRegistered<RemoteGetPojectDetails>()) {
     sl.registerLazySingleton<RemoteGetPojectDetails>(
-      () => RemoteGetPojectDetailsImpl(supabase: sl()),
+      () => RemoteGetPojectDetailsImpl(supabaseService: sl()),
     );
   }
   //_____________________________________________________________

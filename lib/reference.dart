@@ -30,8 +30,9 @@
    - getRequestedResources
    - submitResourceRequest
 
-
-
+?__________________________________________________________________
+ note : I kept the 'AuthService' separate from the 'SupabaseService'
+?__________________________________________________________________
 
 
 
@@ -128,10 +129,8 @@ ____________________________________________________________
 ____________________________________________________________________
 
 ? done :
-- adding filterListByQuery to use it in projects and tools searching
-- adding search for tools by tool name
-- refactor: centralize Supabase logic via SupabaseService for cleaner and reusable data access
- (Created SupabaseService to abstract common Supabase operations (select, insert, rpc, upload). Refactored remote data sources to use SupabaseService instead of direct SupabaseClient usage.This improves code reuse, reduces duplication, and standardizes error handling across all data sources.)
+- complete the refactoring for the user and shared features remote layer
+
 ____________________________________________________________________
 
 context.push(

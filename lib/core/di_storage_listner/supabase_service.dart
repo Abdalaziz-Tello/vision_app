@@ -5,6 +5,7 @@ import 'package:mime/mime.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vision_app/core/errors/error_model.dart';
 import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/shared/models/order_by_clause.dart';
 import 'package:vision_app/features/user_features/user_projects_features/create_project_feature/domain/entities/upload_file_entity.dart';
 
 class SupabaseService {
@@ -21,15 +22,12 @@ class SupabaseService {
     int? limit,
   }) async {
     try {
-
       final baseQuery = client.from(from);
       dynamic query = baseQuery.select(columns);
-
 
       filters?.forEach((key, value) {
         query = query.eq(key, value);
       });
-
 
       if (orderBy != null) {
         for (var order in orderBy) {
@@ -40,7 +38,6 @@ class SupabaseService {
         }
       }
 
-
       if (limit != null) {
         query = query.limit(limit);
       }
@@ -49,8 +46,10 @@ class SupabaseService {
 
       return (response as List).cast<Map<String, dynamic>>();
     } on PostgrestException catch (e) {
+      print(e);
       throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
     } catch (e) {
+      print(e);
       throw ServerException(
         errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
       );
@@ -131,14 +130,4 @@ class SupabaseService {
 
   /// Get current user
   User? get currentUser => client.auth.currentUser;
-}
-
-
-//MODEL :
-//______________________________________________________
-class OrderByClause {
-  final String column;
-  final bool ascending;
-
-  OrderByClause({required this.column, this.ascending = true});
 }

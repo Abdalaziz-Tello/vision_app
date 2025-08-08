@@ -4,7 +4,7 @@ import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/features/shared_features/auth/data/auth_response_model.dart';
 import '../../../../core/errors/exceptions.dart';
 
-abstract class AuthRemoteDataSource {
+abstract class AuthService {
   Future<AuthResponseModel> signIn({
     required String email,
     required String password,
@@ -21,7 +21,7 @@ abstract class AuthRemoteDataSource {
 
 //TODO : change the netwrok connection ...DONE✅
 //! the normal way for auth :
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+class AuthRemoteDataSourceImpl implements AuthService {
   final GoTrueClient auth;
 
   AuthRemoteDataSourceImpl({required this.auth});

@@ -1,6 +1,4 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:vision_app/core/errors/error_model.dart';
-import 'package:vision_app/core/errors/exceptions.dart';
+import 'package:vision_app/core/di_storage_listner/supabase_service.dart';
 import 'package:vision_app/core/res/keys/app_keys.dart';
 import 'package:vision_app/core/shared/models/project_models/project_model.dart';
 
@@ -10,16 +8,15 @@ abstract class RemoteGetProjectsByUseIdDatasource {
 
 class RemoteGetProjectsByUseIdDatasourceImp
     implements RemoteGetProjectsByUseIdDatasource {
-  final SupabaseClient supabase;
+  final SupabaseService supabaseService;
 
-  RemoteGetProjectsByUseIdDatasourceImp({required this.supabase});
+  RemoteGetProjectsByUseIdDatasourceImp({required this.supabaseService});
 
   @override
   Future<List<ProjectModel>> getProjectsByUserId(String userId) async {
-    try {
-      final response = await supabase
-          .from(AppKeys.projectsKey)
-          .select('''
+    final response = await supabaseService.select(
+      from: AppKeys.projectsKey,
+      columns: '''
         *,
         project_attachments (
           id,
@@ -29,18 +26,11 @@ class RemoteGetProjectsByUseIdDatasourceImp
           file_size,
           uploaded_at
         )
-      ''')//? should we do it in another better way ?
-          .eq(AppKeys.createdByKey, userId);
-      print(response);
-      return (response as List).map((e) => ProjectModel.fromJson(e)).toList();
-    } on PostgrestException catch (e) {
-      print(e);
-      throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-    } catch (e) {
-      print(e);
-      throw ServerException(
-        errorModel: ErrorModel(errorMessage: "Unexpected: $e"),
-      );
-    }
+      ''',
+      filters: {AppKeys.createdByKey: userId},
+    );
+
+    print('user projects : $response');
+    return response.map((e) => ProjectModel.fromJson(e)).toList();
   }
 }

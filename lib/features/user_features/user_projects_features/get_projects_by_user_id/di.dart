@@ -10,7 +10,7 @@ Future<void> initGetProjectsByUserId() async {
 
   if (!sl.isRegistered<RemoteGetProjectsByUseIdDatasource>()) {
     sl.registerLazySingleton<RemoteGetProjectsByUseIdDatasource>(
-      () => RemoteGetProjectsByUseIdDatasourceImp(supabase: sl()),
+      () => RemoteGetProjectsByUseIdDatasourceImp(supabaseService: sl()),
     );
   }
 

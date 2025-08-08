@@ -15,10 +15,10 @@ class GetAllProjectsRemoteDatasourceImp
 
   @override
   Future<List<ProjectModel>> getProjects() async {
-    try {
-      final result = await supabaseService.select(
-        from: AppKeys.projectsKey,
-        columns: '''
+    //  try {
+    final result = await supabaseService.select(
+      from: AppKeys.projectsKey,
+      columns: '''
           *,
           project_attachments (
             id,
@@ -29,11 +29,11 @@ class GetAllProjectsRemoteDatasourceImp
             uploaded_at
           )
         ''',
-      );
-      print('projects in micro');
-      return result.map((json) => ProjectModel.fromJson(json)).toList();
-    } catch (e) {
-      rethrow; //handled in SupabaseService
-    }
+    );
+    print('projects in micro');
+    return result.map((json) => ProjectModel.fromJson(json)).toList();
+    // } catch (e) {
+    //   rethrow; //handled in SupabaseService
+    // }
   }
 }

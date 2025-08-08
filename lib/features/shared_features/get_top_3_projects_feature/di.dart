@@ -10,7 +10,7 @@ Future<void> initTopCompletedProjects() async {
 
   if (!sl.isRegistered<TopCompletedProjectDatasource>()) {
     sl.registerLazySingleton<TopCompletedProjectDatasource>(
-      () => TopCompletedProjectDatasourceImp(supabase: sl()),
+      () => TopCompletedProjectDatasourceImp(supabaseService: sl()),
     );
   }
   //_____________________________________________________________

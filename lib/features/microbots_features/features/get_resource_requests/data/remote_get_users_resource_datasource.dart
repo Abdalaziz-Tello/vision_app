@@ -12,44 +12,17 @@ class RemoteGetUsersResourceDatasourceImp
   final SupabaseService supabaseService;
   RemoteGetUsersResourceDatasourceImp({required this.supabaseService});
 
-  // @override
-  // Future<List<ResourceRequestModel>> getUsersResourcesRequest() async {
-  //   try {
-  //     final response = await supabase
-  //         .from(AppKeys.resourcesRequestKey)
-  //         .select(); //! change this and make it in the key class
-
-  //     print("Data fetched from 'resources_request':");
-  //     for (var item in response) {
-  //       print(item);
-  //     }
-
-  //     return response
-  //         .map<ResourceRequestModel>(
-  //           (json) => ResourceRequestModel.fromJson(json),
-  //         )
-  //         .toList();
-  //   } on PostgrestException catch (e) {
-  //     print(" PostgrestException: ${e.message}");
-  //     throw ServerException(errorModel: ErrorModel(errorMessage: e.message));
-  //   } catch (e) {
-  //     print("Unexpected error: $e");
-  //     throw ServerException(
-  //       errorModel: ErrorModel(errorMessage: "Unexpected error: $e"),
-  //     );
-  //   }
-  // }
   @override
   Future<List<ResourceRequestModel>> getUsersResourcesRequest() async {
-    try {
-      final result = await supabaseService.select(
-        from: AppKeys.resourcesRequestKey,
-        columns: '*',
-      );
-      print('resoursec in micro');
-      return result.map((json) => ResourceRequestModel.fromJson(json)).toList();
-    } catch (e) {
-      rethrow; //  SupabaseService handle the exception wrapping
-    }
+    //  try {
+    final result = await supabaseService.select(
+      from: AppKeys.resourcesRequestKey,
+      columns: '*',
+    );
+    print('resoursec in micro');
+    return result.map((json) => ResourceRequestModel.fromJson(json)).toList();
+    // } catch (e) {
+    //   rethrow; //  SupabaseService handle the exception wrapping
+    // }
   }
 }

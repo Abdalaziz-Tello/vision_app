@@ -7,7 +7,7 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource remoteDataSource;
+  final AuthService remoteDataSource;
   final NetworkInfo networkInfo;
 
   AuthRepositoryImpl(this.remoteDataSource, this.networkInfo);
